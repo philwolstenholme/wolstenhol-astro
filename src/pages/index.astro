@@ -3,9 +3,11 @@ import Layout from '../layouts/Layout.astro';
 import { Lede } from '../components/Typographical/Lede.tsx';
 import { HeroHeader } from '../components/HeroHeader/HeroHeader.tsx';
 import { CoffeeStains } from '../components/CoffeeStains/CoffeeStains.tsx';
+import HeaderNav from '../components/HeaderNav/HeaderNav.astro';
 ---
 
 <Layout title="Phil Wolstenholme's personal website, blog and portfolio">
+  <HeaderNav />
   <HeroHeader />
   <div class="mx-auto section__inner py-10 lg:pb-28">
     <CoffeeStains>
@@ -21,3 +23,45 @@ import { CoffeeStains } from '../components/CoffeeStains/CoffeeStains.tsx';
     </CoffeeStains>
   </div>
 </Layout>
+
+<script>
+  import AsyncAlpine from 'async-alpine';
+  import Alpine from 'alpinejs';
+  import intersect from '@alpinejs/intersect';
+
+  window.Alpine = Alpine;
+
+  Alpine.plugin(intersect);
+  Alpine.plugin(focus);
+
+  document.addEventListener('alpine:init', () => {
+    Alpine.store('music', {
+      isPlaying: false,
+    });
+  });
+
+  AsyncAlpine.init(Alpine)
+    .data('PwHeader', () => import('../components/HeaderNav/PwHeader'))
+    // .data('PwCardInstagram', () => import('./alpine/PwCardInstagram'))
+    // .data('PwCardMusic', () => import('./alpine/PwCardMusic'))
+    // .data('PwGenre', () => import('./alpine/PwGenre'))
+    // .data('PwLightbox', () => import('./alpine/PwLightbox'))
+    // .data('PwMusic', () => import('./alpine/PwMusic'))
+    // .data('PwSimpleScroller', () => import('./alpine/PwSimpleScroller'))
+    // .data('PwSpotifyLive', () => import('./alpine/PwSpotifyLive'))
+    // .data('PwTweets', () => import('./alpine/PwTweets'))
+    .start();
+
+  Alpine.start();
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (window.scrollY > 0) {
+        const headerElement = document.querySelector('.pw-header') as HTMLElement;
+        headerElement.style.contentVisibility = 'visible';
+      }
+    },
+    { once: true }
+  );
+</script>

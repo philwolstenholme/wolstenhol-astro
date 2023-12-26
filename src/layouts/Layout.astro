@@ -33,11 +33,6 @@ import sprite from '../sprite.svg?raw';
       let root = document.documentElement;
       let scrollbarWidth = window.innerWidth - document.body.offsetWidth;
       root.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
-      declare global {
-        interface Window {
-          pw: any;
-        }
-      }
 
       window.pw = window.pw || {};
     </script>

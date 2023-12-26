@@ -1,0 +1,123 @@
+---
+type Link = {
+  title: string;
+  href: string;
+};
+
+type Links = Link[];
+
+const links = [
+  { title: 'Words', href: '/#words' },
+  { title: 'Reading', href: '/#reading' },
+  { title: 'Speaking', href: '/#speaking' },
+  { title: 'Music', href: '/#music' },
+  { title: 'Photos', href: '/#photos' },
+  { title: 'Tweets & Toots', href: '/#tweetsAndToots' },
+  { title: 'Places', href: '/#places' },
+  { title: 'Work', href: '/work' },
+  { title: 'Contact', href: '/contact' },
+  { title: 'Starred', href: '/github-stars' },
+] as Links;
+
+const currentPath = Astro.url.pathname;
+---
+
+<header
+  role="banner"
+  class="pw-header w-full h-12 sticky top-0 z-20 focus-within:z-50 bg-binding-dark text-white py-2 px-5 sm:px-2"
+  x-ignore
+  ax-load="idle"
+  x-data="PwHeader"
+  x-on:pw-header-active-section-id.window="activeSection = $event.detail"
+  style={currentPath === '/' ? `content-visibility: hidden; contain-intrinsic-height: 48px` : ``}
+>
+  <div class="section__inner mx-auto flex space-x-4">
+    <a href="/#content" rel="home" class="block flex-shrink-0 w-8 h-8">
+      <span class="sr-only">Home</span>
+      <img
+        hidden
+        alt="Phil Wolstenholme"
+        class="inline-block w-8 h-8 bg-yellow-300 rounded-full"
+        src="https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,f_auto,w_32,q_auto:eco/v1545084898/avatar_egzcjk.png"
+        srcset="https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,f_auto,w_64,q_auto:eco/v1545084898/avatar_egzcjk.png 2x"
+        width="32"
+        height="32"
+        loading="lazy"
+      />
+    </a>
+    <nav
+      id="PwHeaderList"
+      class="header-nav relative flex flex-1 items-center overscroll-contain overflow-x-auto hide-scrollbars"
+      role="navigation"
+      tabindex={-1}
+      aria-labelledby="in-page-navigation"
+    >
+      <h2 id="in-page-navigation" class="sr-only">In-page navigation</h2>
+      <ul class="header-nav__list flex align-center space-x-3">
+        {
+          links.map(item => {
+            const id = item.href.replace('/#', '').replace('#', '');
+            const linkFirstChar = item.href.slice(0, 1);
+            const linkSecondChars = item.href.slice(0, 2);
+
+            let itemClass = ``;
+            if (linkFirstChar === '#' || linkSecondChars === '/#') {
+              itemClass = `{'text-yellow-300': activeSection === '${id}'}`;
+            } else {
+              itemClass = `{'text-yellow-300': window.location.pathname === '${id}'}`;
+            }
+
+            return (
+              <li class="flex-shrink-0">
+                <a
+                  href={item.href}
+                  class="font-bold font-serif underline hocus:text-yellow-300"
+                  x-bind:class={itemClass}
+                  x-on:click.prevent={`activeSection = '${id}'; onLinkActivate($event)`}
+                  x-on:keydown.enter.prevent={`activeSection = '${id}'; onLinkActivate($event)`}
+                >
+                  {item.title}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+  </div>
+  <div class="-mx-5 sm:-mx-2 bg-binding-dark h-3 transform shadow-hard" style={{ '--tw-skew-y': '-0.3deg !important' }}></div>
+</header>
+
+<script>
+  (() => {
+    let url = new URL(window.location.href);
+    let params = new URLSearchParams(url.search);
+
+    if (window.location.search.includes('hsp=')) {
+      const scrollLeft = params.get('hsp');
+      const headerList = document.getElementById('PwHeaderList');
+      if (headerList) {
+        headerList.scrollLeft = parseInt(scrollLeft || '0', 10);
+      }
+
+      params.delete('hsp');
+      url.search = params.toString();
+      history.replaceState({}, '', url.toString());
+    }
+
+    if (window.location.search.includes('hc=')) {
+      const header = document.querySelector('header');
+      header?.classList.add('z-50');
+      setTimeout(() => {
+        // The class only neees to be there long enough to scroll down to an anchor.
+        header?.classList.remove('z-50');
+      }, 5 * 1000);
+
+      params.delete('hc');
+      url.search = params.toString();
+      history.replaceState({}, '', url.toString());
+    }
+
+    document.querySelector(`a[href*="${CSS.escape(window.location.hash)}"]`)?.classList.add('text-yellow-300');
+  })();
+</script>

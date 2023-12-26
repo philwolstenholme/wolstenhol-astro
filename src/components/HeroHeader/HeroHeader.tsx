@@ -3,7 +3,7 @@ import React from 'react';
 export const HeroHeader = function HeroHeader() {
   return (
     <>
-      <div className="relative contain-content z-20 bg-binding-dark text-white py-16">
+      <div className="relative contain-content z-20 bg-binding-dark text-white -mt-12 py-16">
         <div className="mx-auto section__inner leading-relaxed flex flex-col space-y-4 md:space-x-8 md:flex-row md:items-start">
           <div className="group bg-yellow-300 flex-shrink-0 w-24 h-24 relative overflow-hidden hover:-rotate-6 hover:scale-125 rounded-full transform transition-transform duration-300">
             <img

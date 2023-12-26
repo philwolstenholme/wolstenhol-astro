@@ -5,3 +5,10 @@ declare module 'react' {
     fetchpriority?: 'high' | 'low' | 'auto';
   }
 }
+
+declare global {
+  interface Window {
+    Alpine: any;
+    pw: any;
+  }
+}
