@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        gray: colors.trueGray,
+        gray: colors.neutral,
         medium: {
           DEFAULT: '#228665',
           dark: '#1e785a',
