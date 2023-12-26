@@ -1,0 +1,131 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  ignore = "git log -1 --pretty=%B | grep test:"
+
+[dev]
+  command = "npm run dev"
+  publish = "dist"
+
+[[redirects]]
+  from = "/proxy/cloudinary/*"
+  to = "https://res.cloudinary.com/wolstenh/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/proxy/jsdelivr/*"
+  to = "https://cdn.jsdelivr.net/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/proxy/gstatic/*"
+  to = "https://t2.gstatic.com/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/recently-played"
+  to = "https://eoh55mp2n2usj4p.m.pipedream.net"
+  status = 200
+
+[[redirects]]
+  from = "/api/recently-played-spotify"
+  to = "https://eoh55mp2n2usj4p.m.pipedream.net"
+  status = 200
+
+# Proxy Lambda functions
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions-internal/:splat"
+  status = 200
+
+[[redirects]]
+  from = "https://cranky-mcnulty-01683e.netlify.app/*"
+  to = "https://wolstenhol.me/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://wolstenhol.me/no-js"
+  to = "https://wolstenhol.me/?no-js"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = '''
+      public,
+      max-age=31536000,
+      immutable'''
+
+[[headers]]
+  for = "/favicon/*"
+  [headers.values]
+    Cache-Control = '''
+      public,
+      max-age=31536000,
+      immutable'''
+
+[[headers]]
+  for = "/partial-*.html"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+
+[[headers]]
+  for = "/*.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=60"
+    CDN-Cache-Control = "max-age=86400"
+
+[[plugins]]
+  package = "netlify-plugin-image-optim"
+[[plugins]]
+  package = "netlify-purge-cloudflare-on-deploy"
+[[plugins]]
+  package = "netlify-plugin-subfont"
+[[plugins]]
+  package = "netlify-plugin-inline-critical-css"
+  [plugins.inputs]
+    dimensions = [
+      { width = 640, height = 1136 },
+      { width = 768, height = 1280 },
+      { width = 1024, height = 600 },
+      { width = 1280, height = 800 },
+      { width = 1536, height = 2048 }
+    ]
+[[plugins]]
+  package = "netlify-plugin-cache"
+  [plugins.inputs]
+    paths = [".cache", "node_modules/.vite", "node_modules/.cache"]
+
+[[edge_functions]]
+  path = "/api/fake-edge-messages-endpoint"
+  function = "fake-edge-messages-endpoint"
+
+[[edge_functions]]
+  path = "/examples/example-banner"
+  function = "example-banner"
+
+[[edge_functions]]
+  path = "/*"
+  function = "remove-js"
+
+[[headers]]
+  for = "/examples/example-banner"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+
+[[edge_functions]]
+  path = "/*"
+  function = "strip-non-html-headers"
