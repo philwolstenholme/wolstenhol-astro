@@ -5,7 +5,7 @@ export const HeroHeader = function HeroHeader() {
     <>
       <div className="relative contain-content z-20 bg-binding-dark text-white -mt-12 py-16">
         <div className="mx-auto section__inner leading-relaxed flex flex-col space-y-4 md:space-x-8 md:flex-row md:items-start">
-          <div className="group bg-yellow-300 flex-shrink-0 w-24 h-24 relative overflow-hidden hover:-rotate-6 hover:scale-125 rounded-full transform transition-transform duration-300">
+          <div className="group bg-yellow-300 flex-shrink-0 size-24 relative overflow-hidden hover:-rotate-6 hover:scale-125 rounded-full transform transition-transform duration-300">
             <img
               alt="Phil Wolstenholme (me!)"
               src="https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,f_auto,q_auto,w_96/v1545084898/avatar_egzcjk.png"
