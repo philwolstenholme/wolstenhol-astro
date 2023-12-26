@@ -7,5 +7,9 @@
   },
   "[svg]": {
     "editor.defaultFormatter": "jock.svg"
+  },
+  "editor.tabSize": 2,
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   }
 }

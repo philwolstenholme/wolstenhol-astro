@@ -1,0 +1,110 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import HeaderNav from '../../components/HeaderNav/HeaderNav.astro';
+import { CoffeeStains } from '../../components/CoffeeStains/CoffeeStains';
+import { Octokit } from 'octokit';
+import type { components } from '@octokit/openapi-types';
+import plur from 'plur';
+import type { Page } from 'astro';
+import eleventyFetch from '@11ty/eleventy-fetch';
+
+export const prerender = true;
+
+export interface Props {
+  page: Page<components['schemas']['starred-repository']['repo']>;
+}
+
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+  const octokit = new Octokit({ auth: process.env.GITHUB_STARS_PAT });
+
+  const stars = await octokit.paginate(octokit.rest.activity.listReposStarredByUser, {
+    username: 'philwolstenholme',
+    per_page: 200,
+    request: {
+      fetch: (
+        url: string,
+        options: {
+          [option: string]: any;
+        }
+      ) =>
+        eleventyFetch(url, {
+          duration: '1d',
+          type: 'text',
+          fetchOptions: options,
+        }),
+    },
+  });
+
+  return paginate(stars, { pageSize: 30 });
+}
+
+const { page } = Astro.props as Props;
+---
+
+<Layout title="Github stars">
+  <HeaderNav />
+  <div class="mx-auto section__inner py-10 lg:pb-28">
+    <CoffeeStains>
+      <h1>Github stars</h1>
+      <ul class="grid gap-5 pb-2 md:grid-cols-2 xl:grid-cols-3">
+        {
+          page.data.map(item => {
+            return (
+              <li class="stars-list__item flex min-w-0">
+                <a
+                  href={item.html_url}
+                  class="stars-list-link contain-content group relative min-w-0 flex-1 items-baseline rounded border bg-gray-900 p-4 font-serif text-white shadow-hard hocus:bg-black"
+                >
+                  <div class="isolate flex h-full flex-col">
+                    <>
+                      <div class="flex-1">
+                        <h2 class="text-lg leading-tight group-hocus:underline">
+                          {item.owner.login}/<span class="font-bold">{item.name}</span>
+                        </h2>
+                        <>
+                          <img
+                            src={`https://wolstenhol.me/proxy/cloudinary/image/fetch/c_lfill,f_auto,g_face,h_50,w_50,q_auto,fl_progressive/${item.owner.avatar_url}`}
+                            srcset={`https://wolstenhol.me/proxy/cloudinary/image/fetch/c_lfill,f_auto,g_face,h_100,w_100,q_auto,fl_progressive/${item.owner.avatar_url} 2x`}
+                            alt={item.owner.login}
+                            width="50"
+                            height="50"
+                            class="w-15 h-15 float-right ml-3 mb-3 block rounded-full bg-white"
+                          />
+                          <p class="stars-list-link__description mt-3 font-sans text-sm leading-tight no-underline">{item.description}</p>
+                        </>
+                      </div>
+                      <dl class="mt-5 flex gap-5 no-underline">
+                        <div class="flex flex-col-reverse">
+                          <>
+                            <dt class="font-sans text-sm font-light">{plur('Issue', item.open_issues)}</dt>
+                            <dd class="font-bold">{Intl.NumberFormat('en-GB').format(item.open_issues)}</dd>
+                          </>
+                        </div>
+                        <>
+                          <div class="flex flex-col-reverse">
+                            <>
+                              <dt class="font-sans text-sm font-light">{plur('Star', item.stargazers_count)}</dt>
+                              <dd class="font-bold">{Intl.NumberFormat('en-GB').format(item.stargazers_count)}</dd>
+                            </>
+                          </div>
+                          <div class="flex flex-col-reverse">
+                            <>
+                              <dt class="font-sans text-sm font-light">{plur('Fork', item.forks)}</dt>
+                              <dd class="font-bold">{Intl.NumberFormat('en-GB').format(item.forks)}</dd>
+                            </>
+                          </div>
+                        </>
+                      </dl>
+                    </>
+                  </div>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+      {page.url.prev ? <a href={page.url.prev}>Previous</a> : null}
+      {page.url.next ? <a href={page.url.next}>Next</a> : null}
+    </CoffeeStains>
+  </div>
+</Layout>
