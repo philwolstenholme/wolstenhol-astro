@@ -1,0 +1,221 @@
+@import 'tailwindcss/base';
+@import '_base.css';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+:root {
+  --outline-size: max(4px, 0.08em);
+}
+
+@layer utilities {
+  @responsive {
+    .scrolling-touch {
+      -webkit-overflow-scrolling: touch;
+    }
+    .scrolling-auto {
+      -webkit-overflow-scrolling: auto;
+    }
+    .hide-scrollbars {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .hide-scrollbars::-webkit-scrollbar {
+      width: 0px;
+      height: 0;
+    }
+
+    .items-1 {
+      --items: 1;
+    }
+    .items-2 {
+      --items: 2;
+    }
+    .items-3 {
+      --items: 3;
+    }
+    .items-4 {
+      --items: 4;
+    }
+    .items-5 {
+      --items: 5;
+    }
+    .items-6 {
+      --items: 6;
+    }
+    .items-7 {
+      --items: 7;
+    }
+  }
+
+  .links-underline a {
+    text-decoration: underline;
+  }
+
+  .scroll-smooth {
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
+  }
+
+  .contain-content {
+    contain: content;
+  }
+
+  .outline-offset-invert {
+    --outline-offset: calc(var(--outline-size) * -1);
+  }
+}
+
+.icon {
+  position: relative;
+  top: -0.0625em;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  fill: currentColor;
+}
+
+/* Make a custom fallback font based on the local Times New Roman */
+@font-face {
+  font-family: 'Roboto Slab-fallback';
+  size-adjust: 117.8%;
+  src: local('Times New Roman');
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Roboto Slab Regular'), local('RobotoSlab-Regular'), url('/assets/fonts/roboto-slab-v12-latin-regular.woff2') format('woff2'),
+    url('/assets/fonts/roboto-slab-v12-latin-regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Roboto Slab Bold'), local('RobotoSlab-Bold'), url('/assets/fonts/roboto-slab-v12-latin-700.woff2') format('woff2'),
+    url('/assets/fonts/roboto-slab-v12-latin-700.woff') format('woff');
+}
+
+/* purgecss ignore */
+:focus,
+.group:focus .group-focus\:outline {
+  outline-color: var(--outline-color, hotpink);
+  outline-width: var(--outline-size);
+  outline-style: solid;
+  outline-offset: var(--outline-offset, var(--outline-size));
+}
+/* purgecss ignore */
+:focus:not(:focus-visible),
+.group:focus:not(:focus-visible) .group-focus\:outline {
+  outline: none;
+}
+
+.scroller-item--fit-to-grid {
+  width: calc((100% - (1.25rem * (var(--items) - 1))) / var(--items));
+}
+
+/* https://max.hn/thoughts/how-to-create-a-highlighter-marker-effect-in-css */
+::target-text,
+h2:target,
+mark,
+.highlight,
+.highlight-links a {
+  margin: -0.1em -0.4em;
+  padding: 0.1em 0.4em;
+  border-radius: 0.8em 0.3em;
+  background: transparent;
+  background-image: linear-gradient(to right, rgba(255, 225, 0, 0.1), rgba(255, 225, 0, 0.7) 4%, rgba(255, 225, 0, 0.4));
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.breakout {
+  width: calc(100vw - var(--scrollbar-width, 15px));
+  margin-left: calc(50% - (50vw - (var(--scrollbar-width, 15px) / 2)));
+}
+
+.aspect-ratio {
+  aspect-ratio: var(--aspect-ratio);
+}
+
+@supports not (aspect-ratio: 16 / 9) {
+  .aspect-ratio::before {
+    float: left;
+    padding-top: calc(100% / (var(--aspect-ratio)));
+    content: '';
+  }
+
+  .aspect-ratio::after {
+    display: block;
+    content: '';
+    clear: both;
+  }
+}
+
+.section__inner {
+  max-width: calc(100vw - 2.5rem);
+
+  @screen sm {
+    max-width: 540px;
+  }
+
+  @screen md {
+    max-width: 720px;
+  }
+
+  @screen lg {
+    max-width: 960px;
+  }
+
+  @screen xl {
+    max-width: calc(72rem - 16px);
+  }
+}
+
+input[type='checkbox'] {
+  accent-color: theme('colors.black');
+}
+
+.grid.grid-stack {
+  grid-template-areas: 'stack';
+
+  & > * {
+    grid-area: stack;
+  }
+}
+
+a.focus\:not-sr-only:focus[href='#content'] {
+  display: inline-block !important;
+  position: absolute !important;
+  padding: 0.5rem !important;
+}
+
+.tweets-grid .scroll-saver ~ .tweets-grid__item,
+ul .scroll-saver ~ .reading-list__item {
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+dialog::backdrop {
+  background-image: url('https://wolstenhol.me/proxy/cloudinary/image/upload/c_crop,f_auto,h_200,w_200,q_auto:eco/v1473712910/binding_dark_im2rpa.png');
+  opacity: 0.9;
+}
+
+html.lightbox-open {
+  overflow-y: hidden !important;
+  padding-right: var(--scrollbar-width);
+}
+
+.opacity-grunge {
+  opacity: var(--opacity, 0.3);
+}
+
+body:not(.connection--unknown):not(.connection--4g) [data-frivolous-grunge] {
+  display: none !important;
+}

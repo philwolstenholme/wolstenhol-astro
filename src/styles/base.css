@@ -1,0 +1,361 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-padding-top: 5em;
+}
+
+:root {
+  --scrollbar-width: calc(100vw - 100%);
+}
+
+/**
+   * Disable animations if the user has turned on the a11y option for reduced motion due to
+   * vestibular disorders etc.
+   *
+   * @link https://css-tricks.com/introduction-reduced-motion-media-query/#article-header-id-3
+   */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01s !important;
+    transition-duration: 0.01s !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/**
+   * ::selection selector: color, background, cursor, and outline.
+   */
+::selection {
+  @apply bg-yellow-300 text-black;
+}
+
+/**
+   * `x-cloak` attributes are removed from elements when Alpine initializes.
+   * This is useful for hiding pre-initialized DOM.
+   *
+   * @link https://github.com/alpinejs/alpine#x-cloak
+   *
+   */
+[x-cloak] {
+  @apply hidden;
+}
+
+/**
+   * Selectively disable the default focus style by selecting for the case when the polyfill
+   * is loaded and [data-focus-visible-added] attribute is not applied to the element:
+   *
+   * @link https://github.com/WICG/focus-visible#2-update-your-css
+   */
+.js-focus-visible :focus:not([data-focus-visible-added]) {
+  @apply outline-none;
+}
+
+.hue-rotate,
+.hue-rotate-links a {
+  animation: hue-rotate 30s infinite;
+  animation-delay: 5s;
+}
+
+@keyframes hue-rotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+a {
+  transition: all 0.25 ease-in-out;
+}
+
+.bg-binding-dark,
+.bg-binding-dark:after,
+.bg-binding-dark:before {
+  background-color: #171717;
+  background-image: url('https://wolstenhol.me/proxy/cloudinary/image/upload/c_crop,f_auto,h_200,w_200,q_auto:eco/v1473712910/binding_dark_im2rpa.png');
+}
+
+.bg-subtle-grunge,
+.bg-subtle-grunge:after,
+.bg-subtle-grunge:before {
+  background-color: #f4f4f4;
+  background-image: url('https://wolstenhol.me/proxy/cloudinary/image/upload/c_crop,f_auto,h_200,w_200,q_auto:eco/v1473712910/subtle_grunge_ux3r0f.png');
+}
+
+button {
+  user-select: none;
+}
+
+.custom-scrollbars {
+  scrollbar-color: #848584 transparent;
+
+  &:focus {
+    scrollbar-color: hotpink transparent;
+
+    &::-webkit-scrollbar-thumb {
+      background: hotpink;
+      border: 0 none hotpink;
+      border-radius: 50px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: darken(hotpink, 20%);
+    }
+    &::-webkit-scrollbar-thumb:active {
+      background: darken(hotpink, 40%);
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  &::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #848584;
+    border: 0 none #848584;
+    border-radius: 50px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: darken(#848584, 20%);
+  }
+  &::-webkit-scrollbar-thumb:active {
+    background: darken(#848584, 40%);
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border: 0 none #fff;
+    border-radius: 45px;
+  }
+  &::-webkit-scrollbar-track:hover {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-track:active {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+:root {
+  --outline-size: max(4px, 0.08em);
+}
+
+@layer utilities {
+  @responsive {
+    .scrolling-touch {
+      -webkit-overflow-scrolling: touch;
+    }
+    .scrolling-auto {
+      -webkit-overflow-scrolling: auto;
+    }
+    .hide-scrollbars {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .hide-scrollbars::-webkit-scrollbar {
+      width: 0px;
+      height: 0;
+    }
+
+    .items-1 {
+      --items: 1;
+    }
+    .items-2 {
+      --items: 2;
+    }
+    .items-3 {
+      --items: 3;
+    }
+    .items-4 {
+      --items: 4;
+    }
+    .items-5 {
+      --items: 5;
+    }
+    .items-6 {
+      --items: 6;
+    }
+    .items-7 {
+      --items: 7;
+    }
+  }
+
+  .links-underline a {
+    text-decoration: underline;
+  }
+
+  .scroll-smooth {
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
+  }
+
+  .contain-content {
+    contain: content;
+  }
+
+  .outline-offset-invert {
+    --outline-offset: calc(var(--outline-size) * -1);
+  }
+}
+
+.icon {
+  position: relative;
+  top: -0.0625em;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  fill: currentColor;
+}
+
+/* Make a custom fallback font based on the local Times New Roman */
+@font-face {
+  font-family: 'Roboto Slab-fallback';
+  size-adjust: 117.8%;
+  src: local('Times New Roman');
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Roboto Slab Regular'), local('RobotoSlab-Regular'), url('/assets/fonts/roboto-slab-v12-latin-regular.woff2') format('woff2'),
+    url('/assets/fonts/roboto-slab-v12-latin-regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Roboto Slab Bold'), local('RobotoSlab-Bold'), url('/assets/fonts/roboto-slab-v12-latin-700.woff2') format('woff2'),
+    url('/assets/fonts/roboto-slab-v12-latin-700.woff') format('woff');
+}
+
+:focus,
+.group:focus .group-focus\:outline {
+  outline-color: var(--outline-color, hotpink);
+  outline-width: var(--outline-size);
+  outline-style: solid;
+  outline-offset: var(--outline-offset, var(--outline-size));
+}
+
+:focus:not(:focus-visible),
+.group:focus:not(:focus-visible) .group-focus\:outline {
+  outline: none;
+}
+
+.scroller-item--fit-to-grid {
+  width: calc((100% - (1.25rem * (var(--items) - 1))) / var(--items));
+}
+
+/* https://max.hn/thoughts/how-to-create-a-highlighter-marker-effect-in-css */
+::target-text,
+h2:target,
+mark,
+.highlight,
+.highlight-links a {
+  margin: -0.1em -0.4em;
+  padding: 0.1em 0.4em;
+  border-radius: 0.8em 0.3em;
+  background: transparent;
+  background-image: linear-gradient(to right, rgba(255, 225, 0, 0.1), rgba(255, 225, 0, 0.7) 4%, rgba(255, 225, 0, 0.4));
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.breakout {
+  width: calc(100vw - var(--scrollbar-width, 15px));
+  margin-left: calc(50% - (50vw - (var(--scrollbar-width, 15px) / 2)));
+}
+
+.aspect-ratio {
+  aspect-ratio: var(--aspect-ratio);
+}
+
+@supports not (aspect-ratio: 16 / 9) {
+  .aspect-ratio::before {
+    float: left;
+    padding-top: calc(100% / (var(--aspect-ratio)));
+    content: '';
+  }
+
+  .aspect-ratio::after {
+    display: block;
+    content: '';
+    clear: both;
+  }
+}
+
+.section__inner {
+  max-width: calc(100vw - 2.5rem);
+
+  @screen sm {
+    max-width: 540px;
+  }
+
+  @screen md {
+    max-width: 720px;
+  }
+
+  @screen lg {
+    max-width: 960px;
+  }
+
+  @screen xl {
+    max-width: calc(72rem - 16px);
+  }
+}
+
+input[type='checkbox'] {
+  accent-color: theme('colors.black');
+}
+
+.grid.grid-stack {
+  grid-template-areas: 'stack';
+
+  & > * {
+    grid-area: stack;
+  }
+}
+
+a.focus\:not-sr-only:focus[href='#content'] {
+  display: inline-block !important;
+  position: absolute !important;
+  padding: 0.5rem !important;
+}
+
+.tweets-grid .scroll-saver ~ .tweets-grid__item,
+ul .scroll-saver ~ .reading-list__item {
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+dialog::backdrop {
+  background-image: url('https://wolstenhol.me/proxy/cloudinary/image/upload/c_crop,f_auto,h_200,w_200,q_auto:eco/v1473712910/binding_dark_im2rpa.png');
+  opacity: 0.9;
+}
+
+html.lightbox-open {
+  overflow-y: hidden !important;
+  padding-right: var(--scrollbar-width);
+}
+
+.opacity-grunge {
+  opacity: var(--opacity, 0.3);
+}
+
+body:not(.connection--unknown):not(.connection--4g) [data-frivolous-grunge] {
+  display: none !important;
+}

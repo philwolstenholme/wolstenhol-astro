@@ -18,16 +18,22 @@
 [ ] - Tweets and toots section
 [ ] - Places section
 [ ] - Footer
-    [ ] - No CSS view
-    [ ] - No JS view
-    [ ] - Lighthouse stats
+[ ] - No CSS view
+[ ] - No JS view
+[ ] - Lighthouse stats
 
 ## General @TODO
 
-[ ] - Review `netlify.toml`, e.g. to set *.netlify.app to redirect to prod URL and to remove unnecessary bits
+[ ] - Review `netlify.toml`, e.g. to set \*.netlify.app to redirect to prod URL and to remove unnecessary bits
 [ ] - Sprite icons
 [ ] - PostCSS config
 [ ] - Workbox/PWA
 [ ] - Sound effects?
-[ ] - 
-[ ] - 
+[ ] - Replace `no-js` classes with that script support media query
+[ ] - SVG favicon?
+[ ] - Font subsetting
+[ ] - Switch to https://github.com/natemoo-re/astro-icon for icon
+[ ] -
+[ ] -
+[ ] -
+[ ] -
