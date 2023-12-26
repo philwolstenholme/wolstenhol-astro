@@ -8,43 +8,41 @@
 }
 
 @layer utilities {
-  @responsive {
-    .scrolling-touch {
-      -webkit-overflow-scrolling: touch;
-    }
-    .scrolling-auto {
-      -webkit-overflow-scrolling: auto;
-    }
-    .hide-scrollbars {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    .hide-scrollbars::-webkit-scrollbar {
-      width: 0px;
-      height: 0;
-    }
+  .scrolling-touch {
+    -webkit-overflow-scrolling: touch;
+  }
+  .scrolling-auto {
+    -webkit-overflow-scrolling: auto;
+  }
+  .hide-scrollbars {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbars::-webkit-scrollbar {
+    width: 0px;
+    height: 0;
+  }
 
-    .items-1 {
-      --items: 1;
-    }
-    .items-2 {
-      --items: 2;
-    }
-    .items-3 {
-      --items: 3;
-    }
-    .items-4 {
-      --items: 4;
-    }
-    .items-5 {
-      --items: 5;
-    }
-    .items-6 {
-      --items: 6;
-    }
-    .items-7 {
-      --items: 7;
-    }
+  .items-1 {
+    --items: 1;
+  }
+  .items-2 {
+    --items: 2;
+  }
+  .items-3 {
+    --items: 3;
+  }
+  .items-4 {
+    --items: 4;
+  }
+  .items-5 {
+    --items: 5;
+  }
+  .items-6 {
+    --items: 6;
+  }
+  .items-7 {
+    --items: 7;
   }
 
   .links-underline a {
