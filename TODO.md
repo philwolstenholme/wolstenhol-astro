@@ -2,8 +2,10 @@
 
 ## Global
 
-- [ ] Container/Breakout components
+- [x] Container/Breakout components
+    - [ ] Yes but make max widths correct, should match old site
 - [ ] Typography components/classes
+    - [ ] Fluid font sizes using that Tailwind plugin
 - [ ] Section intro component
 - [ ] Lede component
 - [ ] Horizontal scroller component
@@ -12,6 +14,7 @@
 - [ ] Highlighted text component
 - [ ] `content-visibility` bits
 - [ ] Bring background images locally or use correct Cloudinary proxy URL
+- [ ] Icon system
 
 ## Homepage
 
