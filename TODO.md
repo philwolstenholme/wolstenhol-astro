@@ -2,11 +2,12 @@
 
 ## Global
 
+- Nav that appears on scroll (use scroll linked animation? Check for Safari support)
 - [x] Container/Breakout components
-    - [ ] Yes but make max widths correct, should match old site
-    - [ ] Yes but find out how to add top/bottom padding to compensate for angle
+  - [ ] Yes but make max widths correct, should match old site
+  - [ ] Yes but find out how to add top/bottom padding to compensate for angle
 - [ ] Typography components/classes
-    - [ ] Fluid font sizes using that Tailwind plugin
+  - [ ] Fluid font sizes using that Tailwind plugin
 - [ ] Section intro component
 - [ ] Lede component
 - [ ] Horizontal scroller component
@@ -16,6 +17,14 @@
 - [ ] `content-visibility` bits
 - [ ] Bring background images locally or use correct Cloudinary proxy URL
 - [ ] Icon system for social media links, section headers etc
+  - [ ] https://github.com/natemoo-re/astro-icon
+- [ ] List truncator for reading list (use HTMLX for partials?)
+- [ ] Custom fonts
+- [ ] Font subsetting
+- [ ] Favicons
+- [ ] Workbox/PWA?
+  - [ ] Refresh for update if new version of site is available
+- [ ] OpenGraph images
 
 ## Homepage
 
