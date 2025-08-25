@@ -1,0 +1,32 @@
+---
+const { as = "section", class: extraClass = "" } = Astro.props;
+const As = as;
+---
+
+<style is:global>
+  @reference "tailwindcss";
+
+  :root {
+    --space: 1rem;
+    --space-md: calc(var(--space) * 2);
+    --content-max-width: theme(--container-5xl);
+  }
+
+  .constrain-content {
+    display: grid;
+    grid-template-columns:
+      [full-start] 1fr
+      [content-start]
+      min(var(--content-max-width), 100% - var(--space-md) * 2)
+      [content-end]
+      1fr [full-end];
+  }
+
+  .constrain-content > * {
+    grid-column: content;
+  }
+</style>
+
+<As class={["constrain-content", extraClass].filter(Boolean).join(" ")}>
+  <slot />
+</As>
