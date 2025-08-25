@@ -11,6 +11,7 @@
 - [ ] Big non homepage heading
 - [ ] Highlighted text component
 - [ ] `content-visibility` bits
+- [ ] Bring background images locally or use correct Cloudinary proxy URL
 
 ## Homepage
 
