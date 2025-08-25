@@ -1,5 +1,6 @@
 ---
-const { as = "header", class: extraClass = "" } = Astro.props;
+import clsx from "clsx";
+const { as = "header", class: extraClass = "", side = "bottom" } = Astro.props;
 const As = as;
 ---
 
@@ -15,7 +16,7 @@ const As = as;
     --clip-padding: calc(var(--full-width) * var(--tan-alpha) / 2);
   }
 
-  .angle {
+  .angle--bottom {
     clip-path: polygon(
       0% 0%,
       100% 0%,
@@ -23,8 +24,22 @@ const As = as;
       0% 100%
     );
   }
+
+  .angle--top {
+    clip-path: polygon(
+      0% calc(var(--clip-padding) * 2),
+      100% 0%,
+      100% 100%,
+      0% 100%
+    );
+  }
 </style>
 
-<As class={`angle ${extraClass}`}>
+<As
+  class={clsx("angle", extraClass, {
+    "angle--top": side === "top",
+    "angle--bottom": side !== "top",
+  })}
+>
   <slot />
 </As>

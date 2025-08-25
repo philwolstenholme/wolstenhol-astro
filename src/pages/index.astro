@@ -6,7 +6,7 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-  <Angle as="header" class="bg-black bg-binding-dark text-white py-16">
+  <Angle as="header" class="bg-binding-dark text-white py-16">
     <Content>
       <div class="md:grid grid-cols-[fit-content(300px)_auto] gap-4">
         <img
@@ -75,4 +75,18 @@ import Layout from "../layouts/Layout.astro";
       </div>
     </Content>
   </main>
+  <Angle as="footer" side="top" class="bg-binding-dark py-16 text-sm text-yellow-400">
+    <Content class="space-y-2">
+    <p>© 1989-{new Date().getFullYear()} Phil Wolstenholme unless otherwise stated (there might be the odd Creative Commons license image within articles)</p>
+    <p>Built with Astro, Tailwind, and Preact.</p>
+    </Content>
+    <!-- two col grid on desktop -->
+    <!-- copyright thing -->
+    <!-- stack notice -->
+    <!-- list of API data sources -->
+    <!-- image copyright notice -->
+    <!-- view page without CSS -->
+    <!-- view page without javascript -->
+    <!-- lighthouse widget -->
+  </Angle>
 </Layout>
