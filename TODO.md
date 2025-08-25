@@ -25,6 +25,7 @@
 - [ ] Workbox/PWA?
   - [ ] Refresh for update if new version of site is available
 - [ ] OpenGraph images
+- [ ] Github actions for deployment
 
 ## Homepage
 
