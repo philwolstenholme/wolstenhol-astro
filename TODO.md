@@ -14,11 +14,11 @@
 - [ ] Highlighted text component
 - [ ] `content-visibility` bits
 - [ ] Bring background images locally or use correct Cloudinary proxy URL
-- [ ] Icon system
+- [ ] Icon system for social media links, section headers etc
 
 ## Homepage
 
-- [ ] Diagonal section divider (clip path?)
+- [x] Diagonal section divider (clip path?)
 - [ ] Reading list item component
 - [ ] Speaking component
 - [ ] Music player component
