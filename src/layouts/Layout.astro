@@ -4,7 +4,8 @@ export interface Props {
   title?: string;
   hasTitleSuffix?: boolean;
 }
-const { title = "Phil Wolstenholme", hasTitleSuffix = true } = Astro.props as Props;
+const { title = "Phil Wolstenholme", hasTitleSuffix = true } =
+  Astro.props as Props;
 const titleSuffix = " | Phil Wolstenholme";
 const fullTitle = hasTitleSuffix ? `${title}${titleSuffix}` : title;
 ---
@@ -17,6 +18,61 @@ const fullTitle = hasTitleSuffix ? `${title}${titleSuffix}` : title;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{fullTitle}</title>
+    <meta charset="UTF-8" /><meta
+      name="viewport"
+      content="width=device-width,initial-scale=1"
+    />
+    <meta name="view-transition" content="same-origin" />
+    <meta name="description" content="Phil Wolstenholme's personal site" />
+    <link rel="canonical" href="https://wolstenhol.me/" />
+    <meta property="og:site_name" content="Phil Wolstenholme" />
+    <meta
+      property="og:title"
+      content={fullTitle}
+    />
+    <meta
+      property="twitter:title"
+      content={fullTitle}
+    />
+    <meta
+      property="og:description"
+      content="Phil Wolstenholme's personal site"
+    />
+    <meta
+      property="twitter:description"
+      content="Phil Wolstenholme's personal site"
+    />
+    <meta property="og:url" content="https://wolstenhol.me/" />
+    <meta
+      property="og:locale"
+      content="en_gb"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      name="twitter:site"
+      content="@philw_"
+    />
+    <meta name="twitter:creator" content="@philw_" />
+    <meta
+      name="twitter:card"
+      content="summary_large_image"
+    />
+    <meta
+      name="image"
+      property="og:image"
+      content="https://wolstenhol.me/og?title=Phil%20Wolstenholme's%20personal%20website%2C%20blog%20and%20portfolio&url=https%3A%2F%2Fwolstenhol.me%2F&v=1.5.0"
+    />
+    <meta
+      property="og:image:alt"
+      content="Phil Wolstenholme's personal website, blog and portfolio, a webpage by Phil Wolstenholme, @philw_"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="My posts on dev.to"
+      href="https://dev.to/feed/philw_"
+    />
+    <meta name="theme-color" content="#161616" />
   </head>
   <body class="bg-subtle-grunge">
     <slot />
