@@ -1,4 +1,8 @@
 ---
+export interface ContentProps {
+  as?: string;
+  class?: string;
+}
 const { as = "section", class: extraClass = "" } = Astro.props;
 const As = as;
 ---

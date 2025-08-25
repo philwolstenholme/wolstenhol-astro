@@ -1,5 +1,10 @@
 ---
 import clsx from "clsx";
+export interface AngleProps {
+  as?: string;
+  class?: string;
+  side?: "top" | "bottom";
+}
 const { as = "header", class: extraClass = "", side = "bottom" } = Astro.props;
 const As = as;
 ---

@@ -1,5 +1,12 @@
 ---
 import "../styles/global.css";
+export interface Props {
+  title?: string;
+  hasTitleSuffix?: boolean;
+}
+const { title = "Phil Wolstenholme", hasTitleSuffix = true } = Astro.props as Props;
+const titleSuffix = " | Phil Wolstenholme";
+const fullTitle = hasTitleSuffix ? `${title}${titleSuffix}` : title;
 ---
 
 <!doctype html>
@@ -9,7 +16,7 @@ import "../styles/global.css";
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Phil Wolstenholme</title>
+    <title>{fullTitle}</title>
   </head>
   <body class="bg-subtle-grunge">
     <slot />
