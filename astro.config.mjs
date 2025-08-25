@@ -11,5 +11,7 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
-  integrations: [preact()]
+  integrations: [preact({
+    devtools: true
+  })]
 });
