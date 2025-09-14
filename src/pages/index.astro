@@ -26,20 +26,19 @@ const githubStarsRaw: GithubStar[] = await githubStarsResponse.json();
 const githubStarsChunks = chunk(githubStarsRaw, 15);
 
 let githubStarsIndex = 0;
-let url;
 if (Astro.request) {
-  url = new URL(Astro.request.url);
-  const param = url.searchParams.get("githubStars");
-  if (param !== null) {
-    const parsed = Number(param);
-    if (!isNaN(parsed) && Number.isInteger(parsed)) {
-      githubStarsIndex = clamp(parsed, 0, githubStarsChunks.length - 1);
-    }
+  const parsedPaginationParam = Number(new URL(Astro.request.url).searchParams.get("githubStars"));
+  if (Number.isInteger(parsedPaginationParam)) {
+    githubStarsIndex = clamp(parsedPaginationParam, 0, githubStarsChunks.length - 1);
   }
 }
-const githubStarsData = githubStarsChunks[githubStarsIndex];
-const githubStarsHasPrev = githubStarsIndex > 0;
-const githubStarsHasNext = githubStarsIndex < githubStarsChunks.length - 1;
+
+const githubStars = {
+  data: githubStarsChunks[githubStarsIndex],
+  hasPrev: githubStarsIndex > 0,
+  hasNext: githubStarsIndex < githubStarsChunks.length - 1,
+  index: githubStarsIndex,
+};
 
 export const prerender = false;
 ---
@@ -162,7 +161,7 @@ export const prerender = false;
               class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]"
             >
               {
-                githubStarsData.map((star) => (
+                githubStars.data?.map((star) => (
                   <li class="expand-clickable-area shadow border rounded p-4 space-y-1 flex flex-col justify-between bg-white/50">
                     <StyledTextLink
                       href={star.html_url}
@@ -182,12 +181,12 @@ export const prerender = false;
             </ul>
             <div class="flex justify-center mt-4 gap-4">
               {
-                githubStarsHasPrev && (
+                githubStars.hasPrev && (
                   <StyledTextLink
                     href={
-                      githubStarsIndex === 1
+                      githubStars.index === 1
                         ? `/#stars`
-                        : `/?githubStars=${githubStarsIndex - 1}#stars`
+                        : `/?githubStars=${githubStars.index - 1}#stars`
                     }
                   >
                     &larr; Previous
@@ -195,9 +194,9 @@ export const prerender = false;
                 )
               }
               {
-                githubStarsHasNext && (
+                githubStars.hasNext && (
                   <StyledTextLink
-                    href={`?githubStars=${githubStarsIndex + 1}#stars`}
+                    href={`?githubStars=${githubStars.index + 1}#stars`}
                   >
                     Next &rarr;
                   </StyledTextLink>
