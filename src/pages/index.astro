@@ -26,12 +26,15 @@ const githubStarsRaw: GithubStar[] = await githubStarsResponse.json();
 const githubStarsChunks = chunk(githubStarsRaw, 15);
 
 let githubStarsIndex = 0;
+let url;
 if (Astro.request) {
-  const url = new URL(Astro.request.url);
+  url = new URL(Astro.request.url);
   const param = url.searchParams.get("githubStars");
-  const parsed = Number(param);
-  if (!isNaN(parsed) && Number.isInteger(parsed)) {
-    githubStarsIndex = clamp(parsed, 0, githubStarsChunks.length - 1);
+  if (param !== null) {
+    const parsed = Number(param);
+    if (!isNaN(parsed) && Number.isInteger(parsed)) {
+      githubStarsIndex = clamp(parsed, 0, githubStarsChunks.length - 1);
+    }
   }
 }
 const githubStarsData = githubStarsChunks[githubStarsIndex];
@@ -151,9 +154,8 @@ export const prerender = false;
             <StyledTextLink
               href="https://github.com/philwolstenholme?tab=stars"
             >
-              starred on GitHub
-            </StyledTextLink>
-            .
+              starred on GitHub</StyledTextLink
+            >.
           </p>
           <div class="mt-8">
             <ul
@@ -161,7 +163,7 @@ export const prerender = false;
             >
               {
                 githubStarsData.map((star) => (
-                  <li class="mb-4 shadow border rounded p-4 space-y-1 flex flex-col justify-between bg-white/50">
+                  <li class="shadow border rounded p-4 space-y-1 flex flex-col justify-between bg-white/50">
                     <StyledTextLink
                       href={star.html_url}
                       class="text-binding-dark font-medium"
@@ -182,7 +184,11 @@ export const prerender = false;
               {
                 githubStarsHasPrev && (
                   <StyledTextLink
-                    href={`?githubStars=${githubStarsIndex - 1}#stars`}
+                    href={
+                      githubStarsIndex === 1
+                        ? `/#stars`
+                        : `/?githubStars=${githubStarsIndex - 1}#stars`
+                    }
                   >
                     &larr; Previous
                   </StyledTextLink>

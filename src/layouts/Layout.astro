@@ -61,6 +61,23 @@ const fullTitle = hasTitleSuffix ? `${title}${titleSuffix}` : title;
   </head>
   <body class="bg-subtle-grunge">
     <slot />
+    <script type="speculationrules">
+      {
+        "prerender": [
+          {
+            "source": "document",
+            "where": {
+              "and": [
+                { "href_matches": "/*" },
+                { "not": { "selector_matches": ".no-prerender" } },
+                { "not": { "selector_matches": "[rel~=nofollow]" } }
+              ]
+            },
+            "eagerness": "eager"
+          }
+        ]
+      }
+    </script>
   </body>
 </html>
 
