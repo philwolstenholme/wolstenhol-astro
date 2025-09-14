@@ -27,9 +27,15 @@ const githubStarsChunks = chunk(githubStarsRaw, 15);
 
 let githubStarsIndex = 0;
 if (Astro.request) {
-  const parsedPaginationParam = Number(new URL(Astro.request.url).searchParams.get("githubStars"));
+  const parsedPaginationParam = Number(
+    new URL(Astro.request.url).searchParams.get("githubStars"),
+  );
   if (Number.isInteger(parsedPaginationParam)) {
-    githubStarsIndex = clamp(parsedPaginationParam, 0, githubStarsChunks.length - 1);
+    githubStarsIndex = clamp(
+      parsedPaginationParam,
+      0,
+      githubStarsChunks.length - 1,
+    );
   }
 }
 
@@ -162,17 +168,16 @@ export const prerender = false;
             >
               {
                 githubStars.data?.map((star) => (
-                  <li class="expand-clickable-area shadow border rounded p-4 space-y-1 flex flex-col justify-between bg-white/50">
-                    <StyledTextLink
+                  <li class="expand-clickable-area shadow border rounded overflow-hidden flex flex-col bg-white/50">
+                    <a
                       href={star.html_url}
-                      class="text-binding-dark font-medium"
-                    >
-                      {star.full_name}
-                    </StyledTextLink>
-                    <p
-                      class="text-sm text-binding-light truncate"
+                      class="text-binding-dark font-bold font-mono p-4 flex-1"
                       title={star.description}
                     >
+                      {star.full_name}
+                    </a>
+                    <hr class="border-black" />
+                    <p class="text-xs truncate block bg-gray-100/50  p-4" title={star.description}>
                       {star.description}
                     </p>
                   </li>
