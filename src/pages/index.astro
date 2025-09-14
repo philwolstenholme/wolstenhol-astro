@@ -2,6 +2,46 @@
 import Angle from "../components/Angle.astro";
 import Content from "../components/Content.astro";
 import Layout from "../layouts/Layout.astro";
+import { StyledTextLink } from "../components/StyledTextLink.tsx";
+import { Section } from "../components/Section.tsx";
+import { chunk } from "es-toolkit";
+
+type GithubStar = {
+  html_url: string;
+  full_name: string;
+  description: string;
+};
+
+const githubStarsResponse = await fetch(
+  "https://api.github.com/users/philwolstenholme/starred?per_page=99",
+  {
+    headers: {
+      Authorization: `token ${import.meta.env.GITHUB_PAT}`,
+      "User-Agent": "astro-site",
+      Accept: "application/vnd.github.v3+json",
+    },
+  },
+);
+const githubStarsRaw: GithubStar[] = await githubStarsResponse.json();
+const githubStarsChunks: GithubStar[][] = chunk(githubStarsRaw, 16);
+
+let githubStarsIndex = 0;
+if (Astro.request) {
+  const url = new URL(Astro.request.url);
+  const param = url.searchParams.get("githubStars");
+  const parsed = Number(param);
+  if (
+    !isNaN(parsed) &&
+    parsed >= 0 &&
+    Number.isInteger(parsed) &&
+    parsed < githubStarsChunks.length
+  ) {
+    githubStarsIndex = parsed;
+  }
+}
+const githubStars = githubStarsChunks[githubStarsIndex] ?? [];
+const hasPrev = githubStarsIndex > 0;
+const hasNext = githubStarsIndex < githubStarsChunks.length - 1;
 ---
 
 <Layout
@@ -55,13 +95,36 @@ import Layout from "../layouts/Layout.astro";
             Outside of work I'm interested in science, the environment,
             bouldering, bikes (everyday/utility), and open source software.
           </p>
-          <ul>
-            <li class="inline">Twitter/X</li>
-            <li class="inline">Bluesky</li>
-            <li class="inline">Github</li>
-            <li class="inline">LinkedIn</li>
-            <li class="inline">Email</li>
-            <li class="inline">Drupal.org</li>
+          <ul class="space-x-2">
+            <li class="inline">
+              <StyledTextLink href="https://twitter.com/philw_"
+                >Twitter/X</StyledTextLink
+              >
+            </li>
+            <li class="inline">
+              <StyledTextLink href="https://bsky.app/profile/wolstenhol.me"
+                >Bluesky</StyledTextLink
+              >
+            </li>
+            <li class="inline">
+              <StyledTextLink href="https://github.com/philwolstenholme"
+                >Github</StyledTextLink
+              >
+            </li>
+            <li class="inline">
+              <StyledTextLink
+                href="https://www.linkedin.com/in/phil-wolstenholme"
+                >LinkedIn</StyledTextLink
+              >
+            </li>
+            <li class="inline">
+              <StyledTextLink href="/contact">Email</StyledTextLink>
+            </li>
+            <li class="inline">
+              <StyledTextLink href="https://www.drupal.org/u/phil-wolstenholme"
+                >Drupal.org</StyledTextLink
+              >
+            </li>
           </ul>
         </div>
       </div>
@@ -69,22 +132,73 @@ import Layout from "../layouts/Layout.astro";
   </Angle>
   <main class="space-y-8 py-8">
     <Content>
-      <div class="space-y-2">
-        <h2>Meanwhile, elsewhere on the internet…</h2>
-        <p>
-          Posts from Bluesky or Mastodon, blog posts from DEV/Medium, talks from
-          YouTube and beyond, photos from Instagram, music from Spotify, and
-          nice places from Foursquare (lol, I know, but I've built the API
-          integration now so Foursquare lives on on this website!).
-        </p>
+      <div class="space-y-6">
+        <Section heading="Meanwhile, elsewhere on the internet…">
+          <p>
+            Posts from Bluesky or Mastodon, blog posts from DEV/Medium, talks
+            from YouTube and beyond, photos from Instagram, music from Spotify,
+            and nice places from Foursquare (lol, I know, but I've built the API
+            integration now so Foursquare lives on on this website!).
+          </p>
+        </Section>
+        <Section heading="Words" />
+        <Section heading="Reading" />
+        <Section heading="Speaking" />
+        <Section heading="Music" />
+        <Section heading="Photos" />
+        <Section heading="Posts" />
+        <Section heading="Places" />
+        <Section heading="Stars"
+          ><p class="max-w-3xl mt-3 font-serif leading-relaxed tracking-widest">
+            A recent selection of projects that I've{" "}
+            <StyledTextLink
+              href="https://github.com/philwolstenholme?tab=stars"
+            >
+              starred on GitHub
+            </StyledTextLink>
+            .
+          </p>
+          <div class="mt-8">
+            <ul
+              class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]"
+            >
+              {
+                githubStars.map((star) => (
+                  <li class="mb-4 shadow border rounded p-4 space-y-1 flex flex-col justify-between">
+                    <StyledTextLink
+                      href={star.html_url}
+                      class="text-binding-dark font-medium"
+                    >
+                      {star.full_name}
+                    </StyledTextLink>
+                    <p
+                      class="text-sm text-binding-light truncate"
+                      title={star.description}
+                    >
+                      {star.description}
+                    </p>
+                  </li>
+                ))
+              }
+            </ul>
+            {
+              hasPrev && (
+                <StyledTextLink href={`?githubStars=${githubStarsIndex - 1}#stars`}>
+                  &larr; Previous
+                </StyledTextLink>
+              )
+            }
+
+            {
+              hasNext && (
+                <StyledTextLink href={`?githubStars=${githubStarsIndex + 1}#stars`}>
+                  Next &rarr;
+                </StyledTextLink>
+              )
+            }
+          </div>
+        </Section>
       </div>
-      <p>Words</p>
-      <p>Reading</p>
-      <p>Speaking</p>
-      <p>Music</p>
-      <p>Photos</p>
-      <p>Posts</p>
-      <p>Places</p>
     </Content>
   </main>
   <Angle

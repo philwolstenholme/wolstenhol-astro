@@ -10,6 +10,12 @@
 - Use Astro recommendations
 - Add inline types unless the type is very large
 - Prefer focused modules over large ones with multiple responsibilities
+- Always use the `clsx` to manage classnames, e.g. to merge classnames or conditionally apply them.
+- Prefer creating TSX components to Astro components.
+- Prefer arrow functions everywhere where possible.
+- Prefer named exports, not default exports.
+- Use Astro conventions, like Content Collections for fetching data.
+- When editing a .astro file keep all logic in the frontmatter script tag, and do not remove the `---` characters.
 
 ## Don't
 
