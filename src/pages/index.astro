@@ -176,10 +176,17 @@ export const prerender = false;
                     >
                       {star.full_name}
                     </a>
-                    <hr class="border-black" />
-                    <p class="text-xs truncate block bg-gray-100/50  p-4" title={star.description}>
-                      {star.description}
-                    </p>
+                    {star.description && star.description.length > 1 && (
+                      <>
+                        <hr class="border-black" />
+                        <p
+                          class="text-xs truncate block bg-gray-100/50  p-4"
+                          title={star.description}
+                        >
+                          {star.description}
+                        </p>
+                      </>
+                    )}
                   </li>
                 ))
               }
