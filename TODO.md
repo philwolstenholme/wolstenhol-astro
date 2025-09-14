@@ -2,10 +2,7 @@
 
 ## Global
 
-- remove prerender false from index and find a way to do fully static pagination
-  - how will this work with multiple paginatable collections on one page?
-  - how will this interact with HTMLX pagination or if it's all static can I just pre-render all the possible combinations of pages?
-  - will we need some middleware/router?
+
 
 - Nav that appears on scroll (use scroll linked animation? Check for Safari support)
 - [x] Container/Breakout components
@@ -33,8 +30,10 @@
 - [ ] Github actions for deployment
 
 ## Collections (e.g. reading list, stars, maps)
+- [x] Basic pagination proof of concept
 - [ ] Show a mix of fresh content but with older stuff randomly mixed in, no duplication allowed
-- [ ] HTMLX partial pagination
+- [ ] HTMLX partials pagination
+- [ ] use https://developers.netlify.com/guides/how-to-do-advanced-caching-and-isr-with-astro for homepage ISR to allow the no-JS pagination (the query string based one) to work as-is but still have a fast site
 - [ ] Preload, CDN cache, or statically render the first 3 partials so the pagination feels instant 
 - [ ] Could we make the pagination work without JS by checking for the `HX-Request` header in middleware and rewriting the request to a partial document, or if the header is missing then returning the full homepage but with the second page of content for the collection. Remember to do `Vary: HX-Request`! 
 
