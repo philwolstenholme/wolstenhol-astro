@@ -4,7 +4,7 @@ import Content from "../components/Content.astro";
 import Layout from "../layouts/Layout.astro";
 import { StyledTextLink } from "../components/StyledTextLink.tsx";
 import { Section } from "../components/Section.tsx";
-import { chunk } from "es-toolkit";
+import { chunk, clamp } from "es-toolkit";
 
 type GithubStar = {
   html_url: string;
@@ -23,25 +23,22 @@ const githubStarsResponse = await fetch(
   },
 );
 const githubStarsRaw: GithubStar[] = await githubStarsResponse.json();
-const githubStarsChunks: GithubStar[][] = chunk(githubStarsRaw, 16);
+const githubStarsChunks = chunk(githubStarsRaw, 15);
 
 let githubStarsIndex = 0;
 if (Astro.request) {
   const url = new URL(Astro.request.url);
   const param = url.searchParams.get("githubStars");
   const parsed = Number(param);
-  if (
-    !isNaN(parsed) &&
-    parsed >= 0 &&
-    Number.isInteger(parsed) &&
-    parsed < githubStarsChunks.length
-  ) {
-    githubStarsIndex = parsed;
+  if (!isNaN(parsed) && Number.isInteger(parsed)) {
+    githubStarsIndex = clamp(parsed, 0, githubStarsChunks.length - 1);
   }
 }
-const githubStars = githubStarsChunks[githubStarsIndex] ?? [];
-const hasPrev = githubStarsIndex > 0;
-const hasNext = githubStarsIndex < githubStarsChunks.length - 1;
+const githubStarsData = githubStarsChunks[githubStarsIndex];
+const githubStarsHasPrev = githubStarsIndex > 0;
+const githubStarsHasNext = githubStarsIndex < githubStarsChunks.length - 1;
+
+export const prerender = false;
 ---
 
 <Layout
@@ -163,8 +160,8 @@ const hasNext = githubStarsIndex < githubStarsChunks.length - 1;
               class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]"
             >
               {
-                githubStars.map((star) => (
-                  <li class="mb-4 shadow border rounded p-4 space-y-1 flex flex-col justify-between">
+                githubStarsData.map((star) => (
+                  <li class="mb-4 shadow border rounded p-4 space-y-1 flex flex-col justify-between bg-white/50">
                     <StyledTextLink
                       href={star.html_url}
                       class="text-binding-dark font-medium"
@@ -181,21 +178,26 @@ const hasNext = githubStarsIndex < githubStarsChunks.length - 1;
                 ))
               }
             </ul>
-            {
-              hasPrev && (
-                <StyledTextLink href={`?githubStars=${githubStarsIndex - 1}#stars`}>
-                  &larr; Previous
-                </StyledTextLink>
-              )
-            }
-
-            {
-              hasNext && (
-                <StyledTextLink href={`?githubStars=${githubStarsIndex + 1}#stars`}>
-                  Next &rarr;
-                </StyledTextLink>
-              )
-            }
+            <div class="flex justify-center mt-4 gap-4">
+              {
+                githubStarsHasPrev && (
+                  <StyledTextLink
+                    href={`?githubStars=${githubStarsIndex - 1}#stars`}
+                  >
+                    &larr; Previous
+                  </StyledTextLink>
+                )
+              }
+              {
+                githubStarsHasNext && (
+                  <StyledTextLink
+                    href={`?githubStars=${githubStarsIndex + 1}#stars`}
+                  >
+                    Next &rarr;
+                  </StyledTextLink>
+                )
+              }
+            </div>
           </div>
         </Section>
       </div>
