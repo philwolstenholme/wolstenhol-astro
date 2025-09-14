@@ -2,6 +2,11 @@
 
 ## Global
 
+- remove prerender false from index and find a way to do fully static pagination
+  - how will this work with multiple paginatable collections on one page?
+  - how will this interact with HTMLX pagination or if it's all static can I just pre-render all the possible combinations of pages?
+  - will we need some middleware/router?
+
 - Nav that appears on scroll (use scroll linked animation? Check for Safari support)
 - [x] Container/Breakout components
   - [ ] Yes but make max widths correct, should match old site
