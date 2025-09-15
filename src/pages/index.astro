@@ -11,9 +11,10 @@ const githubStarsPerPage = 15;
 const githubStarsEntries = await getCollection("github-stars");
 const githubStarsRaw = take(
   githubStarsEntries.map((entry) => entry.data),
-  githubStarsPerPage * Math.floor(githubStarsEntries.length / githubStarsPerPage)
+  githubStarsPerPage *
+    Math.floor(githubStarsEntries.length / githubStarsPerPage),
 );
-const githubStarsChunks = chunk(githubStarsRaw, 15);
+const githubStarsChunks = chunk(githubStarsRaw, githubStarsPerPage);
 
 let githubStarsIndex = 0;
 if (Astro.request) {
