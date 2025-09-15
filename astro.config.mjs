@@ -5,6 +5,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 import preact from '@astrojs/preact';
 
+import netlify from '@astrojs/netlify';
+
 // https://astro.build/config
 export default defineConfig({
   vite: {
@@ -13,5 +15,7 @@ export default defineConfig({
 
   integrations: [preact({
     devtools: true
-  })]
+  })],
+
+  adapter: netlify()
 });
