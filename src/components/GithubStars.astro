@@ -9,12 +9,12 @@ import { StyledTextLink } from "./StyledTextLink";
 const searchParam = 'githubStars';
 const itemsPerPage = getItemsPerPage();
 const collection = await getCollection("github-stars");
-const data = take(
+const collectionData = take(
   collection.map((entry) => entry.data),
   itemsPerPage *
     Math.floor(collection.length / itemsPerPage),
 );
-const chunks = chunk(data, itemsPerPage);
+const chunks = chunk(collectionData, itemsPerPage);
 
 let index = 0;
 if (Astro.request) {
@@ -33,6 +33,7 @@ if (Astro.request) {
 
 const hasPrev = index > 0;
 const hasNext = index < chunks.length - 1;
+const data = chunks[index];
 ---
 
 <Section heading="Stars"
