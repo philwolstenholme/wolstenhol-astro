@@ -7,7 +7,7 @@ import { getItemsPerPage } from "../helpers/getItemsPerPage.astro";
 import { StyledTextLink } from "./StyledTextLink";
 
 const searchParam = 'githubStars';
-const itemsPerPage = getItemsPerPage();
+const itemsPerPage = getItemsPerPage(Astro.request);
 const collection = await getCollection("github-stars");
 const collectionData = take(
   collection.map((entry) => entry.data),
