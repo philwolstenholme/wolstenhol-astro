@@ -1,40 +1,26 @@
 import { defineCollection, z } from "astro:content";
+import { Octokit } from "octokit";
 
-import { Endpoints } from "@octokit/types";
-import { invariant, isNotNil } from "es-toolkit";
-
-const GITHUB_STARS_URL =
-  "https://api.github.com/users/philwolstenholme/starred?per_page=99";
+const GITHUB_USERNAME = "philwolstenholme";
 
 const githubStars = defineCollection({
   type: "content_layer",
   loader: async () => {
-    const headers: Record<string, string> = {
-      "User-Agent": "astro-site",
-      Accept: "application/vnd.github.v3+json",
-    };
-
-    const accessToken = import.meta.env.GITHUB_PAT;
-    if (accessToken) {
-      headers.Authorization = `token ${accessToken}`;
-    }
-
-    const response = await fetch(GITHUB_STARS_URL, { headers });
-    if (!response.ok) {
-      throw new Error(
-        `Unable to load GitHub stars (${response.status} ${response.statusText})`,
-      );
-    }
-
-    const stars: Endpoints["GET /users/{username}/starred"]["response"]["data"] =
-      await response.json();
-
-    return stars.map((star) => {
-      return {
-        ...star,
-        id: star.id.toString(),
-      };
+    const octokit = new Octokit({
+      auth: import.meta.env.GITHUB_PAT,
     });
+
+    const { data } = await octokit.rest.activity.listReposStarredByUser({
+      username: GITHUB_USERNAME,
+      per_page: 100,
+    });
+
+    const repos = data as Extract<(typeof data)[number], { id: number }>[];
+
+    return repos.map((repo) => ({
+      ...repo,
+      id: String(repo.id),
+    }));
   },
   schema: z.object({
     id: z.string(),

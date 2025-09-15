@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Install new dependency",
+			"type": "shell",
+			"command": "npm install",
+			"args": []
+		},
+		{
+			"label": "Astro build",
+			"type": "shell",
+			"command": "npm run build",
+			"args": []
+		}
+	]
+}
