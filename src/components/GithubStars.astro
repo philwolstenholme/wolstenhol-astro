@@ -1,8 +1,9 @@
 ---
-import { Section } from "./Section";
-import { StyledTextLink } from "./StyledTextLink";
 import { chunk, clamp, take } from "es-toolkit";
 import { getCollection } from "astro:content";
+
+import { Section } from "./Section";
+import { StyledTextLink } from "./StyledTextLink";
 
 const githubStarsPerPage = 12;
 const githubStarCollection = await getCollection("github-stars");
