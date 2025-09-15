@@ -4,11 +4,15 @@ import Content from "../components/Content.astro";
 import Layout from "../layouts/Layout.astro";
 import { StyledTextLink } from "../components/StyledTextLink.tsx";
 import { Section } from "../components/Section.tsx";
-import { chunk, clamp } from "es-toolkit";
+import { chunk, clamp, take } from "es-toolkit";
 import { getCollection } from "astro:content";
 
+const githubStarsPerPage = 15;
 const githubStarsEntries = await getCollection("github-stars");
-const githubStarsRaw = githubStarsEntries.map((entry) => entry.data);
+const githubStarsRaw = take(
+  githubStarsEntries.map((entry) => entry.data),
+  githubStarsPerPage * Math.floor(githubStarsEntries.length / githubStarsPerPage)
+);
 const githubStarsChunks = chunk(githubStarsRaw, 15);
 
 let githubStarsIndex = 0;
