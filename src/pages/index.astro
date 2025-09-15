@@ -5,24 +5,10 @@ import Layout from "../layouts/Layout.astro";
 import { StyledTextLink } from "../components/StyledTextLink.tsx";
 import { Section } from "../components/Section.tsx";
 import { chunk, clamp } from "es-toolkit";
+import { getCollection } from "astro:content";
 
-type GithubStar = {
-  html_url: string;
-  full_name: string;
-  description: string;
-};
-
-const githubStarsResponse = await fetch(
-  "https://api.github.com/users/philwolstenholme/starred?per_page=99",
-  {
-    headers: {
-      Authorization: `token ${import.meta.env.GITHUB_PAT}`,
-      "User-Agent": "astro-site",
-      Accept: "application/vnd.github.v3+json",
-    },
-  },
-);
-const githubStarsRaw: GithubStar[] = await githubStarsResponse.json();
+const githubStarsEntries = await getCollection("github-stars");
+const githubStarsRaw = githubStarsEntries.map((entry) => entry.data);
 const githubStarsChunks = chunk(githubStarsRaw, 15);
 
 let githubStarsIndex = 0;
