@@ -3,43 +3,35 @@ import { chunk, clamp, take } from "es-toolkit";
 import { getCollection } from "astro:content";
 
 import { Section } from "./Section";
+import { getItemsPerPage } from "../helpers/getItemsPerPage.astro";
 import { StyledTextLink } from "./StyledTextLink";
 
-// Show fewer stars on mobile devices.
-const githubStarsPerPage = Astro.request
-  ? Astro.request.headers.get("Sec-CH-UA-Mobile") === "?1"
-    ? 5
-    : 12
-  : 12;
-const githubStarCollection = await getCollection("github-stars");
-const githubStarsData = take(
-  githubStarCollection.map((entry) => entry.data),
-  githubStarsPerPage *
-    Math.floor(githubStarCollection.length / githubStarsPerPage),
+const itemsPerPage = getItemsPerPage();
+const collection = await getCollection("github-stars");
+const data = take(
+  collection.map((entry) => entry.data),
+  itemsPerPage *
+    Math.floor(collection.length / itemsPerPage),
 );
-const githubStarsChunks = chunk(githubStarsData, githubStarsPerPage);
+const chunks = chunk(data, itemsPerPage);
 
-let githubStarsIndex = 0;
+let index = 0;
 if (Astro.request) {
   const parsedPaginationParam = Number(
     new URL(Astro.request.url).searchParams.get("githubStars"),
   );
-  
+
   if (Number.isInteger(parsedPaginationParam)) {
-    githubStarsIndex = clamp(
+    index = clamp(
       parsedPaginationParam,
       0,
-      githubStarsChunks.length - 1,
+      chunks.length - 1,
     );
   }
 }
 
-const githubStars = {
-  data: githubStarsChunks[githubStarsIndex],
-  hasPrev: githubStarsIndex > 0,
-  hasNext: githubStarsIndex < githubStarsChunks.length - 1,
-  index: githubStarsIndex,
-};
+const hasPrev = index > 0;
+const hasNext = index < chunks.length - 1;
 ---
 
 <Section heading="Stars"
@@ -52,7 +44,7 @@ const githubStars = {
   <div class="mt-8">
     <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
       {
-        githubStars.data?.map((star) => {
+        data?.map((star) => {
           const hasSensibleDescription = Boolean(
             star.description && star.description.length > 1,
           );
@@ -92,12 +84,12 @@ const githubStars = {
     </ul>
     <div class="flex justify-center mt-4 gap-4">
       {
-        githubStars.hasPrev && (
+        hasPrev && (
           <StyledTextLink
             href={
-              githubStars.index === 1
+              index === 1
                 ? `/#stars`
-                : `/?githubStars=${githubStars.index - 1}#stars`
+                : `/?githubStars=${index - 1}#stars`
             }
           >
             &larr; Previous
@@ -105,8 +97,8 @@ const githubStars = {
         )
       }
       {
-        githubStars.hasNext && (
-          <StyledTextLink href={`?githubStars=${githubStars.index + 1}#stars`}>
+        hasNext && (
+          <StyledTextLink href={`?githubStars=${index + 1}#stars`}>
             Next &rarr;
           </StyledTextLink>
         )

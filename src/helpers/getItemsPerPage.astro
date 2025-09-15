@@ -1,0 +1,10 @@
+---
+/** Uses the `Sec-CH-UA-Mobile` header if it's available to work out how many items to show per page */
+export const getItemsPerPage = () => {
+  return Astro.request
+    ? Astro.request.headers.get("Sec-CH-UA-Mobile") === "?1"
+      ? 5
+      : 12
+    : 12;
+};
+---
