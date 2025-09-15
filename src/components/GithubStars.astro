@@ -5,7 +5,12 @@ import { getCollection } from "astro:content";
 import { Section } from "./Section";
 import { StyledTextLink } from "./StyledTextLink";
 
-const githubStarsPerPage = 12;
+// Show fewer stars on mobile devices.
+const githubStarsPerPage = Astro.request
+  ? Astro.request.headers.get("Sec-CH-UA-Mobile") === "?1"
+    ? 5
+    : 12
+  : 12;
 const githubStarCollection = await getCollection("github-stars");
 const githubStarsData = take(
   githubStarCollection.map((entry) => entry.data),
