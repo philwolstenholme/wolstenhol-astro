@@ -19,9 +19,9 @@ export const Section = ({
   ...rest
 }: SectionProps) => {
   return (
-    <section class={clsx(className, "group/section scroll-mt-8")} {...rest}>
+    <section class={clsx(className, "group/section")} {...rest}>
       {heading && (
-        <Heading as="h2" class="mt-3">
+        <Heading as="h2" class="mt-3 scroll-mt-8">
           {heading}
         </Heading>
       )}

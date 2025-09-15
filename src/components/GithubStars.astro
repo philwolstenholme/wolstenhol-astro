@@ -1,0 +1,109 @@
+---
+import { Section } from "./Section";
+import { StyledTextLink } from "./StyledTextLink";
+import { chunk, clamp, take } from "es-toolkit";
+import { getCollection } from "astro:content";
+
+const githubStarsPerPage = 12;
+const githubStarCollection = await getCollection("github-stars");
+const githubStarsData = take(
+  githubStarCollection.map((entry) => entry.data),
+  githubStarsPerPage *
+    Math.floor(githubStarCollection.length / githubStarsPerPage),
+);
+const githubStarsChunks = chunk(githubStarsData, githubStarsPerPage);
+
+let githubStarsIndex = 0;
+if (Astro.request) {
+  const parsedPaginationParam = Number(
+    new URL(Astro.request.url).searchParams.get("githubStars"),
+  );
+  if (Number.isInteger(parsedPaginationParam)) {
+    githubStarsIndex = clamp(
+      parsedPaginationParam,
+      0,
+      githubStarsChunks.length - 1,
+    );
+  }
+}
+
+const githubStars = {
+  data: githubStarsChunks[githubStarsIndex],
+  hasPrev: githubStarsIndex > 0,
+  hasNext: githubStarsIndex < githubStarsChunks.length - 1,
+  index: githubStarsIndex,
+};
+---
+
+<Section heading="Stars"
+  ><p class="max-w-3xl mt-3 font-serif leading-relaxed tracking-widest">
+    A recent selection of projects that I've{" "}
+    <StyledTextLink href="https://github.com/philwolstenholme?tab=stars">
+      starred on GitHub</StyledTextLink
+    >.
+  </p>
+  <div class="mt-8">
+    <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
+      {
+        githubStars.data?.map((star) => {
+          const hasSensibleDescription = Boolean(
+            star.description && star.description.length > 1,
+          );
+
+          return (
+            <li class="expand-clickable-area shadow border rounded flex flex-col bg-white/50">
+              <a
+                href={star.html_url}
+                class="text-binding-dark bg-graph-paper font-bold font-mono p-4 flex-1"
+                title={hasSensibleDescription ? star.description : undefined}
+              >
+                {star.full_name}
+              </a>
+              {hasSensibleDescription && (
+                <>
+                  <span class="p-4 border-t border-black">
+                    <p
+                      class="text-xs truncate motion-safe:group-data-[in-view]/section:animate-typewriter"
+                      style={{
+                        "animation-delay": `${(Math.random() + 0.1).toFixed(2)}s`,
+                        "animation-duration": `${(Math.random() + 0.1).toFixed(2)}s`,
+                        // animation:
+                        //   "typewriter 3s steps(69) 1 normal both",
+                        // "animation-timeline": "view(60% 0%)",
+                      }}
+                      title={star.description}
+                    >
+                      {star.description}
+                    </p>
+                  </span>
+                </>
+              )}
+            </li>
+          );
+        })
+      }
+    </ul>
+    <div class="flex justify-center mt-4 gap-4">
+      {
+        githubStars.hasPrev && (
+          <StyledTextLink
+            href={
+              githubStars.index === 1
+                ? `/#stars`
+                : `/?githubStars=${githubStars.index - 1}#stars`
+            }
+          >
+            &larr; Previous
+          </StyledTextLink>
+        )
+      }
+      {
+        githubStars.hasNext && (
+          <StyledTextLink href={`?githubStars=${githubStars.index + 1}#stars`}>
+            Next &rarr;
+          </StyledTextLink>
+        )
+      }
+    </div>
+  </div>
+</Section>
