@@ -6,6 +6,7 @@ import { Section } from "./Section";
 import { getItemsPerPage } from "../helpers/getItemsPerPage.astro";
 import { StyledTextLink } from "./StyledTextLink";
 
+const searchParam = 'githubStars';
 const itemsPerPage = getItemsPerPage();
 const collection = await getCollection("github-stars");
 const data = take(
@@ -18,7 +19,7 @@ const chunks = chunk(data, itemsPerPage);
 let index = 0;
 if (Astro.request) {
   const parsedPaginationParam = Number(
-    new URL(Astro.request.url).searchParams.get("githubStars"),
+    new URL(Astro.request.url).searchParams.get(searchParam),
   );
 
   if (Number.isInteger(parsedPaginationParam)) {
