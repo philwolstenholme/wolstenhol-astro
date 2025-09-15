@@ -24,6 +24,7 @@ if (Astro.request) {
   const parsedPaginationParam = Number(
     new URL(Astro.request.url).searchParams.get("githubStars"),
   );
+  
   if (Number.isInteger(parsedPaginationParam)) {
     githubStarsIndex = clamp(
       parsedPaginationParam,
