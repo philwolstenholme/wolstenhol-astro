@@ -1,11 +1,7 @@
 import { defineCollection, z } from "astro:content";
 
-type GithubStarResponse = {
-  id: string;
-  html_url: string;
-  full_name: string;
-  description: string | null;
-};
+import { Endpoints } from "@octokit/types";
+import { invariant, isNotNil } from "es-toolkit";
 
 const GITHUB_STARS_URL =
   "https://api.github.com/users/philwolstenholme/starred?per_page=99";
@@ -30,12 +26,15 @@ const githubStars = defineCollection({
       );
     }
 
-    const stars = await response.json();
+    const stars: Endpoints["GET /users/{username}/starred"]["response"]["data"] =
+      await response.json();
 
-    return stars.map((star) => ({
-      ...star,
-      id: star.id.toString(),
-    }));
+    return stars.map((star) => {
+      return {
+        ...star,
+        id: star.id.toString(),
+      };
+    });
   },
   schema: z.object({
     id: z.string(),
