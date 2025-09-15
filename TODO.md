@@ -31,6 +31,7 @@
 
 ## Collections (e.g. reading list, stars, maps)
 - [x] Basic pagination proof of concept
+- [ ] Skip links
 - [ ] Show a mix of fresh content but with older stuff randomly mixed in, no duplication allowed
 - [ ] HTMLX partials pagination
 - [ ] use https://developers.netlify.com/guides/how-to-do-advanced-caching-and-isr-with-astro for homepage ISR to allow the no-JS pagination (the query string based one) to work as-is but still have a fast site

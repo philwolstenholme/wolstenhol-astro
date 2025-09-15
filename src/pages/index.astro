@@ -174,7 +174,7 @@ if (Astro.response) {
                   );
 
                   return (
-                    <li class="expand-clickable-area shadow border rounded overflow-clip flex flex-col bg-white/50">
+                    <li class="expand-clickable-area shadow border rounded flex flex-col bg-white/50">
                       <a
                         href={star.html_url}
                         class="text-binding-dark bg-graph-paper font-bold font-mono p-4 flex-1"
@@ -191,7 +191,7 @@ if (Astro.response) {
                               class="text-xs truncate motion-safe:group-data-[in-view]/section:animate-typewriter"
                               style={{
                                 "animation-delay": `${(Math.random() * 1).toFixed(2)}s`,
-                                "animation-duration": `${(Math.random() + 1).toFixed(2)}s`,
+                                "animation-duration": `${(Math.random() + 0.1).toFixed(2)}s`,
                                 // animation:
                                 //   "typewriter 3s steps(69) 1 normal both",
                                 // "animation-timeline": "view(60% 0%)",
