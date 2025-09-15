@@ -8,13 +8,13 @@ import { chunk, clamp, take } from "es-toolkit";
 import { getCollection } from "astro:content";
 
 const githubStarsPerPage = 15;
-const githubStarsEntries = await getCollection("github-stars");
-const githubStarsRaw = take(
-  githubStarsEntries.map((entry) => entry.data),
+const githubStarCollection = await getCollection("github-stars");
+const githubStarsData = take(
+  githubStarCollection.map((entry) => entry.data),
   githubStarsPerPage *
-    Math.floor(githubStarsEntries.length / githubStarsPerPage),
+    Math.floor(githubStarCollection.length / githubStarsPerPage),
 );
-const githubStarsChunks = chunk(githubStarsRaw, githubStarsPerPage);
+const githubStarsChunks = chunk(githubStarsData, githubStarsPerPage);
 
 let githubStarsIndex = 0;
 if (Astro.request) {
