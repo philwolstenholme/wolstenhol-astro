@@ -44,17 +44,17 @@
     background-image: url("/graph-paper.svg");
     background-size: 12px;
   }
+}
 
-  .anim-typewriter {
-    animation: typewriter 3s steps(69) 1 normal both;
-  }
+@theme {
+  --animate-typewriter: typewriter 3s steps(69) 1 normal both;
 
   @keyframes typewriter {
     from {
       width: 0;
     }
     to {
-      width: 100%
+      width: 100%;
     }
   }
 }

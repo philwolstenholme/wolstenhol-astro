@@ -187,13 +187,13 @@ export const prerender = false;
                         <>
                           <span class="p-4 border-t border-black">
                             <p
-                              class="text-xs truncate"
+                              class="text-xs truncate motion-safe:group-data-[in-view]/section:animate-typewriter"
                               style={{
-                                // "animation-delay": `${(Math.random() * 1).toFixed(2)}s`,
-                                // "animation-duration": `${(Math.random() * 2 + 1).toFixed(2)}s`,
-                                animation:
-                                  "typewriter 3s steps(69) 1 normal both",
-                                "animation-timeline": "view(60% 0%)",
+                                "animation-delay": `${(Math.random() * 1).toFixed(2)}s`,
+                                "animation-duration": `${(Math.random() + 1).toFixed(2)}s`,
+                                // animation:
+                                //   "typewriter 3s steps(69) 1 normal both",
+                                // "animation-timeline": "view(60% 0%)",
                               }}
                               title={star.description}
                             >
