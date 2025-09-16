@@ -5,18 +5,14 @@ import { Section } from "./Section";
 import { getItemsPerPage } from "../helpers/getItemsPerPage";
 import { StyledTextLink } from "./StyledTextLink";
 import { paginate, buildPageHref } from "../helpers/paginate";
+import Lede from "./Lede.astro";
 
-const searchParam = 'githubStars';
+const searchParam = "githubStars";
 const itemsPerPage = getItemsPerPage(Astro.request);
 const collection = await getCollection("github-stars");
 
-const {
-  data,
-  hasPrev,
-  hasNext,
-  prevIndex,
-  nextIndex,
-} = paginate({
+const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
+  onlyFullPages: true,
   items: collection.map((entry) => entry.data),
   itemsPerPage,
   url: new URL(Astro.request.url),
@@ -24,13 +20,13 @@ const {
 });
 ---
 
-<Section heading="Stars"
-  ><p class="max-w-3xl mt-3 font-serif leading-relaxed tracking-widest">
+<Section heading="Stars">
+  <Lede>
     A recent selection of projects that I've{" "}
     <StyledTextLink href="https://github.com/philwolstenholme?tab=stars">
       starred on GitHub</StyledTextLink
     >.
-  </p>
+  </Lede>
   <div class="mt-8">
     <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
       {
@@ -74,13 +70,13 @@ const {
     </ul>
     <div class="flex justify-center mt-4 gap-4">
       {
-        hasPrev && prevIndex && (
+        hasPrev &&  (
           <StyledTextLink
             href={buildPageHref({
               currentUrl: new URL(Astro.request.url),
               index: prevIndex,
               param: searchParam,
-              anchor: "stars"
+              anchor: "stars",
             })}
           >
             &larr; Previous
@@ -88,13 +84,13 @@ const {
         )
       }
       {
-        hasNext && nextIndex && (
-          <StyledTextLink 
+        hasNext && (
+          <StyledTextLink
             href={buildPageHref({
               currentUrl: new URL(Astro.request.url),
               index: nextIndex,
               param: searchParam,
-              anchor: "stars" 
+              anchor: "stars",
             })}
           >
             Next &rarr;

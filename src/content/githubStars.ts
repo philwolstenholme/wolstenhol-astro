@@ -4,7 +4,6 @@ import { Octokit } from "octokit";
 const GITHUB_USERNAME = "philwolstenholme";
 
 export const githubStars = defineCollection({
-  type: "content_layer",
   loader: async () => {
     const octokit = new Octokit({
       auth: import.meta.env.GITHUB_PAT,

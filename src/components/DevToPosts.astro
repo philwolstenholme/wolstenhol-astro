@@ -1,0 +1,106 @@
+---
+import { getCollection } from "astro:content";
+import { Section } from "./Section";
+import Lede from "./Lede.astro";
+import { StyledTextLink } from "./StyledTextLink";
+import { getItemsPerPage } from "../helpers/getItemsPerPage";
+import { buildPageHref, paginate } from "../helpers/paginate";
+
+const searchParam = "posts";
+const itemsPerPage = 3;
+const collection = await getCollection("dev-to-posts");
+
+const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
+  items: collection.map((entry) => entry.data),
+  itemsPerPage,
+  url: new URL(Astro.request.url),
+  searchParam,
+});
+---
+
+<Section heading="Posts">
+  <Lede>
+    <p class="max-w-3xl font-serif leading-relaxed tracking-widest mt-3">
+      Blog posts I've posted on <StyledTextLink
+        href="https://dev.to/philw_"
+        class="underline">DEV Community</StyledTextLink
+      > or <StyledTextLink
+        href="https://philwolstenholme.medium.com"
+        class="underline">Medium</StyledTextLink
+      > (one day I'll build my own blog, I promise…)
+    </p>
+  </Lede>
+  <div class="mt-8">
+    <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
+      {
+        data?.map((post) => {
+          return (
+            <li class="">
+              <a
+                href={post.canonical_url}
+                class="text-lg font-semibold hover:text-yellow-600 transition-colors"
+              >
+                {post.title}
+              </a>
+              <p class="text-gray-600 text-sm mt-1">
+                {post.description ||
+                  (post.body_markdown &&
+                    post.body_markdown.substring(0, 120) + "...")}
+              </p>
+              <div class="flex items-center mt-2 text-sm text-gray-500">
+                <span>
+                  {new Date(
+                    post.published_at || post.published_timestamp || "",
+                  ).toLocaleDateString()}{" "}
+                  · {post.reading_time_minutes} min read
+                </span>
+                {post.public_reactions_count > 0 && (
+                  <>
+                    <span class="mx-2">·</span>
+                    <span>{post.public_reactions_count} reactions</span>
+                  </>
+                )}
+                {post.comments_count > 0 && (
+                  <>
+                    <span class="mx-2">·</span>
+                    <span>{post.comments_count} comments</span>{" "}
+                  </>
+                )}
+              </div>
+            </li>
+          );
+        })
+      }
+    </ul>
+    <div class="flex justify-center mt-4 gap-4">
+      {
+        hasPrev && (
+          <StyledTextLink
+            href={buildPageHref({
+              currentUrl: new URL(Astro.request.url),
+              index: prevIndex,
+              param: searchParam,
+              anchor: "posts",
+            })}
+          >
+            &larr; Previous
+          </StyledTextLink>
+        )
+      }
+      {
+        hasNext && (
+          <StyledTextLink
+            href={buildPageHref({
+              currentUrl: new URL(Astro.request.url),
+              index: nextIndex,
+              param: searchParam,
+              anchor: "posts",
+            })}
+          >
+            Next &rarr;
+          </StyledTextLink>
+        )
+      }
+    </div>
+  </div>
+</Section>

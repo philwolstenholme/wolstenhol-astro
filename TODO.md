@@ -31,6 +31,7 @@
 
 ## Collections (e.g. reading list, stars, maps)
 - [x] Basic pagination proof of concept
+- [ ] Look at using https://docs.astro.build/en/guides/routing/#pagination for pagination
 - [ ] Skip links
 - [ ] Show a mix of fresh content but with older stuff randomly mixed in, no duplication allowed
 - [ ] HTMLX partials pagination
@@ -39,8 +40,7 @@
 - [ ] Could we make the pagination work without JS by checking for the `HX-Request` header in middleware and rewriting the request to a partial document, or if the header is missing then returning the full homepage but with the second page of content for the collection. Remember to do `Vary: HX-Request`! 
 
 ## Server/CDN
-- [ ] `ETag`
-
+- [ ] `ETag` for SSR pages? Or can we only do that for static assets?
 
 ## Homepage
 

@@ -60,9 +60,8 @@ export type PaginationInput<T> = {
   items: readonly T[];
   itemsPerPage: number;
   url: URL;
-  searchParam?: string; // default: 'page'
-  index?: number; // optional override
-  trimIncompletePage?: boolean; // default: true (matches previous behavior)
+  searchParam?: string;
+  onlyFullPages?: boolean;
 };
 
 export const paginate = <T>({
@@ -70,11 +69,17 @@ export const paginate = <T>({
   itemsPerPage,
   url,
   searchParam = "page",
+  onlyFullPages = false,
 }: PaginationInput<T>) => {
-  const collectionData = take(
-    items,
-    itemsPerPage * Math.floor(items.length / itemsPerPage),
-  );
+  let collectionData = items;
+
+  if (onlyFullPages) {
+    collectionData = take(
+      items,
+      itemsPerPage * Math.floor(items.length / itemsPerPage),
+    );
+  }
+
   const chunks = chunk(collectionData, itemsPerPage);
 
   let index = 0;
@@ -84,8 +89,8 @@ export const paginate = <T>({
     index = clamp(parsedPaginationParam, 0, chunks.length - 1);
   }
 
-  const hasPrev = index > 0;
-  const hasNext = index < chunks.length - 1;
+  const hasPrev = Boolean(index > 0);
+  const hasNext = Boolean(index < chunks.length - 1);
   const prevIndex = hasPrev ? index - 1 : null;
   const nextIndex = hasNext ? index + 1 : null;
 

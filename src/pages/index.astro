@@ -5,6 +5,7 @@ import Layout from "../layouts/Layout.astro";
 import { StyledTextLink } from "../components/StyledTextLink.tsx";
 import { Section } from "../components/Section.tsx";
 import GithubStars from "../components/GithubStars.astro";
+import DevToPosts from "../components/DevToPosts.astro";
 
 export const prerender = false;
 
@@ -14,8 +15,14 @@ if (Astro.response) {
     "public, max-age=0, must-revalidate",
   );
   Astro.response.headers.set("Netlify-CDN-Cache-Control", "s-maxage=31536000");
-  Astro.response.headers.set("Netlify-Cache-Tag", "homepage,github-stars");
-  Astro.response.headers.set("Netlify-Vary", "query=githubStars,header=Sec-CH-UA-Mobile");
+  Astro.response.headers.set(
+    "Netlify-Cache-Tag",
+    "homepage,github-stars,dev-to-posts",
+  );
+  Astro.response.headers.set(
+    "Netlify-Vary",
+    "query=githubStars,devToPosts,header=Sec-CH-UA-Mobile",
+  );
 }
 ---
 
@@ -116,8 +123,10 @@ if (Astro.response) {
             integration now so Foursquare lives on on this website!).
           </p>
         </Section>
+
+        <DevToPosts />
         <GithubStars />
-        <Section heading="Words" />
+        
         <Section heading="Reading" />
         <Section heading="Speaking" />
         <Section heading="Music" />
