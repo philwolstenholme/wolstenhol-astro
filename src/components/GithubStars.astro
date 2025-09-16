@@ -1,39 +1,27 @@
 ---
-import { chunk, clamp, take } from "es-toolkit";
 import { getCollection } from "astro:content";
 
 import { Section } from "./Section";
 import { getItemsPerPage } from "../helpers/getItemsPerPage";
 import { StyledTextLink } from "./StyledTextLink";
+import { paginate, buildPageHref } from "../helpers/paginate";
 
 const searchParam = 'githubStars';
 const itemsPerPage = getItemsPerPage(Astro.request);
 const collection = await getCollection("github-stars");
-const collectionData = take(
-  collection.map((entry) => entry.data),
-  itemsPerPage *
-    Math.floor(collection.length / itemsPerPage),
-);
-const chunks = chunk(collectionData, itemsPerPage);
 
-let index = 0;
-if (Astro.request) {
-  const parsedPaginationParam = Number(
-    new URL(Astro.request.url).searchParams.get(searchParam),
-  );
-
-  if (Number.isInteger(parsedPaginationParam)) {
-    index = clamp(
-      parsedPaginationParam,
-      0,
-      chunks.length - 1,
-    );
-  }
-}
-
-const hasPrev = index > 0;
-const hasNext = index < chunks.length - 1;
-const data = chunks[index];
+const {
+  data,
+  hasPrev,
+  hasNext,
+  prevIndex,
+  nextIndex,
+} = paginate({
+  items: collection.map((entry) => entry.data),
+  itemsPerPage,
+  url: new URL(Astro.request.url),
+  searchParam,
+});
 ---
 
 <Section heading="Stars"
@@ -86,21 +74,29 @@ const data = chunks[index];
     </ul>
     <div class="flex justify-center mt-4 gap-4">
       {
-        hasPrev && (
+        hasPrev && prevIndex && (
           <StyledTextLink
-            href={
-              index === 1
-                ? `/#stars`
-                : `/?githubStars=${index - 1}#stars`
-            }
+            href={buildPageHref({
+              currentUrl: new URL(Astro.request.url),
+              index: prevIndex,
+              param: searchParam,
+              anchor: "stars"
+            })}
           >
             &larr; Previous
           </StyledTextLink>
         )
       }
       {
-        hasNext && (
-          <StyledTextLink href={`?githubStars=${index + 1}#stars`}>
+        hasNext && nextIndex && (
+          <StyledTextLink 
+            href={buildPageHref({
+              currentUrl: new URL(Astro.request.url),
+              index: nextIndex,
+              param: searchParam,
+              anchor: "stars" 
+            })}
+          >
             Next &rarr;
           </StyledTextLink>
         )
