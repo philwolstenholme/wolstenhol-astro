@@ -1,7 +1,7 @@
 const mobileItemsPerPage = 5;
 const desktopItemsPerPage = 12;
 
-/** Uses the `Sec-CH-UA-Mobile` header if it's available to work out how many items to show per page */
+/** Uses the `Sec-CH-UA-Mobile` header if it's available to work out how many items to show per page. */
 export const getItemsPerPage = (astroRequest?: Request) => {
   if (!astroRequest) {
     return desktopItemsPerPage;
