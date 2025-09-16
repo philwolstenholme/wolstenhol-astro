@@ -6,8 +6,10 @@ import { getItemsPerPage } from "../helpers/getItemsPerPage";
 import { StyledTextLink } from "./StyledTextLink";
 import { paginate, buildPageHref } from "../helpers/paginate";
 import Lede from "./Lede.astro";
+import Pagination from "./Pagination.astro";
 
 const searchParam = "githubStars";
+const anchor = "stars";
 const itemsPerPage = getItemsPerPage(Astro.request);
 const collection = await getCollection("github-stars");
 
@@ -68,35 +70,13 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
         })
       }
     </ul>
-    <div class="flex justify-center mt-4 gap-4">
-      {
-        hasPrev &&  (
-          <StyledTextLink
-            href={buildPageHref({
-              currentUrl: new URL(Astro.request.url),
-              index: prevIndex,
-              param: searchParam,
-              anchor: "stars",
-            })}
-          >
-            &larr; Previous
-          </StyledTextLink>
-        )
-      }
-      {
-        hasNext && (
-          <StyledTextLink
-            href={buildPageHref({
-              currentUrl: new URL(Astro.request.url),
-              index: nextIndex,
-              param: searchParam,
-              anchor: "stars",
-            })}
-          >
-            Next &rarr;
-          </StyledTextLink>
-        )
-      }
-    </div>
-  </div>
-</Section>
+    <Pagination
+      anchor={anchor}
+      hasPrev={hasPrev}
+      hasNext={hasNext}
+      prevIndex={prevIndex}
+      nextIndex={nextIndex}
+      searchParam={searchParam}
+    />
+  </div></Section
+>

@@ -1,12 +1,15 @@
 ---
 import { getCollection } from "astro:content";
+import { markdownToTxt } from "markdown-to-txt";
+
 import { Section } from "./Section";
 import Lede from "./Lede.astro";
 import { StyledTextLink } from "./StyledTextLink";
-import { getItemsPerPage } from "../helpers/getItemsPerPage";
 import { buildPageHref, paginate } from "../helpers/paginate";
+import Pagination from "./Pagination.astro";
 
 const searchParam = "posts";
+const anchor = "posts";
 const itemsPerPage = 3;
 const collection = await getCollection("dev-to-posts");
 
@@ -68,10 +71,9 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
                     </>
                   )}
                 </div>
-                <p class="text-sm">
-                  {post.description ||
-                    (post.body_markdown &&
-                      post.body_markdown.substring(0, 120) + "...")}
+                <p class="text-sm line-clamp-3">
+                  {post.body_markdown &&
+                    markdownToTxt(post.body_markdown).substring(0, 300) + "..."}
                 </p>
               </div>
             </li>
@@ -79,35 +81,13 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
         })
       }
     </ul>
-    <div class="flex justify-center mt-4 gap-4">
-      {
-        hasPrev && (
-          <StyledTextLink
-            href={buildPageHref({
-              currentUrl: new URL(Astro.request.url),
-              index: prevIndex,
-              param: searchParam,
-              anchor: "posts",
-            })}
-          >
-            &larr; Previous
-          </StyledTextLink>
-        )
-      }
-      {
-        hasNext && (
-          <StyledTextLink
-            href={buildPageHref({
-              currentUrl: new URL(Astro.request.url),
-              index: nextIndex,
-              param: searchParam,
-              anchor: "posts",
-            })}
-          >
-            Next &rarr;
-          </StyledTextLink>
-        )
-      }
-    </div>
+    <Pagination
+      anchor={anchor}
+      hasPrev={hasPrev}
+      hasNext={hasNext}
+      prevIndex={prevIndex}
+      nextIndex={nextIndex}
+      searchParam={searchParam}
+    />
   </div>
 </Section>

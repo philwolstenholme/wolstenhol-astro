@@ -1,0 +1,38 @@
+---
+import { buildPageHref } from "../helpers/paginate";
+import { StyledTextLink } from "./StyledTextLink";
+
+const { hasPrev, hasNext, prevIndex, nextIndex, searchParam, anchor } =
+  Astro.props;
+---
+
+<div class="flex justify-center mt-4 gap-4">
+  {
+    hasPrev && (
+      <StyledTextLink
+        href={buildPageHref({
+          currentUrl: new URL(Astro.request.url),
+          index: prevIndex,
+          param: searchParam,
+          anchor,
+        })}
+      >
+        &larr; Previous
+      </StyledTextLink>
+    )
+  }
+  {
+    hasNext && (
+      <StyledTextLink
+        href={buildPageHref({
+          currentUrl: new URL(Astro.request.url),
+          index: nextIndex,
+          param: searchParam,
+          anchor,
+        })}
+      >
+        Next &rarr;
+      </StyledTextLink>
+    )
+  }
+</div>
