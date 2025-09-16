@@ -1,23 +1,11 @@
 import { chunk, clamp, invariant, take } from "es-toolkit";
 
-export type PaginationResult<T> = {
-  data: T[];
-  index: number; // 0-based
-  pageCount: number;
-  hasPrev: boolean;
-  hasNext: boolean;
-  prevIndex: number | null;
-  nextIndex: number | null;
-  totalItems: number;
-  itemsPerPage: number;
-};
-
 type PageHrefOptions = {
   currentUrl?: URL;
   base?: string;
   param?: string;
   anchor?: string;
-  index: number;
+  index: number | null;
 };
 
 export const buildPageHref = ({
@@ -31,8 +19,7 @@ export const buildPageHref = ({
     ? new URL(
         typeof currentUrl === "string" ? currentUrl : currentUrl.toString(),
       )
-    : // Dummy origin.
-      new URL(base, "http://example.com");
+    : new URL(base, "");
 
   const searchParams = url.searchParams;
 
@@ -95,7 +82,7 @@ export const paginate = <T>({
   const nextIndex = hasNext ? index + 1 : null;
 
   return {
-    data: chunks[index],
+    data: chunks[index] || [],
     index,
     hasPrev,
     hasNext,
