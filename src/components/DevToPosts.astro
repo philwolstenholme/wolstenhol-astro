@@ -11,6 +11,7 @@ const itemsPerPage = 3;
 const collection = await getCollection("dev-to-posts");
 
 const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
+  onlyFullPages: true,
   items: collection.map((entry) => entry.data),
   itemsPerPage,
   url: new URL(Astro.request.url),
@@ -47,7 +48,7 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
                   (post.body_markdown &&
                     post.body_markdown.substring(0, 120) + "...")}
               </p>
-              <div class="flex items-center mt-2 text-sm text-gray-500">
+              <div class="mt-2 text-sm text-gray-500">
                 <span>
                   {new Date(
                     post.published_at || post.published_timestamp || "",
@@ -56,13 +57,13 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
                 </span>
                 {post.public_reactions_count > 0 && (
                   <>
-                    <span class="mx-2">·</span>
+                    <span>·</span>
                     <span>{post.public_reactions_count} reactions</span>
                   </>
                 )}
                 {post.comments_count > 0 && (
                   <>
-                    <span class="mx-2">·</span>
+                    <span>·</span>
                     <span>{post.comments_count} comments</span>{" "}
                   </>
                 )}
