@@ -39,10 +39,10 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
       {
         data?.map((post) => {
           return (
-            <li class="expand-clickable-area shadow border rounded flex flex-col bg-white/50 overflow-clip">
+            <li class="expand-clickable-area shadow border rounded flex flex-col bg-white/50">
               <a
                 href={post.canonical_url}
-                class="text-binding-dark font-bold font-mono p-4 flex-1"
+                class="text-binding-dark rounded-t font-bold font-mono p-4 flex-1"
                 style={{
                   "background-image":
                     "url(https://wolstenhol.me/proxy/cloudinary/image/upload/c_crop,f_auto,h_200,w_200,q_auto:eco/v1473712910/subtle_grunge_ux3r0f.png)",

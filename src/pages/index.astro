@@ -6,6 +6,7 @@ import { StyledTextLink } from "../components/StyledTextLink.tsx";
 import { Section } from "../components/Section.tsx";
 import GithubStars from "../components/GithubStars.astro";
 import DevToPosts from "../components/DevToPosts.astro";
+import Lede from "../components/Lede.astro";
 
 export const prerender = false;
 
@@ -116,17 +117,17 @@ if (Astro.response) {
     <Content>
       <div class="space-y-6">
         <Section heading="Meanwhile, elsewhere on the internet…">
-          <p>
+          <Lede>
             Posts from Bluesky or Mastodon, blog posts from DEV/Medium, talks
             from YouTube and beyond, photos from Instagram, music from Spotify,
             and nice places from Foursquare (lol, I know, but I've built the API
             integration now so Foursquare lives on on this website!).
-          </p>
+          </Lede>
         </Section>
 
         <DevToPosts />
         <GithubStars />
-        
+
         <Section heading="Reading" />
         <Section heading="Speaking" />
         <Section heading="Music" />

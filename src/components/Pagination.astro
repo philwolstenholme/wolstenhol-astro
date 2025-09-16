@@ -9,7 +9,8 @@ const { hasPrev, hasNext, prevIndex, nextIndex, searchParam, anchor } =
 <div class="flex justify-center mt-4 gap-4">
   {
     hasPrev && (
-      <StyledTextLink
+      <a
+        class="bg-binding-dark text-white font-semibold rounded-full px-4 py-2 hover:underline focus:underline focus:outline-2 outline-black outline-offset-2"
         href={buildPageHref({
           currentUrl: new URL(Astro.request.url),
           index: prevIndex,
@@ -18,12 +19,13 @@ const { hasPrev, hasNext, prevIndex, nextIndex, searchParam, anchor } =
         })}
       >
         &larr; Previous
-      </StyledTextLink>
+      </a>
     )
   }
   {
     hasNext && (
-      <StyledTextLink
+      <a
+        class="bg-binding-dark text-white font-semibold rounded-full px-4 py-2 hover:underline focus:underline focus:outline-2 outline-black outline-offset-2"
         href={buildPageHref({
           currentUrl: new URL(Astro.request.url),
           index: nextIndex,
@@ -32,7 +34,7 @@ const { hasPrev, hasNext, prevIndex, nextIndex, searchParam, anchor } =
         })}
       >
         Next &rarr;
-      </StyledTextLink>
+      </a>
     )
   }
 </div>
