@@ -1,5 +1,10 @@
 import { invariant } from "es-toolkit";
 
+interface SectionDataset extends DOMStringMap {
+  inView?: "true";
+  inViewSkippedBecauseOfPagination?: "true";
+}
+
 const mayHavePaginationParams = (() => {
   const searchParams = new URLSearchParams(window.location.search);
 
@@ -16,16 +21,17 @@ const mayHavePaginationParams = (() => {
 const handleIntersections = (entries: IntersectionObserverEntry[]) => {
   entries.forEach((entry) => {
     invariant(entry.target instanceof HTMLElement, "Expected HTMLElement");
+    const dataset = entry.target.dataset as SectionDataset;
 
     if (!entry.isIntersecting) {
-      delete entry.target.dataset.inView;
+      delete dataset.inView;
       return;
     }
 
     if (mayHavePaginationParams) {
-      entry.target.dataset.inViewSkippedBecauseOfPagination = "true";
+      dataset.inViewSkippedBecauseOfPagination = "true";
     } else {
-      entry.target.dataset.inView = "true";
+      dataset.inView = "true";
     }
   });
 };
