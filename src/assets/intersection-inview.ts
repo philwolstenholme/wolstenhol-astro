@@ -21,28 +21,27 @@ const urlMayHavePaginationParams = (() => {
 })();
 
 const handleIntersections = (entries: IntersectionObserverEntry[]) => {
-  for (const entry of entries) {
+  entries.forEach((entry) => {
     invariant(entry.target instanceof HTMLElement, "Expected HTMLElement");
     const dataset = entry.target.dataset as SectionDataset;
 
     if (!entry.isIntersecting) {
       delete dataset.inView;
-      continue;
+      return;
     }
 
-    // WE don't want animations to trigger if the user is paginating.
-    // Use a data attribute to skip setting `inView` once per section
-    // if we think there might be pagination params in the URL.
+    // We don't want animations to trigger if the user is paginating.
+    // Skip setting `inView` once per section if pagination params exist.
     if (
       urlMayHavePaginationParams &&
       dataset.inViewSkippedBecauseOfPagination !== "true"
     ) {
       dataset.inViewSkippedBecauseOfPagination = "true";
-      continue;
+      return;
     }
 
     dataset.inView = "true";
-  }
+  });
 };
 
 (function init() {
