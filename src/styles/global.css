@@ -1,5 +1,36 @@
 @import "tailwindcss";
 
+/* Make a custom fallback font based on the local Times New Roman */
+@font-face {
+  font-family: "Roboto Slab-fallback";
+  size-adjust: 117.8%;
+  src: local("Times New Roman");
+}
+
+@font-face {
+  font-family: "Roboto Slab";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local("Roboto Slab Regular"),
+    local("RobotoSlab-Regular"),
+    url("/fonts/roboto-slab-v12-latin-regular.woff2") format("woff2"),
+    url("/fonts/roboto-slab-v12-latin-regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Roboto Slab";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local("Roboto Slab Bold"),
+    local("RobotoSlab-Bold"),
+    url("/fonts/roboto-slab-v12-latin-700.woff2") format("woff2"),
+    url("/fonts/roboto-slab-v12-latin-700.woff") format("woff");
+}
+
 @layer utilities {
   .bg-binding-dark,
   .bg-binding-dark:after,
@@ -48,6 +79,7 @@
 
 @theme {
   --animate-typewriter: typewriter 3s steps(69) 1 normal both;
+  --font-serif: "Roboto Slab", "Roboto Slab-fallback", serif;
 
   @keyframes typewriter {
     from {
