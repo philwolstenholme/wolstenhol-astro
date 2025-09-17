@@ -5,11 +5,13 @@ interface SectionDataset extends DOMStringMap {
   inViewSkippedBecauseOfPagination?: "true";
 }
 
-const mayHavePaginationParams = (() => {
+const urlMayHavePaginationParams = (() => {
   const searchParams = new URLSearchParams(window.location.search);
 
   for (const value of searchParams.values()) {
-    // Only digits, and length 1–2.
+    // I don't want to maintain a list of all possible pagination param names,
+    // so instead I just check for numeric 1-2 digit values. If any value looks
+    // like a page number, assume pagination params are present.
     if (/^\d{1,2}$/.test(value)) {
       return true;
     }
@@ -19,21 +21,28 @@ const mayHavePaginationParams = (() => {
 })();
 
 const handleIntersections = (entries: IntersectionObserverEntry[]) => {
-  entries.forEach((entry) => {
+  for (const entry of entries) {
     invariant(entry.target instanceof HTMLElement, "Expected HTMLElement");
     const dataset = entry.target.dataset as SectionDataset;
 
     if (!entry.isIntersecting) {
       delete dataset.inView;
-      return;
+      continue;
     }
 
-    if (mayHavePaginationParams) {
+    // WE don't want animations to trigger if the user is paginating.
+    // Use a data attribute to skip setting `inView` once per section
+    // if we think there might be pagination params in the URL.
+    if (
+      urlMayHavePaginationParams &&
+      dataset.inViewSkippedBecauseOfPagination !== "true"
+    ) {
       dataset.inViewSkippedBecauseOfPagination = "true";
-    } else {
-      dataset.inView = "true";
+      continue;
     }
-  });
+
+    dataset.inView = "true";
+  }
 };
 
 (function init() {
