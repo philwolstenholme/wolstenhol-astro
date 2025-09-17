@@ -22,7 +22,7 @@ if (Astro.response) {
   );
   Astro.response.headers.set(
     "Netlify-Vary",
-    "query=githubStars,devToPosts,header=Sec-CH-UA-Mobile",
+    "query=githubStars,devToPosts|header=Sec-CH-UA-Mobile|cookie=hideWipBanner",
   );
 }
 ---

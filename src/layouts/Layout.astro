@@ -1,4 +1,5 @@
 ---
+import { StyledTextLink } from "../components/StyledTextLink";
 import "../styles/global.css";
 export interface Props {
   title?: string;
@@ -61,6 +62,27 @@ const fullTitle = hasTitleSuffix ? `${title}${titleSuffix}` : title;
     <meta name="theme-color" content="#161616" />
   </head>
   <body class="bg-subtle-grunge">
+    {
+      Astro.cookies.has("hideWipBanner") === false && (
+        <div
+          id="wip-banner"
+          class="sticky border-b border-black z-50 flex py-2 gap-4 top-0 pr-4 bg-yellow-300 text-black text-sm md:text-base"
+        >
+          <marquee>
+            This is a work in progress, my real website is{" "}
+            <StyledTextLink href="https://wolstenhol.me/">
+              https://wolstenhol.me
+            </StyledTextLink>
+          </marquee>
+          <button
+            class="shrink-0 underline"
+            onclick="document.getElementById('wip-banner').style.display='none'; document.cookie = 'hideWipBanner=true; max-age=' + 60*60*24*5 + '; path=/';"
+          >
+            Close me
+          </button>
+        </div>
+      )
+    }
     <slot />
     <script type="speculationrules">
       {

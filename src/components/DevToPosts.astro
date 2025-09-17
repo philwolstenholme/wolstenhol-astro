@@ -35,7 +35,7 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
     </p>
   </Lede>
   <div class="mt-8">
-    <ul class="grid gap-4 grid-cols-3">
+    <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
       {
         data?.map((post) => {
           return (
