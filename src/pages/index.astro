@@ -20,10 +20,10 @@ if (Astro.response) {
   //   "Netlify-Cache-Tag",
   //   "homepage,github-stars,dev-to-posts",
   // );
-  // Astro.response.headers.set(
-  //   "Netlify-Vary",
-  //   "query=githubStars,devToPosts|header=Sec-CH-UA-Mobile|cookie=hideWipBanner",
-  // );
+  Astro.response.headers.set(
+    "Netlify-Vary",
+    "query=githubStars|devToPosts,header=Sec-CH-UA-Mobile,cookie=hideWipBanner",
+  );
 }
 ---
 
