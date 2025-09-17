@@ -16,14 +16,14 @@ if (Astro.response) {
     "public, max-age=0, must-revalidate",
   );
   Astro.response.headers.set("Netlify-CDN-Cache-Control", "s-maxage=31536000");
-  Astro.response.headers.set(
-    "Netlify-Cache-Tag",
-    "homepage,github-stars,dev-to-posts",
-  );
-  Astro.response.headers.set(
-    "Netlify-Vary",
-    "query=githubStars,devToPosts|header=Sec-CH-UA-Mobile|cookie=hideWipBanner",
-  );
+  // Astro.response.headers.set(
+  //   "Netlify-Cache-Tag",
+  //   "homepage,github-stars,dev-to-posts",
+  // );
+  // Astro.response.headers.set(
+  //   "Netlify-Vary",
+  //   "query=githubStars,devToPosts|header=Sec-CH-UA-Mobile|cookie=hideWipBanner",
+  // );
 }
 ---
 
