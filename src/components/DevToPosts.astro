@@ -39,20 +39,20 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
       {
         data?.map((post) => {
           return (
-            <li class="expand-clickable-area row-span-2 gap-0 grid grid-rows-subgrid shadow border rounded bg-white/50">
+            <li
+              class="expand-clickable-area bg-cover row-span-2 gap-0 grid grid-rows-subgrid shadow border rounded"
+              style={{
+                "background-image":
+                  "url(https://res.cloudinary.com/wolstenh/image/upload/f_auto/w_500/CleanShot_2025-09-18_at_21.58.54_2x_ectqq3.png)",
+              }}
+            >
               <a
                 href={post.canonical_url}
                 class="row-span-1 text-binding-dark bg-white rounded-t font-bold font-serif p-4"
               >
                 {post.title}
               </a>
-              <div
-                class="row-span-1 p-4 border-t border-black rounded-b"
-                style={{
-                  "background-image":
-                    "url(https://wolstenhol.me/proxy/cloudinary/image/upload/c_crop,f_auto,h_200,w_200,q_auto:eco/v1473712910/subtle_grunge_ux3r0f.png)",
-                }}
-              >
+              <div class="row-span-1 p-4 border-t bg-white/30 border-black rounded-b">
                 <div class="text-xs mb-2 text-gray-800">
                   <span>
                     {new Date(
