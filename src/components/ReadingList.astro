@@ -5,10 +5,15 @@ import Lede from "./Lede.astro";
 import { StyledTextLink } from "./StyledTextLink";
 import PaginatedGrid from "./PaginatedGrid.astro";
 import ReadingListCard from "./items/ReadingListCard.astro";
+import { getItemsPerPage } from "../helpers/getItemsPerPage";
 
 const searchParam = "readingList";
 const anchor = "reading";
-const itemsPerPage = 9;
+const itemsPerPage = getItemsPerPage({
+  astroRequest: Astro.request,
+  mobileItemsPerPage: 5,
+  desktopItemsPerPage: 12,
+});
 
 const collection = await getCollection("dev-to-reading-list");
 

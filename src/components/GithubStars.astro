@@ -10,7 +10,11 @@ import GithubStarCard from "./items/GithubStarCard.astro";
 
 const searchParam = "githubStars";
 const anchor = "stars";
-const itemsPerPage = getItemsPerPage(Astro.request);
+const itemsPerPage = getItemsPerPage({
+  astroRequest: Astro.request,
+  mobileItemsPerPage: 5,
+  desktopItemsPerPage: 12,
+});
 const collection = await getCollection("github-stars");
 
 const items = collection.map((entry) => entry.data);
