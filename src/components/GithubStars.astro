@@ -4,23 +4,18 @@ import { getCollection } from "astro:content";
 import { Section } from "./Section";
 import { getItemsPerPage } from "../helpers/getItemsPerPage";
 import { StyledTextLink } from "./StyledTextLink";
-import { paginate } from "../helpers/paginate";
+import PaginatedGrid from "./PaginatedGrid.astro";
 import { pluralise } from "../helpers/words";
 import Lede from "./Lede.astro";
 import Pagination from "./Pagination.astro";
+import GithubStarCard from "./items/GithubStarCard.astro";
 
 const searchParam = "githubStars";
 const anchor = "stars";
 const itemsPerPage = getItemsPerPage(Astro.request);
 const collection = await getCollection("github-stars");
 
-const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
-  onlyFullPages: true,
-  items: collection.map((entry) => entry.data),
-  itemsPerPage,
-  url: new URL(Astro.request.url),
-  searchParam,
-});
+const items = collection.map((entry) => entry.data);
 ---
 
 <Section heading="Stars">
@@ -31,77 +26,12 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
     >.
   </Lede>
   <div class="mt-8">
-    <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
-      {
-        data?.map((star) => {
-          const hasSensibleDescription = Boolean(
-            star.description && star.description.length > 1
-          );
-
-          const yearsOld =
-            new Date().getFullYear() - new Date(star.created_at).getFullYear();
-          const isAnniversary =
-            new Date().getMonth() === new Date(star.created_at).getMonth();
-
-          return (
-            <li class="expand-clickable-area shadow border rounded flex flex-col bg-white/50">
-              <a
-                href={star.html_url}
-                class="text-binding-dark bg-graph-paper font-bold font-mono p-4 flex-1"
-                title={hasSensibleDescription ? star.description : undefined}
-              >
-                {star.full_name}
-              </a>
-              {hasSensibleDescription && (
-                <>
-                  <span class="p-4 border-t border-black">
-                    <div
-                      class="text-xs space-y-2 truncate motion-safe:group-data-[in-view]/section:animate-typewriter"
-                      style={{
-                        "animation-delay": `${(Math.random() + 0.1).toFixed(2)}s`,
-                        "animation-duration": `${(Math.random() + 0.1).toFixed(2)}s`,
-                        // animation:
-                        //   "typewriter 3s steps(69) 1 normal both",
-                        // "animation-timeline": "view(60% 0%)",
-                      }}
-                      title={star.description}
-                    >
-                      <div class="block">
-                        {star.stargazers_count > 0 && (
-                          <span>
-                            ★ {star.stargazers_count.toLocaleString()}
-                          </span>
-                        )}
-                        {star.language && (
-                          <>
-                            <span>·</span>
-                            <span>{star.language}</span>
-                          </>
-                        )}
-                        {isAnniversary && (
-                          <>
-                            <span>·</span>
-                            <span>🎂 {pluralise(yearsOld, 'year')} old this month</span>
-                          </>
-                        )}
-                      </div>
-                      <span class="block truncate">{star.description}</span>
-                    </div>
-                  </span>
-                </>
-              )}
-            </li>
-          );
-        })
-      }
-    </ul>
-    <Pagination
-      anchor={anchor}
-      hasPrev={hasPrev}
-      hasNext={hasNext}
-      prevIndex={prevIndex}
-      nextIndex={nextIndex}
+    <PaginatedGrid
+      items={items}
+      itemsPerPage={itemsPerPage}
       searchParam={searchParam}
+      anchor={anchor}
+      itemComponent={GithubStarCard}
     />
   </div></Section
 >

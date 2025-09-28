@@ -3,8 +3,8 @@ import { getCollection } from "astro:content";
 import { Section } from "./Section";
 import Lede from "./Lede.astro";
 import { StyledTextLink } from "./StyledTextLink";
-import { buildPageHref, paginate } from "../helpers/paginate";
-import Pagination from "./Pagination.astro";
+import PaginatedGrid from "./PaginatedGrid.astro";
+import ReadingListCard from "./items/ReadingListCard.astro";
 
 const searchParam = "readingList";
 const anchor = "reading";
@@ -12,13 +12,7 @@ const itemsPerPage = 9;
 
 const collection = await getCollection("dev-to-reading-list");
 
-const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
-  onlyFullPages: true,
-  items: collection.map((entry) => entry.data.article),
-  itemsPerPage,
-  url: new URL(Astro.request.url),
-  searchParam,
-});
+const items = collection.map((entry) => entry.data.article);
 ---
 
 <Section heading="Reading">
@@ -31,43 +25,17 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
     </p>
   </Lede>
   <div class="mt-8">
-    {
-      data && data.length > 0 ? (
-        <>
-          <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
-            {data.map((item) => {
-              return (
-                <li
-                  class="expand-clickable-area row-span-2 gap-2 grid grid-rows-subgrid p-4 font-serif bg-white bg-cover gap-0 shadow border rounded"
-                >
-                  <a
-                    href={item.url}
-                    class="text-binding-dark font-bold row-span-1"
-                  >
-                    {item.title}
-                  </a>
-                  <p class="text-sm line-clamp-3 row-span-1">
-                      {item.description}
-                    </p>
-                </li>
-              );
-            })}
-          </ul>
-          <Pagination
-            anchor={anchor}
-            hasPrev={hasPrev}
-            hasNext={hasNext}
-            prevIndex={prevIndex}
-            nextIndex={nextIndex}
-            searchParam={searchParam}
-          />
-        </>
-      ) : (
-        <p class="text-center text-gray-500 py-8">
-          No reading list items found. Make sure you have set up your DEV.to API
-          key and have items in your reading list.
-        </p>
-      )
-    }
+    <PaginatedGrid
+      items={items}
+      itemsPerPage={itemsPerPage}
+      searchParam={searchParam}
+      anchor={anchor}
+      itemComponent={ReadingListCard}
+    >
+      <p slot="empty" class="text-center text-gray-500 py-8">
+        No reading list items found. Make sure you have set up your DEV.to API
+        key and have items in your reading list.
+      </p>
+    </PaginatedGrid>
   </div>
 </Section>

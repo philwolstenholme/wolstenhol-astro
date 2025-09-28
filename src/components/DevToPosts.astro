@@ -5,21 +5,15 @@ import { markdownToTxt } from "markdown-to-txt";
 import { Section } from "./Section";
 import Lede from "./Lede.astro";
 import { StyledTextLink } from "./StyledTextLink";
-import { paginate } from "../helpers/paginate";
-import Pagination from "./Pagination.astro";
+import PaginatedGrid from "./PaginatedGrid.astro";
+import DevToPostCard from "./items/DevToPostCard.astro";
 
 const searchParam = "posts";
 const anchor = "posts";
 const itemsPerPage = 3;
 const collection = await getCollection("dev-to-posts");
 
-const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
-  onlyFullPages: true,
-  items: collection.map((entry) => entry.data),
-  itemsPerPage,
-  url: new URL(Astro.request.url),
-  searchParam,
-});
+const items = collection.map((entry) => entry.data);
 ---
 
 <Section heading="Posts">
@@ -35,62 +29,14 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
     </p>
   </Lede>
   <div class="mt-8">
-    <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
-      {
-        data?.map((post) => {
-          return (
-            <li
-              class="expand-clickable-area bg-cover row-span-2 gap-0 grid grid-rows-subgrid shadow border rounded"
-              style={{
-                "background-image":
-                  "url(https://res.cloudinary.com/wolstenh/image/upload/f_auto/w_500/CleanShot_2025-09-18_at_21.58.54_2x_ectqq3.png)",
-              }}
-            >
-              <a
-                href={post.canonical_url}
-                class="row-span-1 text-binding-dark bg-white rounded-t font-bold font-serif p-4"
-              >
-                {post.title}
-              </a>
-              <div class="row-span-1 p-4 border-t bg-white/30 border-black rounded-b">
-                <div class="text-xs mb-2 text-gray-800">
-                  <span>
-                    {new Date(
-                      post.published_at || post.published_timestamp || "",
-                    ).toLocaleDateString()}
-                    <span>·</span>
-                    {post.reading_time_minutes} min read
-                  </span>
-                  {post.public_reactions_count > 0 && (
-                    <>
-                      <span>·</span>
-                      <span>{post.public_reactions_count} reactions</span>
-                    </>
-                  )}
-                  {post.comments_count > 0 && (
-                    <>
-                      <span>·</span>
-                      <span>{post.comments_count} comments</span>{" "}
-                    </>
-                  )}
-                </div>
-                <p class="text-sm line-clamp-3">
-                  {post.body_markdown &&
-                    markdownToTxt(post.body_markdown).substring(0, 300) + "..."}
-                </p>
-              </div>
-            </li>
-          );
-        })
-      }
-    </ul>
-    <Pagination
-      anchor={anchor}
-      hasPrev={hasPrev}
-      hasNext={hasNext}
-      prevIndex={prevIndex}
-      nextIndex={nextIndex}
+    <PaginatedGrid
+      items={items}
+      itemsPerPage={itemsPerPage}
       searchParam={searchParam}
-    />
+      anchor={anchor}
+      itemComponent={DevToPostCard}
+    >
+      <div slot="empty" class="text-center text-gray-500 py-8">No posts found.</div>
+    </PaginatedGrid>
   </div>
 </Section>

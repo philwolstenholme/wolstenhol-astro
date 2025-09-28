@@ -1,0 +1,50 @@
+---
+import { paginate } from "../helpers/paginate";
+import Pagination from "./Pagination.astro";
+
+const {
+  items,
+  itemsPerPage,
+  searchParam = "page",
+  anchor,
+  onlyFullPages = true,
+  itemComponent: Item,
+} = Astro.props as {
+  items: readonly unknown[];
+  itemsPerPage: number;
+  searchParam?: string;
+  anchor?: string;
+  onlyFullPages?: boolean;
+  itemComponent: any; // Component expected to output its own <li>
+};
+
+const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
+  onlyFullPages,
+  items,
+  itemsPerPage,
+  url: new URL(Astro.request.url),
+  searchParam,
+});
+---
+
+{
+  data && data.length > 0 ? (
+    <>
+      <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
+        {data.map((item) => (
+          <Item item={item} />
+        ))}
+      </ul>
+      <Pagination
+        anchor={anchor}
+        hasPrev={hasPrev}
+        hasNext={hasNext}
+        prevIndex={prevIndex}
+        nextIndex={nextIndex}
+        searchParam={searchParam}
+      />
+    </>
+  ) : (
+    <slot name="empty" />
+  )
+}
