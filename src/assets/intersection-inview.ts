@@ -41,6 +41,14 @@ const handleIntersections = (entries: IntersectionObserverEntry[]) => {
     }
 
     dataset.inView = "true";
+
+    // TODO: there must be a nicer way of doing this?
+    // it's to allow one-time CSS animations.
+    setTimeout(() => {
+      if (!dataset.inViewPreviously) {
+        dataset.inViewPreviously = "true";
+      }
+    }, 3000);
   });
 };
 

@@ -26,7 +26,7 @@ const isAnniversary =
   </a>
   {
     hasSensibleDescription && (
-      <span class="p-4 border-t border-black">
+      <div class="p-4 border-t border-black">
         <div
           class="github-star-card__title text-xs space-y-2 truncate"
           style={{
@@ -54,7 +54,7 @@ const isAnniversary =
           </div>
           <span class="block truncate">{star.description}</span>
         </div>
-      </span>
+      </div>
     )
   }
 </li>
@@ -63,8 +63,7 @@ const isAnniversary =
   /* @reference "tailwindcss"; */
 
   @media (prefers-reduced-motion: no-preference) {
-    [data-in-view] .github-star-card__title {
-      outline: 2px sold hotpink;
+    [data-in-view="true"]:not([data-in-view-previously="true"]) .github-star-card__title {
       animation: var(--animate-typewriter);
     }
   }
