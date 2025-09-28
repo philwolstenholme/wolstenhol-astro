@@ -29,7 +29,6 @@ export const getItemsPerPage = ({
     const { device } = UAParser(userAgent);
     const smallScreenDeviceTypes: (typeof device.type)[] = [
       "mobile",
-      "tablet",
       "wearable",
     ];
     return smallScreenDeviceTypes.includes(device.type)
