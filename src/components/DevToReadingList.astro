@@ -76,14 +76,12 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
                       {item.description || "No description available."}
                     </p>
                     <div class="mt-2 flex flex-wrap">
-                      {item.tags &&
-                        item.tags
-                          .split(",")
-                          .map((tag: string) => (
-                            <span class="bg-gray-200 rounded-full px-2 py-1 text-xs mr-1 mb-1">
-                              #{tag.trim()}
-                            </span>
-                          ))}
+                      {item.tag_list &&
+                        item.tag_list.map((tag: string) => (
+                          <span class="bg-gray-200 rounded-full px-2 py-1 text-xs mr-1 mb-1">
+                            #{tag.trim()}
+                          </span>
+                        ))}
                     </div>
                   </div>
                 </li>
