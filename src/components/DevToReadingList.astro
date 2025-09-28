@@ -1,0 +1,115 @@
+---
+import { getCollection } from "astro:content";
+import { Section } from "./Section";
+import Lede from "./Lede.astro";
+import { StyledTextLink } from "./StyledTextLink";
+import { buildPageHref, paginate } from "../helpers/paginate";
+import Pagination from "./Pagination.astro";
+
+const searchParam = "readingList";
+const anchor = "reading";
+const itemsPerPage = 9;
+
+const collection = await getCollection("dev-to-reading-list");
+
+const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
+  onlyFullPages: true,
+  items: collection.map((entry) => entry.data.article),
+  itemsPerPage,
+  url: new URL(Astro.request.url),
+  searchParam,
+});
+---
+
+<Section heading="Reading">
+  <Lede>
+    <p class="max-w-3xl font-serif leading-relaxed tracking-widest mt-3">
+      Articles I've saved to my <StyledTextLink
+        href="https://dev.to/philw_/readinglist"
+        class="underline">DEV.to reading list</StyledTextLink
+      > that I've found useful, interesting, or want to read later.
+    </p>
+  </Lede>
+  <div class="mt-8">
+    {
+      data && data.length > 0 ? (
+        <>
+          <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
+            {data.map((item) => {
+              return (
+                <li
+                  class="expand-clickable-area bg-cover row-span-2 gap-0 grid grid-rows-subgrid shadow border rounded"
+                  style={{
+                    "background-image": item.cover_image
+                      ? `url(${item.cover_image})`
+                      : "url(https://res.cloudinary.com/wolstenh/image/upload/f_auto/w_500/CleanShot_2025-09-18_at_21.58.54_2x_ectqq3.png)",
+                  }}
+                >
+                  <a
+                    href={item.url || "#"}
+                    class="row-span-1 text-binding-dark bg-white rounded-t font-bold font-serif p-4"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {item.title || "Untitled Article"}
+                  </a>
+                  <div class="row-span-1 p-4 border-t bg-white/30 border-black rounded-b">
+                    <div class="text-xs mb-2 text-gray-800">
+                      {item.published_at ? (
+                        <span>
+                          {new Date(item.published_at).toLocaleDateString()}
+                          <span class="mx-1">·</span>
+                          {item.reading_time_minutes || "?"} min read
+                        </span>
+                      ) : null}
+
+                      {item.user?.name && (
+                        <>
+                          <span class="mx-1">·</span>
+                          <span>By {item.user.name}</span>
+                        </>
+                      )}
+
+                      {(item.public_reactions_count || 0) > 0 && (
+                        <>
+                          <span class="mx-1">·</span>
+                          <span>{item.public_reactions_count} reactions</span>
+                        </>
+                      )}
+                    </div>
+                    <p class="text-sm line-clamp-3">
+                      {item.description || "No description available."}
+                    </p>
+                    <div class="mt-2 flex flex-wrap">
+                      {item.tags &&
+                        item.tags
+                          .split(",")
+                          .map((tag: string) => (
+                            <span class="bg-gray-200 rounded-full px-2 py-1 text-xs mr-1 mb-1">
+                              #{tag.trim()}
+                            </span>
+                          ))}
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+          <Pagination
+            anchor={anchor}
+            hasPrev={hasPrev}
+            hasNext={hasNext}
+            prevIndex={prevIndex}
+            nextIndex={nextIndex}
+            searchParam={searchParam}
+          />
+        </>
+      ) : (
+        <p class="text-center text-gray-500 py-8">
+          No reading list items found. Make sure you have set up your DEV.to API
+          key and have items in your reading list.
+        </p>
+      )
+    }
+  </div>
+</Section>

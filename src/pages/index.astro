@@ -6,6 +6,7 @@ import { StyledTextLink } from "../components/StyledTextLink.tsx";
 import { Section } from "../components/Section.tsx";
 import GithubStars from "../components/GithubStars.astro";
 import DevToPosts from "../components/DevToPosts.astro";
+import DevToReadingList from "../components/DevToReadingList.astro";
 import Lede from "../components/Lede.astro";
 
 export const prerender = false;
@@ -17,7 +18,7 @@ if (Astro.response) {
   // );
   Astro.response.headers.set(
     "Netlify-Vary",
-    "query=githubStars|posts,header=Sec-CH-UA-Mobile,cookie=hideWipBanner",
+    "query=githubStars|posts|readingList,header=Sec-CH-UA-Mobile,cookie=hideWipBanner",
   );
 }
 ---
@@ -122,8 +123,8 @@ if (Astro.response) {
 
         <DevToPosts />
         <GithubStars />
-
-        <Section heading="Reading" />
+        <DevToReadingList />
+        
         <Section heading="Speaking" />
         <Section heading="Music" />
         <Section heading="Photos" />
