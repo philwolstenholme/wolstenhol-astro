@@ -3,7 +3,7 @@ const { item: article } = Astro.props as { item: any };
 ---
 
 <li
-  class="expand-clickable-area row-span-2 grid grid-rows-subgrid p-4 font-serif bg-white bg-cover shadow border rounded"
+  class="row-span-2 grid grid-rows-subgrid p-4 font-serif bg-white bg-cover shadow border rounded"
 >
   <a href={article.url} class="text-binding-dark font-bold row-span-1">
     {article.title}

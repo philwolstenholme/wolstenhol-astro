@@ -1,4 +1,3 @@
-import { h } from "preact";
 import type { JSX } from "preact";
 import clsx from "clsx";
 import slugify from "@sindresorhus/slugify";
