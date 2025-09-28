@@ -1,7 +1,8 @@
 ---
+import { type GithubStar } from "../../content/githubStars";
 import { pluralise } from "../../helpers/words";
 
-const { item: star } = Astro.props as { item: any };
+const { item: star } = Astro.props as { item: GithubStar };
 
 const hasSensibleDescription = Boolean(
   star.description && star.description.length > 1,

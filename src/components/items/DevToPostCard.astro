@@ -1,9 +1,6 @@
 ---
 import { markdownToTxt } from "markdown-to-txt";
-import type { z } from "astro:content";
-import { devtoArticleSchema } from "../../content/schemas/devtoArticle";
-
-type DevtoArticle = z.infer<typeof devtoArticleSchema>;
+import { type DevtoArticle } from "../../content/schemas/devtoArticle";
 
 const { item: post } = Astro.props as { item: DevtoArticle };
 ---

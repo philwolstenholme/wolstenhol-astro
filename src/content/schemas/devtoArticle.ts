@@ -49,3 +49,5 @@ export const devtoArticleSchema = z.object({
     .nullable()
     .optional(),
 });
+
+export type DevtoArticle = z.infer<typeof devtoArticleSchema>;
