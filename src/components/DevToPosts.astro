@@ -18,12 +18,10 @@ const items = collection.map((entry) => entry.data);
 <Section heading="Posts">
   <Lede>
     <p class="max-w-3xl font-serif leading-relaxed tracking-widest mt-3">
-      Blog posts I've posted on <StyledTextLink
-        href="https://dev.to/philw_"
-        class="underline">DEV Community</StyledTextLink
-      > or <StyledTextLink
-        href="https://philwolstenholme.medium.com"
-        class="underline">Medium</StyledTextLink
+      Blog posts I've posted on <StyledTextLink href="https://dev.to/philw_"
+        >DEV Community</StyledTextLink
+      > or <StyledTextLink href="https://philwolstenholme.medium.com"
+        >Medium</StyledTextLink
       > (one day I'll build my own blog, I promise…)
     </p>
   </Lede>
@@ -35,7 +33,9 @@ const items = collection.map((entry) => entry.data);
       anchor={anchor}
       itemComponent={DevToPostCard}
     >
-      <div slot="empty" class="text-center text-gray-500 py-8">No posts found.</div>
+      <div slot="empty" class="text-center text-gray-500 py-8">
+        No posts found.
+      </div>
     </PaginatedGrid>
   </div>
 </Section>

@@ -1,11 +1,10 @@
-import { h } from "preact";
-import type { JSX } from "preact";
+import type { JSX, ComponentChildren } from "preact";
 import clsx from "clsx";
 
 export interface StyledTextLinkProps
   extends Omit<JSX.HTMLAttributes<HTMLAnchorElement>, "href"> {
   href: string;
-  children?: preact.ComponentChildren;
+  children?: ComponentChildren;
 }
 
 export const StyledTextLink = ({

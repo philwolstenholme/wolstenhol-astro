@@ -1,4 +1,4 @@
-import { chunk, clamp, invariant, take } from "es-toolkit";
+import { chunk, clamp, take } from "es-toolkit";
 
 type PageHrefOptions = {
   currentUrl?: URL;
@@ -23,7 +23,7 @@ export const buildPageHref = ({
 
   const searchParams = url.searchParams;
 
-  if (index === 0) {
+  if (index === 0 || index === null) {
     searchParams.delete(param);
   } else {
     searchParams.set(param, index.toString());
