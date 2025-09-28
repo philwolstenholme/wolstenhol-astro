@@ -11,7 +11,7 @@ const { item: post } = Astro.props as { item: DevtoArticle };
   >
     {post.title}
   </a>
-  <div class="row-span-1 p-4 border-t bg-white/30 border-black rounded-b">
+  <div class="row-span-1 p-4 border-t bg-white/60 border-black rounded-b">
     <div class="text-xs mb-2 text-gray-800">
       <span>
         {new Date(post.published_at || post.published_timestamp || "").toLocaleDateString()}
