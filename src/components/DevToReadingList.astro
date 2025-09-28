@@ -39,11 +39,6 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
               return (
                 <li
                   class="expand-clickable-area bg-cover row-span-2 gap-0 grid grid-rows-subgrid shadow border rounded"
-                  style={{
-                    "background-image": item.cover_image
-                      ? `url(${item.cover_image})`
-                      : "url(https://res.cloudinary.com/wolstenh/image/upload/f_auto/w_500/CleanShot_2025-09-18_at_21.58.54_2x_ectqq3.png)",
-                  }}
                 >
                   <a
                     href={item.url || "#"}
