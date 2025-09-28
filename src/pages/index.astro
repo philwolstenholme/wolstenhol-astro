@@ -18,7 +18,7 @@ if (Astro.response) {
   // );
   Astro.response.headers.set(
     "Netlify-Vary",
-    "query=githubStars|posts|readingList,header=Sec-CH-UA-Mobile,cookie=hideWipBanner",
+    "query=githubStars|posts|readingList,header=Sec-CH-UA-Mobile|User-Agent,cookie=hideWipBanner",
   );
 }
 ---
