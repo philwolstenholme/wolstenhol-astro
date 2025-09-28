@@ -28,7 +28,7 @@ const isAnniversary =
     hasSensibleDescription && (
       <span class="p-4 border-t border-black">
         <div
-          class="text-xs space-y-2 truncate motion-safe:group-data-[in-view]/section:animate-typewriter"
+          class="github-star-card__title text-xs space-y-2 truncate"
           style={{
             "animation-delay": `${(Math.random() + 0.1).toFixed(2)}s`,
             "animation-duration": `${(Math.random() + 0.1).toFixed(2)}s`,
@@ -58,3 +58,14 @@ const isAnniversary =
     )
   }
 </li>
+
+<style is:global>
+  /* @reference "tailwindcss"; */
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-in-view] .github-star-card__title {
+      outline: 2px sold hotpink;
+      animation: var(--animate-typewriter);
+    }
+  }
+</style>

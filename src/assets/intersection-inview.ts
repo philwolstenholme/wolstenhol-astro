@@ -44,13 +44,14 @@ const handleIntersections = (entries: IntersectionObserverEntry[]) => {
   });
 };
 
-(function init() {
+const observer = new IntersectionObserver(handleIntersections, {
+  threshold: 0.1,
+});
+
+function init() {
   const sections = document.querySelectorAll("section");
   if (!sections.length) return;
-
-  const observer = new IntersectionObserver(handleIntersections, {
-    threshold: 0.1,
-  });
-
   sections.forEach((section) => observer.observe(section));
-})();
+}
+
+init();
