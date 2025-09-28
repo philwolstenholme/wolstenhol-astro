@@ -38,52 +38,17 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
             {data.map((item) => {
               return (
                 <li
-                  class="expand-clickable-area bg-cover row-span-2 gap-0 grid grid-rows-subgrid shadow border rounded"
+                  class="expand-clickable-area row-span-2 gap-2 grid grid-rows-subgrid p-4 font-serif bg-white bg-cover gap-0 shadow border rounded"
                 >
                   <a
-                    href={item.url || "#"}
-                    class="row-span-1 text-binding-dark bg-white rounded-t font-bold font-serif p-4"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={item.url}
+                    class="text-binding-dark font-bold row-span-1"
                   >
-                    {item.title || "Untitled Article"}
+                    {item.title}
                   </a>
-                  <div class="row-span-1 p-4 border-t bg-white/30 border-black rounded-b">
-                    <div class="text-xs mb-2 text-gray-800">
-                      {item.published_at ? (
-                        <span>
-                          {new Date(item.published_at).toLocaleDateString()}
-                          <span class="mx-1">·</span>
-                          {item.reading_time_minutes || "?"} min read
-                        </span>
-                      ) : null}
-
-                      {item.user?.name && (
-                        <>
-                          <span class="mx-1">·</span>
-                          <span>By {item.user.name}</span>
-                        </>
-                      )}
-
-                      {(item.public_reactions_count || 0) > 0 && (
-                        <>
-                          <span class="mx-1">·</span>
-                          <span>{item.public_reactions_count} reactions</span>
-                        </>
-                      )}
-                    </div>
-                    <p class="text-sm line-clamp-3">
-                      {item.description || "No description available."}
+                  <p class="text-sm line-clamp-3 row-span-1">
+                      {item.description}
                     </p>
-                    <div class="mt-2 flex flex-wrap">
-                      {item.tag_list &&
-                        item.tag_list.map((tag: string) => (
-                          <span class="bg-gray-200 rounded-full px-2 py-1 text-xs mr-1 mb-1">
-                            #{tag.trim()}
-                          </span>
-                        ))}
-                    </div>
-                  </div>
                 </li>
               );
             })}
