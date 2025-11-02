@@ -1,8 +1,10 @@
 ---
-import { type GithubStar } from "../../content/githubStars";
 import { pluralise } from "../../helpers/words";
+import type { CollectionEntry } from "astro:content";
 
-const { item: star } = Astro.props as { item: GithubStar };
+const { item: star } = Astro.props as {
+  item: CollectionEntry<"github-stars">["data"];
+};
 
 const hasSensibleDescription = Boolean(
   star.description && star.description.length > 1,
@@ -61,7 +63,8 @@ const isAnniversary =
 
 <style is:global>
   @media (prefers-reduced-motion: no-preference) {
-    [data-in-view="true"]:not([data-in-view-previously="true"]) .github-star-card__title {
+    [data-in-view="true"]:not([data-in-view-previously="true"])
+      .github-star-card__title {
       animation: var(--animate-typewriter);
     }
   }

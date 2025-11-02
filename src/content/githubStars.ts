@@ -133,5 +133,3 @@ export const githubStars = defineCollection({
   },
   schema: githubStarSchema,
 });
-
-export type GithubStar = z.infer<typeof githubStarSchema>;

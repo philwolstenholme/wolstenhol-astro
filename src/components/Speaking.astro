@@ -1,0 +1,37 @@
+---
+import { getCollection } from "astro:content";
+
+import { Section } from "./Section";
+import { getItemsPerPage } from "../helpers/getItemsPerPage";
+import PaginatedGrid from "./PaginatedGrid.astro";
+import Lede from "./Lede.astro";
+import GithubStarCard from "./items/GithubStarCard.astro";
+import SpeakingCard from "./items/SpeakingCard.astro";
+
+const searchParam = "speaking";
+const anchor = "speaking";
+const itemsPerPage = getItemsPerPage({
+  astroRequest: Astro.request,
+  mobileItemsPerPage: 5,
+  desktopItemsPerPage: 12,
+});
+const collection = await getCollection("speaking");
+
+const items = collection.map((entry) => entry.data);
+---
+
+<Section heading="Speaking">
+  <Lede>
+    Talks I've given at conferences or other events. I'll link to slides or
+    videos where they are available.
+  </Lede>
+  <div class="mt-8">
+    <PaginatedGrid
+      items={items}
+      itemsPerPage={itemsPerPage}
+      searchParam={searchParam}
+      anchor={anchor}
+      itemComponent={SpeakingCard}
+    />
+  </div></Section
+>

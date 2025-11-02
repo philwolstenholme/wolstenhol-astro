@@ -1,0 +1,81 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+const { item } = Astro.props as {
+  item: CollectionEntry<"speaking">["data"];
+};
+---
+
+{
+  item.type === "thumbnail" ? (
+    item.href ? (
+      <li class="contain-content overflow-hidden rounded bg-purple-700 shadow-hard focus-within:bg-purple-900">
+        <a
+          href={item.href}
+          class="outline-offset-invert group block w-full overflow-hidden stack isolate"
+        >
+          <h3 class="sr-only">{item.talkTitle}</h3>
+          <img
+            src={item.imageSrc}
+            alt={item.imageAlt || ""}
+            width="272"
+            height="153"
+            loading="lazy"
+            decoding="async"
+            crossorigin="anonymous"
+            class="object-cover mix-blend-luminosity transition-opacity group-hocus:opacity-10"
+          />
+          <div class="z-1 flex h-full flex-col justify-end bg-gradient-to-t from-black p-4 font-serif text-xs uppercase text-white">
+            <dl class="flex flex-col justify-end transition-transform group-hocus:-translate-y-1 group-hocus:transform-gpu">
+              <dt class="sr-only">Event</dt>
+              <dd class="font-bold">{item.eventName}</dd>
+              <dt class="sr-only">Talk</dt>
+              <dd>{item.talkTitle}</dd>
+            </dl>
+          </div>
+        </a>
+      </li>
+    ) : (
+      <li class="contain-content overflow-hidden rounded bg-purple-700 shadow-hard focus-within:bg-purple-900">
+        <div class="outline-offset-invert group aspect-h-9 aspect-w-16 block w-full overflow-hidden stack isolate">
+          <h3 class="sr-only">{item.talkTitle}</h3>
+          <img
+            src={item.imageSrc}
+            alt={item.imageAlt || ""}
+            width="272"
+            height="153"
+            loading="lazy"
+            decoding="async"
+            crossorigin="anonymous"
+            class="object-cover mix-blend-luminosity transition-opacity"
+          />
+          <div class="z-1 flex h-full flex-col justify-end bg-gradient-to-t from-black p-4 font-serif text-xs uppercase text-white">
+            <dl class="flex flex-col justify-end">
+              <dt class="sr-only">Event</dt>
+              <dd class="font-bold">{item.eventName}</dd>
+              <dt class="sr-only">Talk</dt>
+              <dd>{item.talkTitle}</dd>
+            </dl>
+          </div>
+        </div>
+      </li>
+    )
+  ) : (
+    <figure class="grid-stack contain-content relative grid rounded bg-purple-700 text-white shadow-hard h-full">
+      <div class="isolate flex flex-col justify-center space-y-3 p-4 text-center">
+        <blockquote class="isolate mx-auto max-w-md font-serif text-xl font-bold leading-tight">
+          <h3>{item.quote}</h3>
+        </blockquote>
+        <figcaption class="isolate mx-9 text-xs uppercase text-white">
+          {item.href ? (
+            <a href={item.href} class="hocus:underline">
+              {item.attribution}
+            </a>
+          ) : (
+            item.attribution
+          )}
+        </figcaption>
+      </div>
+    </figure>
+  )
+}
