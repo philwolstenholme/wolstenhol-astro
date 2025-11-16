@@ -64,20 +64,22 @@ const containerClass = hasHref
     </li>
   )
 ) : (
-  <figure class="stack grid-cols-[1fr] shadow border rounded bg-white contain-content relative grid h-full">
-    <div class="isolate flex flex-col justify-center space-y-3 p-4 text-center">
-      <blockquote class="isolate mx-auto max-w-md font-serif text-xl font-bold leading-tight">
-        <h3>{item.quote}</h3>
-      </blockquote>
-      <figcaption class="isolate mx-9 text-xs uppercase">
-        {item.href ? (
-          <a href={item.href} class="hocus:underline">
-            {item.attribution}
-          </a>
-        ) : (
-          item.attribution
-        )}
-      </figcaption>
-    </div>
-  </figure>
+  <li class={outerClass}>
+    <figure class="stack grid-cols-[1fr] shadow border rounded bg-white contain-content relative grid h-full">
+      <div class="isolate flex flex-col justify-center space-y-3 p-4 text-center">
+        <blockquote class="isolate mx-auto max-w-md font-serif text-xl font-bold leading-tight">
+          <h3>{item.quote}</h3>
+        </blockquote>
+        <figcaption class="isolate mx-9 text-xs uppercase">
+          {item.href ? (
+            <a href={item.href} class="hocus:underline">
+              {item.attribution}
+            </a>
+          ) : (
+            item.attribution
+          )}
+        </figcaption>
+      </div>
+    </figure>
+  </li>
 )}

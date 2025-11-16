@@ -13,6 +13,10 @@ const hasSensibleDescription = Boolean(
 const yearsOld =
   new Date().getFullYear() - new Date(star.created_at).getFullYear();
 const isAnniversary =
+  yearsOld > 0 &&
+  new Date().getMonth() === new Date(star.created_at).getMonth();
+const isNew =
+  yearsOld === 0 &&
   new Date().getMonth() === new Date(star.created_at).getMonth();
 ---
 
@@ -51,6 +55,18 @@ const isAnniversary =
               <>
                 <span>·</span>
                 <span>🎂 {pluralise(yearsOld, "year")} old this month</span>
+              </>
+            )}
+            {isNew && (
+              <>
+                <span>·</span>
+                <picture>
+                  <source
+                    srcset="https://blob.gifcities.org/gifcities/6NFRXRAUIROWRTRZ5BINOLPSBRDPTK6E.gif"
+                    media="(prefers-reduced-motion: no-preference)"
+                  />
+                  <img class="inline h-3.5" src="new.webp" alt="New" />
+                </picture>
               </>
             )}
           </div>
