@@ -8,11 +8,12 @@ interface SectionDataset extends DOMStringMap {
 const urlMayHavePaginationParams = (() => {
   const searchParams = new URLSearchParams(window.location.search);
 
-  for (const value of searchParams.values()) {
-    // I don't want to maintain a list of all possible pagination param names,
-    // so instead I just check for numeric 1-2 digit values. If any value looks
-    // like a page number, assume pagination params are present.
-    if (/^\d{1,2}$/.test(value)) {
+  // Check for common pagination parameter names
+  const paginationParams = ['page', 'p', 'offset', 'start'];
+
+  for (const param of paginationParams) {
+    const value = searchParams.get(param);
+    if (value && /^\d{1,2}$/.test(value)) {
       return true;
     }
   }

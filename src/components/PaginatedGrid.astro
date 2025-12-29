@@ -31,8 +31,8 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
   data && data.length > 0 ? (
     <>
       <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
-        {data.map((item) => (
-          <Item item={item} />
+        {data.map((item: any) => (
+          <Item key={item.id} item={item} />
         ))}
       </ul>
       <Pagination

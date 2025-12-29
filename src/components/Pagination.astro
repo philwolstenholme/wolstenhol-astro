@@ -3,6 +3,8 @@ import { buildPageHref } from "../helpers/paginate";
 
 const { hasPrev, hasNext, prevIndex, nextIndex, searchParam, anchor } =
   Astro.props;
+
+const currentUrl = new URL(Astro.request.url);
 ---
 
 <div class="flex justify-center mt-4 gap-4">
@@ -15,7 +17,7 @@ const { hasPrev, hasNext, prevIndex, nextIndex, searchParam, anchor } =
             "url(https://res.cloudinary.com/wolstenh/image/upload/w_300/q_auto:good/f_auto/v1758225433/astro-site/black-masking-tape-1.png)",
         }}
         href={buildPageHref({
-          currentUrl: new URL(Astro.request.url),
+          currentUrl,
           index: prevIndex,
           param: searchParam,
           anchor,
@@ -34,7 +36,7 @@ const { hasPrev, hasNext, prevIndex, nextIndex, searchParam, anchor } =
             "url(https://res.cloudinary.com/wolstenh/image/upload/w_300/q_auto:good/f_auto/v1758225433/astro-site/black-masking-tape-2.png)",
         }}
         href={buildPageHref({
-          currentUrl: new URL(Astro.request.url),
+          currentUrl,
           index: nextIndex,
           param: searchParam,
           anchor,

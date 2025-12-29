@@ -27,7 +27,5 @@ export const devToPosts = defineCollection({
         id: String(post.id),
       }));
   },
-  schema: devtoArticleSchema.extend({ id: z.string() }).transform((data) => ({
-    ...data,
-  })),
+  schema: devtoArticleSchema.extend({ id: z.string() }),
 });

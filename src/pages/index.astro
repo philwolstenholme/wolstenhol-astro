@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import Angle from "../components/Angle.astro";
 import Content from "../components/Content.astro";
 import Layout from "../layouts/Layout.astro";
@@ -11,6 +12,14 @@ import Lede from "../components/Lede.astro";
 import Speaking from "../components/Speaking.astro";
 
 export const prerender = false;
+
+// Fetch all collections in parallel for better performance
+const [devToPostsCollection, githubStarsCollection, readingListCollection, speakingCollection] = await Promise.all([
+  getCollection("dev-to-posts"),
+  getCollection("github-stars"),
+  getCollection("dev-to-reading-list"),
+  getCollection("speaking"),
+]);
 
 if (Astro.response) {
   // Astro.response.headers.set(
@@ -122,10 +131,10 @@ if (Astro.response) {
           </Lede>
         </Section>
 
-        <DevToPosts />
-        <GithubStars />
-        <DevToReadingList />
-        <Speaking />
+        <DevToPosts collection={devToPostsCollection} />
+        <GithubStars collection={githubStarsCollection} />
+        <DevToReadingList collection={readingListCollection} />
+        <Speaking collection={speakingCollection} />
         
         <Section heading="Music" />
         <Section heading="Photos" />
