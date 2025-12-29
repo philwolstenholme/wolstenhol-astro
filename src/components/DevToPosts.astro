@@ -7,10 +7,12 @@ import { StyledTextLink } from "./StyledTextLink";
 import PaginatedGrid from "./PaginatedGrid.astro";
 import DevToPostCard from "./items/DevToPostCard.astro";
 
+const { collection: collectionProp } = Astro.props;
+
 const searchParam = "posts";
 const anchor = "posts";
 const itemsPerPage = 3;
-const collection = await getCollection("dev-to-posts");
+const collection = collectionProp || await getCollection("dev-to-posts");
 
 const items = collection.map((entry) => entry.data);
 ---

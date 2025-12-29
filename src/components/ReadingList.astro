@@ -7,6 +7,8 @@ import PaginatedGrid from "./PaginatedGrid.astro";
 import ReadingListCard from "./items/ReadingListCard.astro";
 import { getItemsPerPage } from "../helpers/getItemsPerPage";
 
+const { collection: collectionProp } = Astro.props;
+
 const searchParam = "readingList";
 const anchor = "reading";
 const itemsPerPage = getItemsPerPage({
@@ -15,7 +17,7 @@ const itemsPerPage = getItemsPerPage({
   desktopItemsPerPage: 12,
 });
 
-const collection = await getCollection("dev-to-reading-list");
+const collection = collectionProp || await getCollection("dev-to-reading-list");
 
 const items = collection.map((entry) => entry.data.article);
 ---

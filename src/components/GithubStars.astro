@@ -8,6 +8,8 @@ import PaginatedGrid from "./PaginatedGrid.astro";
 import Lede from "./Lede.astro";
 import GithubStarCard from "./items/GithubStarCard.astro";
 
+const { collection: collectionProp } = Astro.props;
+
 const searchParam = "githubStars";
 const anchor = "stars";
 const itemsPerPage = getItemsPerPage({
@@ -15,7 +17,7 @@ const itemsPerPage = getItemsPerPage({
   mobileItemsPerPage: 5,
   desktopItemsPerPage: 12,
 });
-const collection = await getCollection("github-stars");
+const collection = collectionProp || await getCollection("github-stars");
 
 const items = collection.map((entry) => entry.data);
 ---

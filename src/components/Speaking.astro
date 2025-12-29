@@ -8,6 +8,8 @@ import Lede from "./Lede.astro";
 import GithubStarCard from "./items/GithubStarCard.astro";
 import SpeakingCard from "./items/SpeakingCard.astro";
 
+const { collection: collectionProp } = Astro.props;
+
 const searchParam = "speaking";
 const anchor = "speaking";
 const itemsPerPage = getItemsPerPage({
@@ -15,7 +17,7 @@ const itemsPerPage = getItemsPerPage({
   mobileItemsPerPage: 5,
   desktopItemsPerPage: 12,
 });
-const collection = await getCollection("speaking");
+const collection = collectionProp || await getCollection("speaking");
 
 const items = collection.map((entry) => entry.data);
 ---
