@@ -81,6 +81,11 @@
   --animate-typewriter: typewriter 3s steps(69) 1 normal both;
   --font-serif: "Roboto Slab", "Roboto Slab-fallback", serif;
 
+  --color-medium: #228665;
+  --color-medium-dark: #1e785a;
+  --color-oc-yellow-2: #ffec99;
+  --color-oc-yellow-3: #ffe066;
+
   @keyframes typewriter {
     from {
       width: 0;

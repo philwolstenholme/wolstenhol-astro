@@ -5,7 +5,7 @@ const { item } = Astro.props;
 
 const isThumbnail = item.type === "thumbnail";
 const hasHref = !!item.href;
-const outerClass = "contain-content rounded shadow overflow-hidden";
+const outerClass = "contain-content rounded shadow overflow-hidden bg-purple-700";
 const imgClass =
   "object-cover aspect-none w-full h-full mix-blend-luminosity transition-opacity" +
   (hasHref ? " group-hocus:opacity-10" : "");
@@ -67,7 +67,7 @@ const containerClass = hasHref
     )
   ) : (
     <li class={outerClass}>
-      <figure class="stack grid-cols-[1fr] shadow border rounded bg-white contain-content relative grid h-full">
+      <figure class="stack grid-cols-[1fr] shadow border border-purple-900 rounded bg-purple-700 text-white contain-content relative grid h-full">
         <div class="isolate flex flex-col justify-center space-y-3 p-4 text-center">
           <blockquote class="isolate mx-auto max-w-md font-serif text-xl font-bold leading-tight">
             <h3>{item.quote}</h3>
