@@ -94,30 +94,3 @@ htmx.defineExtension("preload", {
     return true;
   },
 });
-
-// Replace-params extension (https://github.com/fanelfaa/htmx-ext-replace-params)
-// Merges hx-vals params into the GET URL query string, replacing any existing
-// values for those keys rather than appending duplicates. Empty string = delete.
-htmx.defineExtension("replace-params", {
-  onEvent: function (name, evt): boolean {
-    if (name !== "htmx:configRequest") return true;
-    const detail = (evt as CustomEvent).detail as {
-      path: string;
-      parameters: Record<string, string>;
-    };
-    const [path, existingParams = ""] = detail.path.split("?");
-    const searchParams = new URLSearchParams(existingParams);
-    for (const key of Object.keys(detail.parameters)) {
-      if (typeof detail.parameters[key] === "function") continue;
-      if (detail.parameters[key] !== "") {
-        searchParams.set(key, detail.parameters[key]);
-      } else {
-        searchParams.delete(key);
-      }
-      delete detail.parameters[key];
-    }
-    const qs = searchParams.toString();
-    detail.path = qs ? `${path}?${qs}` : path;
-    return true;
-  },
-});
