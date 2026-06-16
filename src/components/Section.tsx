@@ -24,11 +24,7 @@ export const Section = ({
           {heading}
         </Heading>
       )}
-      {lede && (
-        <p class="max-w-3xl font-serif leading-relaxed tracking-widest">
-          {lede}
-        </p>
-      )}
+      {lede && <p class="max-w-3xl font-serif leading-relaxed tracking-widest">{lede}</p>}
       {children}
     </section>
   );

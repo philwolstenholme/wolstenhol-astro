@@ -32,10 +32,7 @@ const handleIntersections = (entries: IntersectionObserverEntry[]) => {
 
     // We don't want animations to trigger if the user is paginating.
     // Skip setting `inView` once per section if pagination params exist.
-    if (
-      urlMayHavePaginationParams &&
-      dataset.inViewSkippedBecauseOfPagination !== "true"
-    ) {
+    if (urlMayHavePaginationParams && dataset.inViewSkippedBecauseOfPagination !== "true") {
       dataset.inViewSkippedBecauseOfPagination = "true";
       return;
     }

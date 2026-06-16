@@ -17,7 +17,8 @@ const itemsPerPage = getItemsPerPage({
   desktopItemsPerPage: 12,
 });
 
-const collection = collectionProp || await getCollection("dev-to-reading-list");
+const collection =
+  collectionProp || (await getCollection("dev-to-reading-list"));
 
 const items = collection.map((entry) => entry.data.article);
 ---

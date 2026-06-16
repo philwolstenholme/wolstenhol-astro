@@ -18,9 +18,7 @@ export const devToReadingList = defineCollection({
       });
 
       if (!response.ok) {
-        throw new Error(
-          `Failed to fetch DEV.to reading list: ${response.statusText}`,
-        );
+        throw new Error(`Failed to fetch DEV.to reading list: ${response.statusText}`);
       }
 
       const readingList = await response.json();

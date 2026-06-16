@@ -27,13 +27,8 @@ export const getItemsPerPage = ({
   const userAgent = astroRequest.headers.get("User-Agent");
   if (userAgent) {
     const { device } = UAParser(userAgent);
-    const smallScreenDeviceTypes: (typeof device.type)[] = [
-      "mobile",
-      "wearable",
-    ];
-    return smallScreenDeviceTypes.includes(device.type)
-      ? mobileItemsPerPage
-      : desktopItemsPerPage;
+    const smallScreenDeviceTypes: (typeof device.type)[] = ["mobile", "wearable"];
+    return smallScreenDeviceTypes.includes(device.type) ? mobileItemsPerPage : desktopItemsPerPage;
   }
 
   return desktopItemsPerPage;

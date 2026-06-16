@@ -15,12 +15,7 @@ const sizeMap = {
   h6: "text-lg",
 };
 
-export const Heading = ({
-  as,
-  class: className = "",
-  children,
-  ...rest
-}: HeadingProps) => {
+export const Heading = ({ as, class: className = "", children, ...rest }: HeadingProps) => {
   const Tag = as;
   const sizeClass = sizeMap[as] || "text-lg";
   return (
