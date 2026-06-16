@@ -1,12 +1,18 @@
 {
   "name": "wolstenhol-astro",
-  "type": "module",
   "version": "0.0.1",
+  "license": "AGPL-3.0",
+  "type": "module",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "prepare": "simple-git-hooks",
+    "lint": "oxlint src/",
+    "lint:fix": "oxlint --fix src/",
+    "format": "oxfmt . && prettier --write \"src/**/*.astro\"",
+    "format:check": "oxfmt --check . && prettier --check \"src/**/*.astro\""
   },
   "dependencies": {
     "@astrojs/netlify": "^7.0.13",
@@ -26,9 +32,23 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "nano-staged": "^1.0.2",
+    "oxfmt": "^0.55.0",
+    "oxlint": "^1.70.0",
     "prettier": "3.6.2",
     "prettier-plugin-astro": "0.14.1",
+    "simple-git-hooks": "^2.13.1",
     "typescript": "^6.0.3"
   },
-  "license": "AGPL-3.0"
+  "simple-git-hooks": {
+    "pre-commit": "node_modules/.bin/nano-staged"
+  },
+  "nano-staged": {
+    "*.{ts,tsx,js,mjs,cjs}": [
+      "oxfmt",
+      "oxlint --fix"
+    ],
+    "*.{css,json}": "oxfmt",
+    "*.astro": "prettier --write"
+  }
 }

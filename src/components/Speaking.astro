@@ -16,7 +16,7 @@ const itemsPerPage = getItemsPerPage({
   mobileItemsPerPage: 5,
   desktopItemsPerPage: 12,
 });
-const collection = collectionProp || await getCollection("speaking");
+const collection = collectionProp || (await getCollection("speaking"));
 
 const items = collection.map((entry) => entry.data);
 ---
