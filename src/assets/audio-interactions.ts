@@ -14,26 +14,27 @@ const linkClick = defineSound({
   gain: 0.08,
 });
 
-let readyPromise: Promise<AudioContext> | null = null;
+// Initialised once the AudioContext is running. Kept as a flag so the click
+// handler can play synchronously — avoiding the await that would race with
+// page navigation on anchor clicks.
+let ready = false;
 
-function getReady() {
-  if (!readyPromise) readyPromise = ensureReady();
-  return readyPromise;
-}
+document.addEventListener(
+  "pointerdown",
+  () => {
+    if (!ready) ensureReady().then(() => { ready = true; });
+  },
+  { capture: true },
+);
 
 document.addEventListener(
   "click",
-  async (e) => {
+  (e) => {
+    if (!ready) return;
     const target = e.target as Element;
-    const isButton = !!target.closest("button");
-    const isLink = !!target.closest("a");
-    if (!isButton && !isLink) return;
-
-    await getReady();
-
-    if (isButton) {
+    if (target.closest("button")) {
       buttonClick();
-    } else {
+    } else if (target.closest("a")) {
       linkClick();
     }
   },
