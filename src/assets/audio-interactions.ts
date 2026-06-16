@@ -22,7 +22,10 @@ const isMuteToggle = (el: Element) => !!el.closest("#mute-toggle");
 document.addEventListener(
   "pointerdown",
   () => {
-    if (!ready) ensureReady().then(() => { ready = true; });
+    if (!ready)
+      ensureReady().then(() => {
+        ready = true;
+      });
   },
   { capture: true },
 );
@@ -58,10 +61,15 @@ document.addEventListener(
       !href.startsWith("mailto:") &&
       !href.startsWith("tel:");
 
-    if (isPlainNav) {
+    if (isPagination) {
+      // HTMX handles pagination navigation; just play the sound without redirecting.
+      playTap();
+    } else if (isPlainNav) {
       e.preventDefault();
-      isPagination ? playTap() : playPageEnter();
-      setTimeout(() => { window.location.href = href!; }, NAV_SOUND_DELAY_MS);
+      playPageEnter();
+      setTimeout(() => {
+        window.location.href = href!;
+      }, NAV_SOUND_DELAY_MS);
     } else {
       playClick();
     }
