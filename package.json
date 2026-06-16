@@ -45,8 +45,8 @@
   },
   "nano-staged": {
     "*.{ts,tsx,js,mjs,cjs}": [
-      "oxfmt",
-      "oxlint --fix"
+      "oxlint --fix",
+      "oxfmt"
     ],
     "*.{css,json}": "oxfmt",
     "*.astro": "prettier --write"
