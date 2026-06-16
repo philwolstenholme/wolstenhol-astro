@@ -1,9 +1,8 @@
 import { defineSound, ensureReady } from "@web-kits/audio";
-import { click, tap, hover, pageEnter } from "../../public/patches/minimal";
+import { click, tap, pageEnter } from "../../public/patches/minimal";
 
 const playClick = defineSound(click);
 const playTap = defineSound(tap);
-const playHover = defineSound(hover);
 const playPageEnter = defineSound(pageEnter);
 
 // pageEnter has a ~58ms envelope (attack 3ms + decay 40ms + release 15ms).
@@ -15,6 +14,11 @@ const PAGINATION_SELECTOR = ".pagination__button";
 
 let ready = false;
 
+const isMuted = () => localStorage.getItem("audioMuted") === "true";
+
+// The mute toggle button itself must never trigger a sound.
+const isMuteToggle = (el: Element) => !!el.closest("#mute-toggle");
+
 document.addEventListener(
   "pointerdown",
   () => {
@@ -23,21 +27,12 @@ document.addEventListener(
   { capture: true },
 );
 
-// Hover sound on pagination buttons — only on non-touch devices.
-let isTouch = false;
-document.addEventListener("touchstart", () => { isTouch = true; }, { once: true, passive: true });
-
-document.addEventListener("mouseover", (e) => {
-  if (!ready || isTouch) return;
-  const target = e.target as Element;
-  if (target.closest(PAGINATION_SELECTOR)) playHover();
-});
-
 document.addEventListener(
   "click",
   (e) => {
-    if (!ready) return;
+    if (!ready || isMuted()) return;
     const target = e.target as Element;
+    if (isMuteToggle(target)) return;
 
     // Buttons always get the click sound, no navigation delay needed.
     if (target.closest("button")) {
@@ -63,17 +58,12 @@ document.addEventListener(
       !href.startsWith("mailto:") &&
       !href.startsWith("tel:");
 
-    if (isPagination && isPlainNav) {
-      // Delay navigation so the tap sound can be heard before the page swaps.
+    if (isPlainNav) {
       e.preventDefault();
-      playTap();
+      isPagination ? playTap() : playPageEnter();
       setTimeout(() => { window.location.href = href!; }, NAV_SOUND_DELAY_MS);
     } else {
       playClick();
-      if (isPlainNav) {
-        e.preventDefault();
-        setTimeout(() => { window.location.href = href!; }, NAV_SOUND_DELAY_MS);
-      }
     }
   },
   true,
