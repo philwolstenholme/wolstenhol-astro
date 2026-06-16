@@ -24,6 +24,7 @@ const { index } = paginate({
 // Tell the browser to update the URL to match the server-side pagination format.
 // HX-Current-Url is sent automatically by HTMX with every request.
 const htmxCurrentUrl = Astro.request.headers.get("HX-Current-Url");
+const pageUrl = htmxCurrentUrl ? new URL(htmxCurrentUrl) : undefined;
 if (htmxCurrentUrl) {
   Astro.response.headers.set(
     "HX-Replace-Url",
@@ -42,4 +43,5 @@ if (htmxCurrentUrl) {
   searchParam={searchParam}
   itemComponent={DevToPostCard}
   htmxPartialPath={htmxPartialPath}
+  pageUrl={pageUrl}
 />

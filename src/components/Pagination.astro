@@ -9,9 +9,13 @@ const {
   searchParam,
   anchor,
   htmxPartialPath,
+  pageUrl,
 } = Astro.props;
 
-const currentUrl = new URL(Astro.request.url);
+// When rendered inside a partial response, Astro.request.url is the partial
+// endpoint URL. pageUrl carries the real page URL (from HX-Current-Url) so
+// that href values point to the main page rather than the partial endpoint.
+const currentUrl = pageUrl ?? new URL(Astro.request.url);
 
 // When htmxPartialPath is set, wire up HTMX attributes for client-side pagination.
 // hx-select picks just the grid div from the full HTML response returned by the
@@ -74,7 +78,6 @@ const htmxTarget = htmxPartialPath
         hx-target={htmxTarget}
         hx-swap={htmxPartialPath ? "outerHTML" : undefined}
         hx-select={htmxTarget}
-        preload={htmxPartialPath ? "" : undefined}
       >
         <span class="rotate-3 inline-block group-active:scale-95 group-hover:underline transition-transform">
           Next

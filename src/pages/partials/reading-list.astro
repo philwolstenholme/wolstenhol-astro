@@ -27,6 +27,7 @@ const { index } = paginate({
 });
 
 const htmxCurrentUrl = Astro.request.headers.get("HX-Current-Url");
+const pageUrl = htmxCurrentUrl ? new URL(htmxCurrentUrl) : undefined;
 if (htmxCurrentUrl) {
   Astro.response.headers.set(
     "HX-Replace-Url",
@@ -45,4 +46,5 @@ if (htmxCurrentUrl) {
   searchParam={searchParam}
   itemComponent={ReadingListCard}
   htmxPartialPath={htmxPartialPath}
+  pageUrl={pageUrl}
 />
