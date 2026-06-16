@@ -1,13 +1,17 @@
 import { defineCollection, z } from "astro:content";
+import { DEV_TO_API_KEY } from "astro:env/server";
 import { devtoArticleSchema } from "./schemas/devtoArticle";
 
 export const devToReadingList = defineCollection({
-  type: "content_layer",
   loader: async () => {
+    if (!DEV_TO_API_KEY) {
+      console.warn("DEV.to reading list: DEV_TO_API_KEY not set, skipping fetch");
+      return [];
+    }
     try {
       const response = await fetch("https://dev.to/api/readinglist", {
         headers: {
-          "API-key": import.meta.env.DEV_TO_API_KEY,
+          "API-key": DEV_TO_API_KEY,
           Accept: "application/vnd.forem.api-v1+json",
           "Content-Type": "application/json",
         },

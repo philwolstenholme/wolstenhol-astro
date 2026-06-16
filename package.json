@@ -9,23 +9,25 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/netlify": "^6.5.10",
-    "@astrojs/preact": "^4.1.0",
-    "@octokit/types": "^14.1.0",
+    "@astrojs/netlify": "^7.0.13",
+    "@astrojs/preact": "^5.1.5",
+    "@octokit/types": "^16.0.0",
     "@sindresorhus/slugify": "^3.0.0",
-    "@tailwindcss/vite": "^4.1.12",
-    "astro": "^5.13.3",
+    "@tailwindcss/vite": "^4.3.1",
+    "astro": "^6.4.7",
     "clsx": "^2.1.1",
-    "es-toolkit": "^1.39.10",
+    "es-toolkit": "^1.47.1",
     "markdown-to-txt": "^2.0.1",
-    "octokit": "^4.1.4",
-    "preact": "^10.27.1",
-    "tailwindcss": "^4.1.12",
-    "ua-parser-js": "^2.0.5"
+    "octokit": "^5.0.5",
+    "preact": "^10.29.2",
+    "tailwindcss": "^4.3.1",
+    "ua-parser-js": "^2.0.10"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
     "prettier": "3.6.2",
-    "prettier-plugin-astro": "0.14.1"
+    "prettier-plugin-astro": "0.14.1",
+    "typescript": "^6.0.3"
   },
   "license": "AGPL-3.0"
 }
