@@ -1,4 +1,5 @@
 import { defineCollection, z } from "astro:content";
+import { GITHUB_PAT } from "astro:env/server";
 import { Octokit } from "octokit";
 
 const GITHUB_USERNAME = "philwolstenholme";
@@ -115,21 +116,30 @@ const githubStarSchema = z.object({
 
 export const githubStars = defineCollection({
   loader: async () => {
-    const octokit = new Octokit({
-      auth: import.meta.env.GITHUB_PAT,
-    });
+    if (!GITHUB_PAT) {
+      console.warn("GitHub stars: GITHUB_PAT not set, skipping fetch");
+      return [];
+    }
+    try {
+      const octokit = new Octokit({
+        auth: GITHUB_PAT,
+      });
 
-    const { data } = await octokit.rest.activity.listReposStarredByUser({
-      username: GITHUB_USERNAME,
-      per_page: 100,
-    });
+      const { data } = await octokit.rest.activity.listReposStarredByUser({
+        username: GITHUB_USERNAME,
+        per_page: 100,
+      });
 
-    const repos = data as Extract<(typeof data)[number], { id: number }>[];
+      const repos = data as Extract<(typeof data)[number], { id: number }>[];
 
-    return repos.map((repo) => ({
-      ...repo,
-      id: String(repo.id),
-    }));
+      return repos.map((repo) => ({
+        ...repo,
+        id: String(repo.id),
+      }));
+    } catch (error) {
+      console.error("GitHub stars fetch failed:", error);
+      return [];
+    }
   },
   schema: githubStarSchema,
 });
