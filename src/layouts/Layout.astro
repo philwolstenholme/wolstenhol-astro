@@ -1,5 +1,6 @@
 ---
 import { StyledTextLink } from "../components/StyledTextLink";
+import MuteToggle from "../components/MuteToggle.astro";
 import "../styles/global.css";
 type Props = {
   title?: string;
@@ -91,6 +92,8 @@ if (Astro.response) {
       )
     }
     <slot />
+    <MuteToggle />
+    <script src="../assets/audio-interactions.ts"></script>
     <script type="speculationrules">
       {
         "prerender": [
