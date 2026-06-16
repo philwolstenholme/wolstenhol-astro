@@ -69,7 +69,7 @@ if (Astro.response) {
     />
     <meta name="theme-color" content="#161616" />
   </head>
-  <body class="bg-subtle-grunge">
+  <body class="bg-subtle-grunge" hx-ext="replace-params,preload">
     {
       Astro.cookies.has("hideWipBanner") === false && (
         <div
@@ -94,6 +94,7 @@ if (Astro.response) {
     <slot />
     <MuteToggle />
     <script src="../assets/audio-interactions.ts"></script>
+    <script src="../assets/htmx.ts"></script>
     <script type="speculationrules">
       {
         "prerender": [

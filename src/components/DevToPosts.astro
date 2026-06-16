@@ -34,6 +34,7 @@ const items = collection.map((entry) => entry.data);
       searchParam={searchParam}
       anchor={anchor}
       itemComponent={DevToPostCard}
+      htmxPartialPath="/partials/posts"
     >
       <div slot="empty" class="text-center text-gray-500 py-8">
         No posts found.

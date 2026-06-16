@@ -9,6 +9,7 @@ const {
   anchor,
   onlyFullPages = true,
   itemComponent: Item,
+  htmxPartialPath,
 } = Astro.props as {
   items: readonly unknown[];
   itemsPerPage: number;
@@ -16,6 +17,7 @@ const {
   anchor?: string;
   onlyFullPages?: boolean;
   itemComponent: any; // Component expected to output its own <li>
+  htmxPartialPath?: string;
 };
 
 const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
@@ -29,7 +31,7 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
 
 {
   data && data.length > 0 ? (
-    <>
+    <div id={`paginated-grid-${searchParam}`}>
       <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
         {data.map((item: any) => (
           <Item key={item.id} item={item} />
@@ -42,8 +44,9 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
         prevIndex={prevIndex}
         nextIndex={nextIndex}
         searchParam={searchParam}
+        htmxPartialPath={htmxPartialPath}
       />
-    </>
+    </div>
   ) : (
     <slot name="empty" />
   )

@@ -1,10 +1,27 @@
 ---
-import { buildPageHref } from "../helpers/paginate";
+import { buildPageHref, buildPartialHref } from "../helpers/paginate";
 
-const { hasPrev, hasNext, prevIndex, nextIndex, searchParam, anchor } =
-  Astro.props;
+const {
+  hasPrev,
+  hasNext,
+  prevIndex,
+  nextIndex,
+  searchParam,
+  anchor,
+  htmxPartialPath,
+} = Astro.props;
 
 const currentUrl = new URL(Astro.request.url);
+
+// When htmxPartialPath is set, wire up HTMX attributes for client-side pagination.
+// hx-select picks just the grid div from the full HTML response returned by the
+// partial page, hx-swap replaces the whole div (including new pagination buttons),
+// and hx-select pairs with hx-target so the right element is swapped.
+// The partial endpoint sets HX-Replace-Url so the browser URL stays in the same
+// ?param=N format that server-side navigation uses.
+const htmxTarget = htmxPartialPath
+  ? `#paginated-grid-${searchParam}`
+  : undefined;
 ---
 
 <div class="flex justify-center mt-4 gap-4">
@@ -22,6 +39,14 @@ const currentUrl = new URL(Astro.request.url);
           param: searchParam,
           anchor,
         })}
+        hx-get={
+          htmxPartialPath
+            ? buildPartialHref(htmxPartialPath, searchParam, prevIndex)
+            : undefined
+        }
+        hx-target={htmxTarget}
+        hx-swap={htmxPartialPath ? "outerHTML" : undefined}
+        hx-select={htmxTarget}
       >
         <span class="-rotate-3 inline-block group-active:scale-95 group-hover:underline transition-transform">
           Previous
@@ -43,6 +68,15 @@ const currentUrl = new URL(Astro.request.url);
           param: searchParam,
           anchor,
         })}
+        hx-get={
+          htmxPartialPath
+            ? buildPartialHref(htmxPartialPath, searchParam, nextIndex)
+            : undefined
+        }
+        hx-target={htmxTarget}
+        hx-swap={htmxPartialPath ? "outerHTML" : undefined}
+        hx-select={htmxTarget}
+        preload={htmxPartialPath ? "" : undefined}
       >
         <span class="rotate-3 inline-block group-active:scale-95 group-hover:underline transition-transform">
           Next
