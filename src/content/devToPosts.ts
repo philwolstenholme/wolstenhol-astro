@@ -17,9 +17,7 @@ export const devToPosts = defineCollection({
     });
 
     if (!response.ok) {
-      console.error(
-        `DEV.to posts fetch failed: ${response.status} ${response.statusText}`,
-      );
+      console.error(`DEV.to posts fetch failed: ${response.status} ${response.statusText}`);
       return [];
     }
 

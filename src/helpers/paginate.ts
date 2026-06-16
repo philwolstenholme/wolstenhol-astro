@@ -16,9 +16,7 @@ export const buildPageHref = ({
   index,
 }: PageHrefOptions): string => {
   const url = currentUrl
-    ? new URL(
-        typeof currentUrl === "string" ? currentUrl : currentUrl.toString(),
-      )
+    ? new URL(typeof currentUrl === "string" ? currentUrl : currentUrl.toString())
     : new URL(base, "");
 
   const searchParams = url.searchParams;
@@ -61,10 +59,7 @@ export const paginate = <T>({
   let collectionData = items;
 
   if (onlyFullPages) {
-    collectionData = take(
-      items,
-      itemsPerPage * Math.floor(items.length / itemsPerPage),
-    );
+    collectionData = take(items, itemsPerPage * Math.floor(items.length / itemsPerPage));
   }
 
   const chunks = chunk(collectionData, itemsPerPage);

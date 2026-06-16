@@ -14,7 +14,12 @@ import Speaking from "../components/Speaking.astro";
 export const prerender = false;
 
 // Fetch all collections in parallel for better performance
-const [devToPostsCollection, githubStarsCollection, readingListCollection, speakingCollection] = await Promise.all([
+const [
+  devToPostsCollection,
+  githubStarsCollection,
+  readingListCollection,
+  speakingCollection,
+] = await Promise.all([
   getCollection("dev-to-posts"),
   getCollection("github-stars"),
   getCollection("dev-to-reading-list"),
@@ -107,7 +112,9 @@ if (Astro.response) {
               >
             </li>
             <li class="inline">
-              <StyledTextLink href="https://wolstenhol.me/contact">Email</StyledTextLink>
+              <StyledTextLink href="https://wolstenhol.me/contact"
+                >Email</StyledTextLink
+              >
             </li>
             <li class="inline">
               <StyledTextLink href="https://www.drupal.org/u/phil-wolstenholme"
@@ -135,7 +142,7 @@ if (Astro.response) {
         <GithubStars collection={githubStarsCollection} />
         <DevToReadingList collection={readingListCollection} />
         <Speaking collection={speakingCollection} />
-        
+
         <Section heading="Music" />
         <Section heading="Photos" />
         <Section heading="Places" />
