@@ -94,7 +94,9 @@ if (Astro.response) {
     <slot />
     <MuteToggle />
     <script src="../assets/audio-interactions.ts"></script>
-    <script src="../assets/htmx.ts"></script>
+    <script>
+      import "../assets/htmx.ts";
+    </script>
     <script type="speculationrules">
       {
         "prerender": [
