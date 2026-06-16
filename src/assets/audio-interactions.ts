@@ -3,7 +3,7 @@ import { defineSound, ensureReady } from "@web-kits/audio";
 // Minimal library — synthesised UI sounds via @web-kits/audio
 const buttonClick = defineSound({
   source: { type: "noise", color: "white" },
-  filter: { type: "bandpass", frequency: 1800, Q: 3 },
+  filter: { type: "bandpass", frequency: 1800, resonance: 3 },
   envelope: { attack: 0, decay: 0.05, sustain: 0, release: 0.02 },
   gain: 0.12,
 });
@@ -14,7 +14,7 @@ const linkClick = defineSound({
   gain: 0.08,
 });
 
-let readyPromise: Promise<void> | null = null;
+let readyPromise: Promise<AudioContext> | null = null;
 
 function getReady() {
   if (!readyPromise) readyPromise = ensureReady();
