@@ -94,6 +94,12 @@
     background-blend-mode: luminosity;
   }
 
+  .hue-rotate,
+  .hue-rotate-links a {
+    animation: hue-rotate 30s infinite;
+    animation-delay: 10s;
+  }
+
   .reading-list-link {
     &::before {
       content: "";
@@ -136,6 +142,15 @@
 ::target-text {
   background-color: var(--color-yellow-300);
   color: black;
+}
+
+@keyframes hue-rotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
 }
 
 @theme {
