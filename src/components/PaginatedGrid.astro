@@ -29,28 +29,32 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
   url: new URL(Astro.request.url),
   searchParam,
 });
+
+const focusExpr = `$event.target.id === 'paginated-grid-${searchParam}' && $focus.within($event.target).first()`;
 ---
 
-{
-  data && data.length > 0 ? (
-    <div id={`paginated-grid-${searchParam}`}>
-      <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
-        {data.map((item: any) => (
-          <Item key={item.id} item={item} />
-        ))}
-      </ul>
-      <Pagination
-        anchor={anchor}
-        hasPrev={hasPrev}
-        hasNext={hasNext}
-        prevIndex={prevIndex}
-        nextIndex={nextIndex}
-        searchParam={searchParam}
-        htmxPartialPath={htmxPartialPath}
-        pageUrl={pageUrl}
-      />
-    </div>
-  ) : (
-    <slot name="empty" />
-  )
-}
+<div x-data x-on:htmx:after-swap={focusExpr}>
+  {
+    data && data.length > 0 ? (
+      <div id={`paginated-grid-${searchParam}`}>
+        <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
+          {data.map((item: any) => (
+            <Item key={item.id} item={item} />
+          ))}
+        </ul>
+        <Pagination
+          anchor={anchor}
+          hasPrev={hasPrev}
+          hasNext={hasNext}
+          prevIndex={prevIndex}
+          nextIndex={nextIndex}
+          searchParam={searchParam}
+          htmxPartialPath={htmxPartialPath}
+          pageUrl={pageUrl}
+        />
+      </div>
+    ) : (
+      <slot name="empty" />
+    )
+  }
+</div>
