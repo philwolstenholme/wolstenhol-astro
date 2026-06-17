@@ -61,9 +61,12 @@ document.addEventListener(
       !href.startsWith("mailto:") &&
       !href.startsWith("tel:");
 
-    if (isPlainNav) {
+    if (isPagination) {
+      // HTMX handles pagination navigation; just play the sound without redirecting.
+      playTap();
+    } else if (isPlainNav) {
       e.preventDefault();
-      isPagination ? playTap() : playPageEnter();
+      playPageEnter();
       setTimeout(() => {
         window.location.href = href!;
       }, NAV_SOUND_DELAY_MS);

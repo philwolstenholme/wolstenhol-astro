@@ -5,7 +5,8 @@ const { item } = Astro.props;
 
 const isThumbnail = item.type === "thumbnail";
 const hasHref = !!item.href;
-const outerClass = "contain-content rounded shadow overflow-hidden bg-purple-700";
+const outerClass =
+  "contain-content rounded shadow overflow-hidden bg-purple-700";
 const imgClass =
   "object-cover aspect-none w-full h-full mix-blend-luminosity transition-opacity" +
   (hasHref ? " group-hocus:opacity-10" : "");

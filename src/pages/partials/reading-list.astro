@@ -1,0 +1,50 @@
+---
+export const prerender = false;
+
+import { getCollection } from "astro:content";
+import { paginate, buildPageHref } from "../../helpers/paginate";
+import { getItemsPerPage } from "../../helpers/getItemsPerPage";
+import PaginatedGrid from "../../components/PaginatedGrid.astro";
+import ReadingListCard from "../../components/items/ReadingListCard.astro";
+
+const searchParam = "readingList";
+const htmxPartialPath = "/partials/reading-list";
+const itemsPerPage = getItemsPerPage({
+  astroRequest: Astro.request,
+  mobileItemsPerPage: 5,
+  desktopItemsPerPage: 12,
+});
+
+const collection = await getCollection("dev-to-reading-list");
+const items = collection.map((entry) => entry.data.article);
+
+const { index } = paginate({
+  items,
+  itemsPerPage,
+  url: new URL(Astro.request.url),
+  searchParam,
+  onlyFullPages: true,
+});
+
+const htmxCurrentUrl = Astro.request.headers.get("HX-Current-Url");
+const pageUrl = htmxCurrentUrl ? new URL(htmxCurrentUrl) : undefined;
+if (htmxCurrentUrl) {
+  Astro.response.headers.set(
+    "HX-Replace-Url",
+    buildPageHref({
+      currentUrl: new URL(htmxCurrentUrl),
+      param: searchParam,
+      index,
+    }),
+  );
+}
+---
+
+<PaginatedGrid
+  items={items}
+  itemsPerPage={itemsPerPage}
+  searchParam={searchParam}
+  itemComponent={ReadingListCard}
+  htmxPartialPath={htmxPartialPath}
+  pageUrl={pageUrl}
+/>

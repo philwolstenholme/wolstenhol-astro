@@ -39,6 +39,7 @@ const items = collection.map((entry) => entry.data.article);
       searchParam={searchParam}
       anchor={anchor}
       itemComponent={ReadingListCard}
+      htmxPartialPath="/partials/reading-list"
     >
       <p slot="empty" class="text-center text-gray-500 py-8">
         No reading list items found. Make sure you have set up your DEV.to API

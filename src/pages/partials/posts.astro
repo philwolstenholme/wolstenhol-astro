@@ -1,0 +1,47 @@
+---
+export const prerender = false;
+
+import { getCollection } from "astro:content";
+import { paginate, buildPageHref } from "../../helpers/paginate";
+import PaginatedGrid from "../../components/PaginatedGrid.astro";
+import DevToPostCard from "../../components/items/DevToPostCard.astro";
+
+const searchParam = "posts";
+const itemsPerPage = 3;
+const htmxPartialPath = "/partials/posts";
+
+const collection = await getCollection("dev-to-posts");
+const items = collection.map((entry) => entry.data);
+
+const { index } = paginate({
+  items,
+  itemsPerPage,
+  url: new URL(Astro.request.url),
+  searchParam,
+  onlyFullPages: true,
+});
+
+// Tell the browser to update the URL to match the server-side pagination format.
+// HX-Current-Url is sent automatically by HTMX with every request.
+const htmxCurrentUrl = Astro.request.headers.get("HX-Current-Url");
+const pageUrl = htmxCurrentUrl ? new URL(htmxCurrentUrl) : undefined;
+if (htmxCurrentUrl) {
+  Astro.response.headers.set(
+    "HX-Replace-Url",
+    buildPageHref({
+      currentUrl: new URL(htmxCurrentUrl),
+      param: searchParam,
+      index,
+    }),
+  );
+}
+---
+
+<PaginatedGrid
+  items={items}
+  itemsPerPage={itemsPerPage}
+  searchParam={searchParam}
+  itemComponent={DevToPostCard}
+  htmxPartialPath={htmxPartialPath}
+  pageUrl={pageUrl}
+/>

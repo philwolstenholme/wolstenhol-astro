@@ -41,6 +41,26 @@ export const buildPageHref = ({
   return result;
 };
 
+/**
+ * Build a URL for an HTMX partial endpoint. Uses a placeholder origin so that
+ * relative paths work with the URL constructor, then returns only the path + search.
+ * Page 0 omits the param entirely (matching the server-side convention).
+ */
+export const buildPartialHref = (
+  partialPath: string,
+  param: string,
+  index: number | null,
+): string => {
+  const url = new URL(partialPath, "http://x");
+  if (index === null || index === 0) {
+    url.searchParams.delete(param);
+  } else {
+    url.searchParams.set(param, index.toString());
+  }
+  const qs = url.searchParams.toString();
+  return url.pathname + (qs ? `?${qs}` : "");
+};
+
 export type PaginationInput<T> = {
   items: readonly T[];
   itemsPerPage: number;
