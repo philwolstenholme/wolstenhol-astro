@@ -1,6 +1,9 @@
 import { defineCollection, z } from "astro:content";
 import { GITHUB_PAT } from "astro:env/server";
+import emojiRegex from "emoji-regex";
 import { Octokit } from "octokit";
+
+const stripEmojis = (str: string) => str.replace(emojiRegex(), "").replace(/\s+/g, " ").trim();
 
 const GITHUB_USERNAME = "philwolstenholme";
 
@@ -135,6 +138,7 @@ export const githubStars = defineCollection({
       return repos.map((repo) => ({
         ...repo,
         id: String(repo.id),
+        description: repo.description ? stripEmojis(repo.description) : null,
       }));
     } catch (error) {
       console.error("GitHub stars fetch failed:", error);

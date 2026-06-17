@@ -23,6 +23,7 @@
     "@web-kits/audio": "^0.1.0",
     "astro": "^6.4.7",
     "clsx": "^2.1.1",
+    "emoji-regex": "^10.6.0",
     "es-toolkit": "^1.47.1",
     "htmx.org": "^2.0.10",
     "markdown-to-txt": "^2.0.1",
