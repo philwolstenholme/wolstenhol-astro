@@ -4,6 +4,7 @@ import { devToReadingList } from "./content/devToReadingList";
 import { airtableReadingList } from "./content/airtableReadingList";
 import { speaking } from "./content/speaking";
 import { places } from "./content/places";
+import { spotify } from "./content/spotify";
 
 export const collections = {
   "github-stars": githubStars,
@@ -12,4 +13,5 @@ export const collections = {
   "airtable-reading-list": airtableReadingList,
   speaking,
   places,
+  spotify,
 };

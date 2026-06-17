@@ -1,0 +1,29 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Section } from "./Section";
+
+interface Props {
+  data: CollectionEntry<"spotify"> | undefined;
+}
+
+const { data } = Astro.props;
+
+if (!data) return;
+
+const { artists, randomGenres } = data.data;
+---
+
+<Section heading="Music">
+  <ul>
+    {
+      randomGenres.map((g) => (
+        <li>
+          <strong>{g.genre}</strong> — {g.artist}
+        </li>
+      ))
+    }
+  </ul>
+
+  <h3>Artists ({(artists as unknown[]).length})</h3>
+  <pre>{JSON.stringify(artists, null, 2)}</pre>
+</Section>

@@ -11,6 +11,7 @@ import DevToReadingList from "../components/ReadingList.astro";
 import Lede from "../components/Lede.astro";
 import Speaking from "../components/Speaking.astro";
 import Places from "../components/Places.astro";
+import SpotifyMusic from "../components/SpotifyMusic.astro";
 
 export const prerender = false;
 
@@ -20,12 +21,16 @@ const [
   githubStarsCollection,
   readingListCollection,
   speakingCollection,
+  spotifyCollection,
 ] = await Promise.all([
   getCollection("dev-to-posts"),
   getCollection("github-stars"),
   getCollection("dev-to-reading-list"),
   getCollection("speaking"),
+  getCollection("spotify"),
 ]);
+
+const spotifyData = spotifyCollection[0];
 
 if (Astro.response) {
   // Astro.response.headers.set(
@@ -154,7 +159,7 @@ if (Astro.response) {
         <DevToReadingList collection={readingListCollection} />
         <Speaking collection={speakingCollection} />
 
-        <Section heading="Music" />
+        <SpotifyMusic data={spotifyData} />
         <Section heading="Photos" />
         <Places />
       </div>
