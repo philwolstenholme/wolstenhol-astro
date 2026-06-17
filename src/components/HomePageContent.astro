@@ -12,6 +12,7 @@ import Lede from "./Lede.astro";
 import Speaking from "./Speaking.astro";
 import Places from "./Places.astro";
 import SpotifyMusic from "./SpotifyMusic.astro";
+import Instagram from "./Instagram.astro";
 
 // Fetch all collections in parallel for better performance
 const [
@@ -20,12 +21,14 @@ const [
   readingListCollection,
   speakingCollection,
   spotifyCollection,
+  instagramCollection,
 ] = await Promise.all([
   getCollection("dev-to-posts"),
   getCollection("github-stars"),
   getCollection("dev-to-reading-list"),
   getCollection("speaking"),
   getCollection("spotify"),
+  getCollection("instagram"),
 ]);
 
 const spotifyData = spotifyCollection[0];
@@ -146,7 +149,7 @@ const spotifyData = spotifyCollection[0];
         <DevToReadingList collection={readingListCollection} />
         <Speaking collection={speakingCollection} />
         <SpotifyMusic data={spotifyData} />
-        <Section heading="Photos" />
+        <Instagram collection={instagramCollection} />
         <Places />
       </div>
     </Content>
