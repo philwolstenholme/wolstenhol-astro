@@ -1,0 +1,42 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Section } from "./Section";
+import { SpotifyGenresLede } from "./SpotifyGenresLede";
+import { SpotifyMusicPlayer } from "./SpotifyMusicPlayer";
+import type { SpotifyArtist } from "./SpotifyMusicPlayer";
+
+interface Props {
+  data: CollectionEntry<"spotify"> | undefined;
+}
+
+const { data } = Astro.props;
+
+if (!data) return;
+
+const { artists, randomGenres } = data.data;
+---
+
+<Section heading="Music">
+  <SpotifyGenresLede genres={randomGenres} />
+  <SpotifyMusicPlayer client:visible artists={artists as SpotifyArtist[]} />
+</Section>
+
+<script>
+  document
+    .querySelectorAll<HTMLElement>("[data-genre-mark]")
+    .forEach((mark) => {
+      let open = false;
+      mark.addEventListener("click", () => {
+        const p = mark.closest("p");
+        if (p) {
+          p.classList.add("select-none");
+          setTimeout(() => p.classList.remove("select-none"), 1000);
+        }
+        if (open) mark.blur();
+        open = !open;
+      });
+      mark.addEventListener("blur", () => {
+        open = false;
+      });
+    });
+</script>

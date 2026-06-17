@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "file=$(printf '%s' \"$CLAUDE_TOOL_INPUT\" | jq -r '.file_path // \"\"'); if [[ \"$file\" =~ \\.(ts|tsx|js|jsx|mjs|cjs)$ ]]; then node_modules/.bin/oxfmt \"$file\" 2>/dev/null; node_modules/.bin/oxlint --fix \"$file\" 2>/dev/null; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
