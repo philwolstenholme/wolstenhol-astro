@@ -16,7 +16,7 @@ the Tailwind styling from Tailwind 3 to Tailwind 4.
 - Use Astro recommendations
 - Add inline types unless the type is very large
 - Prefer focused modules over large ones with multiple responsibilities
-- Always use the `clsx` to manage classnames, e.g. to merge classnames or conditionally apply them.
+- Always use the `clsx` package to manage classnames, e.g. to merge classnames or conditionally apply them.
 - Prefer creating TSX components to Astro components.
 - Prefer arrow functions everywhere where possible.
 - Prefer named exports, not default exports.
