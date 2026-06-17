@@ -13,11 +13,11 @@
 - [ ] Horizontal scroller component
 - [ ] Footer
 - [ ] Big non homepage heading
-- [ ] Highlighted text component
+- [x] Highlighted text component
 - [ ] `content-visibility` bits
 - [ ] Bring background images locally or use correct Cloudinary proxy URL
 - [ ] Icon system for social media links, section headers etc
-  - [ ] https://github.com/natemoo-re/astro-icon
+  - [ ] <https://github.com/natemoo-re/astro-icon>
 - [ ] List truncator for reading list (use HTMLX for partials?)
 - [ ] Custom fonts
 - [ ] Font subsetting
@@ -30,13 +30,12 @@
 ## Collections (e.g. reading list, stars, maps)
 
 - [x] Basic pagination proof of concept
-- [ ] Look at using https://docs.astro.build/en/guides/routing/#pagination for pagination
+- [ ] Look at using <https://docs.astro.build/en/guides/routing/#pagination> for pagination
 - [ ] Skip links
 - [ ] Show a mix of fresh content but with older stuff randomly mixed in, no duplication allowed
-- [ ] HTMLX partials pagination
-- [x] use https://developers.netlify.com/guides/how-to-do-advanced-caching-and-isr-with-astro for homepage ISR to allow the no-JS pagination (the query string based one) to work as-is but still have a fast site
+- [x] HTMLX partials pagination
+- [x] use <https://developers.netlify.com/guides/how-to-do-advanced-caching-and-isr-with-astro> for homepage ISR to allow the no-JS pagination (the query string based one) to work as-is but still have a fast site
 - [x] Preload, CDN cache, or statically render the first 3 partials so the pagination feels instant
-- [ ] Could we make the pagination work without JS by checking for the `HX-Request` header in middleware and rewriting the request to a partial document, or if the header is missing then returning the full homepage but with the second page of content for the collection. Remember to do `Vary: HX-Request`!
 
 ## Server/CDN
 
@@ -45,22 +44,22 @@
 ## Homepage
 
 - [x] Diagonal section divider (clip path?)
-- [ ] Reading list item component
-- [ ] Speaking component
+- [x] Reading list item component
+- [x] Speaking component
 - [ ] Music player component
 - [ ] Instagram card
 - [ ] Bluesky post
 - [ ] Mastodon post
 - [ ] Twitter post
-- [ ] Place post
+- [x] Place post
 
-## Portfolio
+##  Portfolio
 
 - [ ] Portfolio item screenshot
 - [ ] Typography setup
 - [ ] Alternating grid
 
-## Github stars
+##  Github stars
 
 - [ ] Starred repo component
 
