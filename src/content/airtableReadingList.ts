@@ -1,8 +1,26 @@
 import { defineCollection, z } from "astro:content";
 import { AIRTABLE_KEY } from "astro:env/server";
+import metascraperFactory from "metascraper";
+import metascraperDescription from "metascraper-description";
 
 const BASE_ID = "appT2NMQ7UD8T2smq";
 const TABLE = "List";
+
+const metascraper = metascraperFactory([metascraperDescription()]);
+
+async function getDescription(targetUrl: string): Promise<string | null> {
+  try {
+    const res = await fetch(targetUrl, {
+      headers: { "User-Agent": "Mozilla/5.0 (compatible; wolstenhol-bot/1.0)" },
+      signal: AbortSignal.timeout(5000),
+    });
+    const html = await res.text();
+    const metadata = await metascraper({ html, url: res.url });
+    return metadata.description ?? null;
+  } catch {
+    return null;
+  }
+}
 
 export const airtableReadingList = defineCollection({
   loader: async () => {
@@ -22,13 +40,19 @@ export const airtableReadingList = defineCollection({
 
       const data = await response.json();
 
-      return data.records.map((record: any) => ({
-        id: record.id,
-        title: record.fields.title ?? "",
-        url: record.fields.url ?? "",
-        description: record.fields.subTitle ?? null,
-        date: record.fields.date ?? record.createdTime ?? null,
-      }));
+      return await Promise.all(
+        data.records.map(async (record: any) => {
+          const url = record.fields.url ?? "";
+          const description = record.fields.subTitle || (url ? await getDescription(url) : null);
+          return {
+            id: record.id,
+            title: record.fields.title ?? "",
+            url,
+            description: description ?? null,
+            date: record.fields.date ?? record.createdTime ?? null,
+          };
+        }),
+      );
     } catch (error) {
       console.error("Airtable reading list fetch failed:", error);
       return [];

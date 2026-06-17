@@ -27,6 +27,8 @@
     "es-toolkit": "^1.47.1",
     "htmx.org": "^2.0.10",
     "markdown-to-txt": "^2.0.1",
+    "metascraper": "^5.50.6",
+    "metascraper-description": "^5.50.6",
     "octokit": "^5.0.5",
     "preact": "^10.29.2",
     "tailwindcss": "^4.3.1",
