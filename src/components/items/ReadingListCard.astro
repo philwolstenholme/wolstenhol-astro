@@ -6,18 +6,46 @@ const { item: article } = Astro.props as {
   item: CollectionEntry<"dev-to-reading-list">["data"]["article"];
 };
 
-// Give each card a slight, randomised tilt at render time, like the original
-// site. The standalone `rotate` property composes with the `hover:scale-105`
-// lift so the card straightens out a touch as it grows.
 const rotation = getRandomRotation();
+
+let faviconUrl: string | null = null;
+let favicon2xUrl: string | null = null;
+try {
+  const hostname = new URL(article.canonical_url || article.url).hostname;
+  faviconUrl = `https://wolstenhol.me/proxy/cloudinary/image/fetch/f_auto,w_16,h_16,q_auto/https://t2.gstatic.com/faviconV2%3Fclient=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${hostname}&size=32`;
+  favicon2xUrl = faviconUrl.replace("w_16,h_16", "w_32,h_32");
+} catch {
+  // malformed URL — skip favicon
+}
 ---
 
 <li
-  class="expand-clickable-area row-span-2 grid grid-rows-subgrid p-4 font-serif bg-oc-yellow-2 bg-paper-grunge shadow-hard border border-gray-300 rounded transition-all duration-75 hover:scale-105 hover:bg-oc-yellow-3 hover:shadow-lg focus-within:scale-105 focus-within:bg-oc-yellow-3 focus-within:shadow-lg"
+  class="expand-clickable-area reading-list-link font-serif bg-oc-yellow-2 bg-paper-grunge shadow-hard border border-gray-300 rounded transition-all duration-75 hover:scale-105 hover:bg-oc-yellow-3 hover:shadow-lg focus-within:scale-105 focus-within:bg-oc-yellow-3 focus-within:shadow-lg"
   style={rotation ? `rotate: ${rotation}` : undefined}
 >
-  <a href={article.url} class="text-binding-dark font-bold row-span-1">
-    {article.title}
+  <a
+    href={article.url}
+    class="group isolate flex min-w-0 flex-1 items-baseline space-x-3 p-4"
+  >
+    {
+      faviconUrl && (
+        <img
+          src={faviconUrl}
+          srcset={favicon2xUrl ? `${favicon2xUrl} 2x` : undefined}
+          alt=""
+          width="16"
+          height="16"
+          loading="lazy"
+          fetchpriority="low"
+          class="isolate shrink-0 rounded translate-y-0.5"
+        />
+      )
+    }
+    <div class="isolate min-w-0">
+      <h3 class="font-bold leading-tight group-hocus:underline">
+        {article.title}
+      </h3>
+      <p class="mt-2 truncate text-xs">{article.description}</p>
+    </div>
   </a>
-  <p class="text-sm line-clamp-3 row-span-1">{article.description}</p>
 </li>
