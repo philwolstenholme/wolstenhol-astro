@@ -1,6 +1,10 @@
 ---
 export const prerender = false;
 
+Astro.response.headers.set("Cache-Control", "public, max-age=300, stale-while-revalidate=3600");
+Astro.response.headers.set("Netlify-CDN-Cache-Control", "s-maxage=31536000");
+Astro.response.headers.set("X-Robots-Tag", "noindex");
+
 import { getCollection } from "astro:content";
 import { paginate, buildPageHref } from "../../helpers/paginate";
 import PaginatedGrid from "../../components/PaginatedGrid.astro";
