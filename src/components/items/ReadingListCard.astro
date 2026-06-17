@@ -1,10 +1,8 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import { getRandomRotation } from "../../helpers/getRandomRotation";
+import type { ReadingListCardItem } from "../../helpers/mergeReadingLists";
 
-const { item: article } = Astro.props as {
-  item: CollectionEntry<"dev-to-reading-list">["data"]["article"];
-};
+const { item: article } = Astro.props as { item: ReadingListCardItem };
 
 const rotation = getRandomRotation();
 

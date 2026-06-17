@@ -19,6 +19,7 @@ export default defineConfig({
     schema: {
       DEV_TO_API_KEY: envField.string({ context: "server", access: "secret", optional: true }),
       GITHUB_PAT: envField.string({ context: "server", access: "secret", optional: true }),
+      AIRTABLE_KEY: envField.string({ context: "server", access: "secret", optional: true }),
     },
   },
 });

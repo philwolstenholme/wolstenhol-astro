@@ -6,8 +6,7 @@ import { StyledTextLink } from "./StyledTextLink";
 import PaginatedGrid from "./PaginatedGrid.astro";
 import ReadingListCard from "./items/ReadingListCard.astro";
 import { getItemsPerPage } from "../helpers/getItemsPerPage";
-
-const { collection: collectionProp } = Astro.props;
+import { mergeReadingLists } from "../helpers/mergeReadingLists";
 
 const searchParam = "readingList";
 const anchor = "reading";
@@ -17,10 +16,12 @@ const itemsPerPage = getItemsPerPage({
   desktopItemsPerPage: 12,
 });
 
-const collection =
-  collectionProp || (await getCollection("dev-to-reading-list"));
+const [devToCollection, airtableCollection] = await Promise.all([
+  getCollection("dev-to-reading-list"),
+  getCollection("airtable-reading-list"),
+]);
 
-const items = collection.map((entry) => entry.data.article);
+const items = mergeReadingLists(devToCollection, airtableCollection);
 ---
 
 <Section heading="Reading">

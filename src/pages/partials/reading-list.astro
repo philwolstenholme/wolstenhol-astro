@@ -1,7 +1,10 @@
 ---
 export const prerender = false;
 
-Astro.response.headers.set("Cache-Control", "public, max-age=300, stale-while-revalidate=3600");
+Astro.response.headers.set(
+  "Cache-Control",
+  "public, max-age=300, stale-while-revalidate=3600",
+);
 Astro.response.headers.set("Netlify-CDN-Cache-Control", "s-maxage=31536000");
 Astro.response.headers.set("X-Robots-Tag", "noindex");
 
@@ -10,6 +13,7 @@ import { paginate, buildPageHref } from "../../helpers/paginate";
 import { getItemsPerPage } from "../../helpers/getItemsPerPage";
 import PaginatedGrid from "../../components/PaginatedGrid.astro";
 import ReadingListCard from "../../components/items/ReadingListCard.astro";
+import { mergeReadingLists } from "../../helpers/mergeReadingLists";
 
 const searchParam = "readingList";
 const htmxPartialPath = "/partials/reading-list";
@@ -19,8 +23,12 @@ const itemsPerPage = getItemsPerPage({
   desktopItemsPerPage: 12,
 });
 
-const collection = await getCollection("dev-to-reading-list");
-const items = collection.map((entry) => entry.data.article);
+const [devToCollection, airtableCollection] = await Promise.all([
+  getCollection("dev-to-reading-list"),
+  getCollection("airtable-reading-list"),
+]);
+
+const items = mergeReadingLists(devToCollection, airtableCollection);
 
 const { index } = paginate({
   items,

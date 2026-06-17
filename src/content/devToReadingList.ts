@@ -9,7 +9,7 @@ export const devToReadingList = defineCollection({
       return [];
     }
     try {
-      const response = await fetch("https://dev.to/api/readinglist", {
+      const response = await fetch("https://dev.to/api/readinglist?per_page=50", {
         headers: {
           "API-key": DEV_TO_API_KEY,
           Accept: "application/vnd.forem.api-v1+json",
