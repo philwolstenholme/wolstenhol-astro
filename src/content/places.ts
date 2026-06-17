@@ -1,7 +1,9 @@
 import { defineCollection, z } from "astro:content";
-import { GOOGLE_MAPS_KEY, GOOGLE_MAPS_SECRET } from "astro:env/server";
+import { GOOGLE_MAPS_KEY, GOOGLE_MAPS_SECRET, FOURSQUARE_OAUTH_TOKEN } from "astro:env/server";
 import { createHmac } from "crypto";
-import placesData from "./places.json";
+import { sampleSize } from "es-toolkit";
+
+const SAMPLE_SIZE = 9;
 
 function signGoogleMapsUrl(url: string, secret: string): string {
   const urlObj = new URL(url);
@@ -16,16 +18,47 @@ function signGoogleMapsUrl(url: string, secret: string): string {
   return `${url}&signature=${signature}`;
 }
 
+function buildMapUrl(lat: number, lng: number): string | null {
+  if (!GOOGLE_MAPS_KEY) return null;
+  const base = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=13&size=365x182&maptype=roadmap&key=${GOOGLE_MAPS_KEY}&format=png&visual_refresh=true&map_id=db8ea46f9ea0d213&scale=2`;
+  return GOOGLE_MAPS_SECRET ? signGoogleMapsUrl(base, GOOGLE_MAPS_SECRET) : base;
+}
+
 export const places = defineCollection({
   loader: async () => {
-    return placesData.map((place) => {
-      let mapUrl: string | null = null;
-      if (GOOGLE_MAPS_KEY) {
-        const baseUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${place.lat},${place.lng}&zoom=13&size=365x182&maptype=roadmap&key=${GOOGLE_MAPS_KEY}&format=png&visual_refresh=true&map_id=db8ea46f9ea0d213&scale=2`;
-        mapUrl = GOOGLE_MAPS_SECRET ? signGoogleMapsUrl(baseUrl, GOOGLE_MAPS_SECRET) : baseUrl;
-      }
-      return { ...place, mapUrl };
-    });
+    if (!FOURSQUARE_OAUTH_TOKEN) {
+      console.warn("Places: FOURSQUARE_OAUTH_TOKEN not set, skipping fetch");
+      return [];
+    }
+
+    const response = await fetch(
+      `https://api.foursquare.com/v2/users/self/venuelikes?oauth_token=${FOURSQUARE_OAUTH_TOKEN}&v=20151227&limit=200`,
+    );
+
+    if (!response.ok) {
+      throw new Error(`Foursquare API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.meta?.code !== 200) {
+      throw new Error(`Foursquare error: ${data.meta?.errorDetail}`);
+    }
+
+    const venues: any[] = data.response?.venues?.items ?? [];
+
+    return sampleSize(venues, SAMPLE_SIZE).map((v) => ({
+      id: v.id,
+      name: v.name,
+      lat: v.location.lat,
+      lng: v.location.lng,
+      address: v.location.formattedAddress?.[0] ?? v.location.address ?? "",
+      city: v.location.city ?? "",
+      url: v.url ?? `https://foursquare.com/v/${v.id}`,
+      tip: v.tipHint ?? null,
+      likedAt: v.ratedAt ? new Date(v.ratedAt * 1000).toISOString() : null,
+      mapUrl: buildMapUrl(v.location.lat, v.location.lng),
+    }));
   },
   schema: z.object({
     name: z.string(),
@@ -34,8 +67,8 @@ export const places = defineCollection({
     address: z.string(),
     city: z.string(),
     url: z.string().url().optional(),
-    tip: z.string().optional(),
-    likedAt: z.string().optional(),
+    tip: z.string().nullable().optional(),
+    likedAt: z.string().nullable().optional(),
     mapUrl: z.string().nullable(),
   }),
 });

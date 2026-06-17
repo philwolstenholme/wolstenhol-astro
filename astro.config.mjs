@@ -42,6 +42,11 @@ export default defineConfig({
         access: "secret",
         optional: true,
       }),
+      FOURSQUARE_OAUTH_TOKEN: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
     },
   },
 });

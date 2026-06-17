@@ -26,7 +26,7 @@ const asteriskRotation = Math.floor(Math.random() * 360) + 1;
   class="expand-clickable-area font-serif bg-foursquare shadow-hard border border-foursquare-dark rounded overflow-hidden transition-all duration-75 hover:scale-105 hover:shadow-lg focus-within:scale-105 focus-within:shadow-lg"
 >
   <div class="group flex flex-col-reverse h-full">
-    <div class="p-4 space-y-2">
+    <div class="flex-grow p-4 space-y-2">
       <h3 class="font-bold text-white leading-tight text-base">
         <span aria-hidden="true" class="mr-1">♥</span>
         {
@@ -45,7 +45,7 @@ const asteriskRotation = Math.floor(Math.random() * 360) + 1;
       </div>
     </div>
 
-    <div class="relative grid-stack overflow-hidden" style="height: 182px;">
+    <div class="relative grid-stack overflow-hidden">
       {
         place.mapUrl ? (
           <img
@@ -54,7 +54,7 @@ const asteriskRotation = Math.floor(Math.random() * 360) + 1;
             width="365"
             height="182"
             loading="lazy"
-            class="w-full h-full object-cover mix-blend-multiply"
+            class="w-full mix-blend-multiply"
           />
         ) : (
           <div class="w-full h-full bg-foursquare-dark/30" />
@@ -67,7 +67,7 @@ const asteriskRotation = Math.floor(Math.random() * 360) + 1;
         width="365"
         height="182"
         srcset="https://wolstenhol.me/proxy/cloudinary/image/upload/c_fill%2Cg_north%2Cw_365%2Ch_182%2Cf_auto%2Cq_auto%3Alow%2Fv1661284312%2Fone-offs%2F9-soft-grunge-texture-4-1.png 1x, https://wolstenhol.me/proxy/cloudinary/image/upload/c_fill%2Cg_north%2Cw_730%2Ch_364%2Cf_auto%2Cq_auto%3Alow%2Fv1661284312%2Fone-offs%2F9-soft-grunge-texture-4-1.png 2x"
-        class="opacity-grunge block h-full w-full object-cover"
+        class="opacity-grunge block w-full"
         style={`--opacity: ${grungeOpacity}`}
       />
 
