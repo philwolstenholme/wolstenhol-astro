@@ -34,6 +34,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "nano-staged": "^1.0.2",
+    "netlify-cli": "^26.1.0",
     "oxfmt": "^0.55.0",
     "oxlint": "^1.70.0",
     "prettier": "3.8.4",

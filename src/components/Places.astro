@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+import { Section } from "./Section";
+import Lede from "./Lede.astro";
+import PaginatedGrid from "./PaginatedGrid.astro";
+import PlacesCard from "./items/PlacesCard.astro";
+import { getItemsPerPage } from "../helpers/getItemsPerPage";
+
+const searchParam = "places";
+const anchor = "places";
+const itemsPerPage = getItemsPerPage({
+  astroRequest: Astro.request,
+  mobileItemsPerPage: 4,
+  desktopItemsPerPage: 6,
+});
+
+const placesCollection = await getCollection("places");
+const items = placesCollection.map((entry) => ({
+  id: entry.id,
+  ...entry.data,
+}));
+---
+
+<Section heading="Places">
+  <Lede>
+    <p class="max-w-3xl font-serif leading-relaxed tracking-widest mt-3">
+      A selection of places I've liked on Foursquare — could be somewhere from a
+      holiday, or a random bar in Manchester that closed three years ago…
+    </p>
+  </Lede>
+  <div class="mt-8">
+    <PaginatedGrid
+      items={items}
+      itemsPerPage={itemsPerPage}
+      searchParam={searchParam}
+      anchor={anchor}
+      itemComponent={PlacesCard}
+    >
+      <p slot="empty" class="text-center text-gray-500 py-8">
+        No places found. Add some to <code>src/content/places.json</code>.
+      </p>
+    </PaginatedGrid>
+  </div>
+</Section>

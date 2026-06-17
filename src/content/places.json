@@ -1,0 +1,68 @@
+[
+  {
+    "id": "bundobust-manchester",
+    "name": "Bundobust",
+    "lat": 53.47832,
+    "lng": -2.23712,
+    "address": "61 Oxford St",
+    "city": "Manchester",
+    "url": "https://foursquare.com/v/bundobust/5596a76d498e8cf0f1a0cf37",
+    "tip": "Indian street food and craft beer. A proper Manchester institution.",
+    "likedAt": "2022-08-15T12:00:00.000Z"
+  },
+  {
+    "id": "the-refuge-manchester",
+    "name": "The Refuge",
+    "lat": 53.47735,
+    "lng": -2.23648,
+    "address": "Oxford St",
+    "city": "Manchester",
+    "url": "https://foursquare.com/v/the-refuge/5a1b4e7f4b952372b83c4e3a",
+    "tip": "Beautiful bar in the old Palace Hotel. Great for a cocktail.",
+    "likedAt": "2023-03-10T19:00:00.000Z"
+  },
+  {
+    "id": "elnecot-manchester",
+    "name": "Elnecot",
+    "lat": 53.48163,
+    "lng": -2.22845,
+    "address": "41 Blossom St",
+    "city": "Manchester",
+    "url": "https://foursquare.com/v/elnecot/59e4b36a5d3e3c2b5dc3e2f1",
+    "tip": "Modern British cooking in the heart of Ancoats. Really lovely neighbourhood restaurant.",
+    "likedAt": "2021-11-04T20:00:00.000Z"
+  },
+  {
+    "id": "dishoom-kings-cross",
+    "name": "Dishoom",
+    "lat": 51.53024,
+    "lng": -0.12253,
+    "address": "5 Stable St",
+    "city": "London",
+    "url": "https://foursquare.com/v/dishoom-kings-cross/4f348b01e4b0d3cc16e7e234",
+    "tip": "The bacon naan at breakfast is the best thing in London. Queue early.",
+    "likedAt": "2023-06-22T08:30:00.000Z"
+  },
+  {
+    "id": "albert-schloss-manchester",
+    "name": "Albert's Schloss",
+    "lat": 53.47907,
+    "lng": -2.23878,
+    "address": "27 Peter St",
+    "city": "Manchester",
+    "url": "https://foursquare.com/v/alberts-schloss/56c3e4b5498e8d2738e8a123",
+    "tip": "Bavarian beer palace with live music and a proper party atmosphere.",
+    "likedAt": "2020-02-08T21:00:00.000Z"
+  },
+  {
+    "id": "ancoats-coffee-manchester",
+    "name": "Ancoats Coffee Co.",
+    "lat": 53.48421,
+    "lng": -2.22664,
+    "address": "9 Royal Mills",
+    "city": "Manchester",
+    "url": "https://foursquare.com/v/ancoats-coffee-co/53c2e4a8498e8e5b3f2c4d56",
+    "tip": "Brilliant coffee in a converted mill. The kind of place you want to spend a whole morning in.",
+    "likedAt": "2019-09-30T09:15:00.000Z"
+  }
+]

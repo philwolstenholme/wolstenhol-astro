@@ -82,6 +82,13 @@
     background-size: 12px;
   }
 
+  .grid-stack {
+    display: grid;
+    > * {
+      grid-area: 1 / 1;
+    }
+  }
+
   .bg-paper-grunge {
     background-image: url(https://wolstenhol.me/proxy/cloudinary/image/upload/c_crop,f_auto,h_200,w_200,q_auto:eco/v1473712910/subtle_grunge_ux3r0f.png);
     background-blend-mode: luminosity;
@@ -139,6 +146,8 @@
   --color-medium-dark: #1e785a;
   --color-oc-yellow-2: #ffec99;
   --color-oc-yellow-3: #ffe066;
+  --color-foursquare: #dc3068;
+  --color-foursquare-dark: #ce225a;
 
   /* The offset, blur-less "hard" shadow used on every card on the original
    * site. It's what gives the cards their slightly cut-out, sticker-y feel. */

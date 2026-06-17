@@ -3,6 +3,7 @@ import { devToPosts } from "./content/devToPosts";
 import { devToReadingList } from "./content/devToReadingList";
 import { airtableReadingList } from "./content/airtableReadingList";
 import { speaking } from "./content/speaking";
+import { places } from "./content/places";
 
 export const collections = {
   "github-stars": githubStars,
@@ -10,4 +11,5 @@ export const collections = {
   "dev-to-reading-list": devToReadingList,
   "airtable-reading-list": airtableReadingList,
   speaking,
+  places,
 };

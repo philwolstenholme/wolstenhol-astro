@@ -17,9 +17,31 @@ export default defineConfig({
   adapter: netlify(),
   env: {
     schema: {
-      DEV_TO_API_KEY: envField.string({ context: "server", access: "secret", optional: true }),
-      GITHUB_PAT: envField.string({ context: "server", access: "secret", optional: true }),
-      AIRTABLE_KEY: envField.string({ context: "server", access: "secret", optional: true }),
+      DEV_TO_API_KEY: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
+      GITHUB_PAT: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
+      AIRTABLE_KEY: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
+      GOOGLE_MAPS_KEY: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
+      GOOGLE_MAPS_SECRET: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
     },
   },
 });

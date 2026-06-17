@@ -10,6 +10,7 @@ import DevToPosts from "../components/DevToPosts.astro";
 import DevToReadingList from "../components/ReadingList.astro";
 import Lede from "../components/Lede.astro";
 import Speaking from "../components/Speaking.astro";
+import Places from "../components/Places.astro";
 
 export const prerender = false;
 
@@ -146,7 +147,7 @@ if (Astro.response) {
 
         <Section heading="Music" />
         <Section heading="Photos" />
-        <Section heading="Places" />
+        <Places />
       </div>
     </Content>
   </main>
