@@ -13,7 +13,9 @@ export function SpotifyGenresLede({ genres }: { genres: Genre[] }) {
     <p class="mt-3 max-w-3xl font-serif leading-relaxed tracking-widest">
       According to the Spotify API, I've been listening to a bit of{" "}
       {parts.map((part) => {
-        if (part.type === "literal") return part.value;
+        if (part.type === "literal") {
+          return part.value;
+        }
         const g = byGenreName[part.value];
         return (
           <mark data-genre-mark class="group cursor-help" tabIndex={0} title={g.artist}>

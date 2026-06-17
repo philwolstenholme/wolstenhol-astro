@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+:root {
+  --outline-size: max(4px, 0.08em);
+}
+
 /* Hover *and* focus in one go, matching the original wolstenhol.me site. A lot
  * of the card interactions (lifting captions, fading talk thumbnails, swapping
  * background colours) hang off this variant. */
@@ -94,6 +98,10 @@
     background-blend-mode: luminosity;
   }
 
+  .outline-offset-invert {
+    --outline-offset: calc(var(--outline-size) * -1);
+  }
+
   .hue-rotate,
   .hue-rotate-links a {
     animation: hue-rotate 30s infinite;
@@ -137,6 +145,20 @@
   }
 }
 
+/* Hotpink focus outline — matches wolstenhol.me. Elements with
+ * .outline-offset-invert get a negative offset so the ring draws inset. */
+:focus,
+.group:focus .group-focus\:outline {
+  outline-color: var(--outline-color, hotpink);
+  outline-width: var(--outline-size);
+  outline-style: solid;
+  outline-offset: var(--outline-offset, var(--outline-size));
+}
+:focus:not(:focus-visible),
+.group:focus:not(:focus-visible) .group-focus\:outline {
+  outline: none;
+}
+
 /* Match the site's yellow text selection rather than the browser default. */
 ::selection,
 ::target-text {
@@ -163,6 +185,8 @@
   --color-oc-yellow-3: #ffe066;
   --color-foursquare: #dc3068;
   --color-foursquare-dark: #ce225a;
+  --color-spotify: #1db954;
+  --color-spotify-dark: #1aa64b;
 
   /* The offset, blur-less "hard" shadow used on every card on the original
    * site. It's what gives the cards their slightly cut-out, sticker-y feel. */
@@ -176,4 +200,67 @@
       width: 100%;
     }
   }
+}
+
+/* ─── Music card ─────────────────────────────────────────────────────────── */
+
+.card-music__image {
+  filter: grayscale(1) contrast(1.05);
+}
+
+.card-music__caption::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: inline-block;
+  width: 100%;
+  background-color: currentColor;
+  border-radius: 0.125rem;
+  transform: rotate(-1deg);
+}
+
+.card-music__progress {
+  height: 3px;
+  transition: transform 250ms cubic-bezier(1, 0, 0, 1);
+  transform: translateY(3px);
+  appearance: none;
+  border: none;
+
+  &::-webkit-progress-bar {
+    height: 3px;
+    background: rgba(0, 0, 0, 0.3);
+  }
+  &::-webkit-progress-value {
+    background: currentColor;
+  }
+  &::-moz-progress-bar {
+    height: 3px;
+    background: currentColor;
+  }
+}
+
+.card-music__progress--active {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card-music--playing {
+    animation: dance 100ms infinite alternate;
+  }
+}
+
+@keyframes dance {
+  0% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1.02);
+  }
+}
+
+/* ─── Simple scroller ────────────────────────────────────────────────────── */
+
+.scroller-affordance {
+  background: radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)) 0
+    100%;
 }

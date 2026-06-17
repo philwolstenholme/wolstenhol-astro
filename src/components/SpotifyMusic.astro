@@ -2,6 +2,8 @@
 import type { CollectionEntry } from "astro:content";
 import { Section } from "./Section";
 import { SpotifyGenresLede } from "./SpotifyGenresLede";
+import { SpotifyMusicPlayer } from "./SpotifyMusicPlayer";
+import type { SpotifyArtist } from "./SpotifyMusicPlayer";
 
 interface Props {
   data: CollectionEntry<"spotify"> | undefined;
@@ -11,11 +13,12 @@ const { data } = Astro.props;
 
 if (!data) return;
 
-const { randomGenres } = data.data;
+const { artists, randomGenres } = data.data;
 ---
 
 <Section heading="Music">
   <SpotifyGenresLede genres={randomGenres} />
+  <SpotifyMusicPlayer client:visible artists={artists as SpotifyArtist[]} />
 </Section>
 
 <script>

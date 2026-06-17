@@ -7,7 +7,9 @@ const EXCLUDED_GENRES = ["modern alternative rock", "modern rock", "alternative 
 
 // Picks the first genre not already in usedGenres, then marks it as used.
 function pickGenreNotUsed(genres: string[], usedGenres: string[], index = 0): string | undefined {
-  if (index >= genres.length) return undefined;
+  if (index >= genres.length) {
+    return undefined;
+  }
   const genre = genres[index];
   if (!usedGenres.includes(genre)) {
     usedGenres.push(genre);
@@ -51,7 +53,9 @@ export const spotify = defineCollection({
         const res = await fetch(`https://api.spotify.com/v1${path}`, {
           headers: { Authorization: `Bearer ${access_token}` },
         });
-        if (!res.ok) throw new Error(`Spotify API ${path} → ${res.status}`);
+        if (!res.ok) {
+          throw new Error(`Spotify API ${path} → ${res.status}`);
+        }
         return res.json();
       };
 
@@ -81,7 +85,9 @@ export const spotify = defineCollection({
       //    deprecated this endpoint for apps created after Nov 2024, so we swallow errors).
       await Promise.all(
         artists.map(async (artist) => {
-          if (!artist.top_track?.id) return;
+          if (!artist.top_track?.id) {
+            return;
+          }
           try {
             const features = await spotifyFetch(`/audio-features/${artist.top_track.id}`);
             (artist.top_track as unknown as Record<string, unknown>).features = features;
