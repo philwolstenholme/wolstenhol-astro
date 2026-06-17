@@ -1,4 +1,5 @@
 import { defineSound, ensureReady } from "@web-kits/audio";
+
 import { click, tap, pageEnter } from "../../public/patches/minimal";
 
 const playClick = defineSound(click);
@@ -21,9 +22,9 @@ const isMuteToggle = (el: Element) => !!el.closest("#mute-toggle");
 
 document.addEventListener(
   "pointerdown",
-  () => {
+  async () => {
     if (!ready)
-      ensureReady().then(() => {
+      await ensureReady().then(() => {
         ready = true;
       });
   },

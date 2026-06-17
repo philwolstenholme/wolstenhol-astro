@@ -1,6 +1,6 @@
-import type { JSX } from "preact";
-import clsx from "clsx";
 import slugify from "@sindresorhus/slugify";
+import clsx from "clsx";
+import type { JSX } from "preact";
 
 export interface HeadingProps extends JSX.HTMLAttributes<HTMLHeadingElement> {
   as: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";

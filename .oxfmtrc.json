@@ -1,7 +1,11 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": [],
+  "ignorePatterns": ["netlify.toml"],
   "tabWidth": 2,
   "useTabs": false,
-  "htmlWhitespaceSensitivity": "css"
+  "htmlWhitespaceSensitivity": "css",
+  "trailingComma": "all",
+  "sortTailwindcss": true,
+  "sortPackageJson": true,
+  "sortImports": true
 }

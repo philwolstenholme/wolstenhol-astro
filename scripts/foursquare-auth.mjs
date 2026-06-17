@@ -8,8 +8,8 @@
  * 4. Prints the token so you can add it to .env as FOURSQUARE_OAUTH_TOKEN
  */
 
-import http from "http";
 import { execFile } from "child_process";
+import http from "http";
 import { URL } from "url";
 
 const [, , CLIENT_ID, CLIENT_SECRET] = process.argv;

@@ -1,9 +1,9 @@
-import { githubStars } from "./content/githubStars";
+import { airtableReadingList } from "./content/airtableReadingList";
 import { devToPosts } from "./content/devToPosts";
 import { devToReadingList } from "./content/devToReadingList";
-import { airtableReadingList } from "./content/airtableReadingList";
-import { speaking } from "./content/speaking";
+import { githubStars } from "./content/githubStars";
 import { places } from "./content/places";
+import { speaking } from "./content/speaking";
 import { spotify } from "./content/spotify";
 
 export const collections = {

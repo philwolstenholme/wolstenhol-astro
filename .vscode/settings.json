@@ -1,18 +1,25 @@
 {
   "editor.defaultFormatter": "oxc.oxc-vscode",
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": "always",
-    "source.format.oxc": "always"
+    "source.fixAll.prettier": "never"
   },
   "prettier.documentSelectors": ["**/*.astro"],
   "[astro]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "always",
+      "source.fixAll.prettier": "always"
+    }
   },
   "[toml]": {
     "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
   "editor.formatOnPaste": true,
   "editor.formatOnType": true,
-  "oxc.typeAware": true
+  "oxc.typeAware": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  }
 }

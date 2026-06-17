@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "preact/hooks";
 import clsx from "clsx";
+import { useState, useEffect, useRef } from "preact/hooks";
 
 interface SpotifyImage {
   url: string;
@@ -189,7 +189,7 @@ function MusicCard({
       )}
 
       <div class="absolute bottom-0 left-0 z-10 block p-2 text-xs font-bold">
-        <div class="card-music__caption relative inline-block transform-gpu p-1 px-2 text-yellow-300 transition-transform duration-75 group-hocus:-translate-y-1">
+        <div class="card-music__caption group-hocus:-translate-y-1 relative inline-block transform-gpu p-1 px-2 text-yellow-300 transition-transform duration-75">
           <span class="relative z-10 text-black">{artist.name}</span>
         </div>
       </div>
@@ -329,7 +329,7 @@ export function SpotifyMusicPlayer({ artists }: Props) {
       >
         <span class="sr-only">Back</span>
         <svg
-          class="rotate-3 transform-gpu group-hocus:rotate-6"
+          class="group-hocus:rotate-6 rotate-3 transform-gpu"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 84.663887 42.437332"
           focusable="false"
@@ -352,7 +352,7 @@ export function SpotifyMusicPlayer({ artists }: Props) {
           ref={scrollerRef}
           role="list"
           aria-label="What I've been listening to"
-          class="relative flex snap-x snap-mandatory scroll-smooth space-x-5 overflow-x-auto overscroll-x-none"
+          class="relative flex snap-x snap-mandatory space-x-5 overflow-x-auto overscroll-x-none scroll-smooth"
           onScroll={() => scrollerRef.current?.classList.remove("scroller--no-interaction")}
           onMouseEnter={() => scrollerRef.current?.classList.remove("scroller--no-interaction")}
         >
@@ -397,7 +397,7 @@ export function SpotifyMusicPlayer({ artists }: Props) {
       >
         <span class="sr-only">Forward</span>
         <svg
-          class="-rotate-3 transform-gpu group-hocus:-rotate-6"
+          class="group-hocus:-rotate-6 -rotate-3 transform-gpu"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 84.663887 42.437332"
           focusable="false"
@@ -416,7 +416,7 @@ export function SpotifyMusicPlayer({ artists }: Props) {
           <span>There&rsquo;s more!</span>
           <button
             type="button"
-            class="ml-1 rounded bg-green-700 px-2 py-1 font-bold text-white shadow-hard transition-colors hocus:bg-green-600"
+            class="shadow-hard hocus:bg-green-600 ml-1 rounded bg-green-700 px-2 py-1 font-bold text-white transition-colors"
             onClick={scrollRight}
           >
             scroll this way <span aria-hidden="true">➜</span>
@@ -440,7 +440,7 @@ export function SpotifyMusicPlayer({ artists }: Props) {
         onEnded={() => setPlayingUrl(null)}
       />
       <iframe
-        class="absolute bottom-0 right-0 h-20 w-36"
+        class="absolute right-0 bottom-0 h-20 w-36"
         name="spotify-preview"
         title="Spotify preview"
         aria-hidden="true"

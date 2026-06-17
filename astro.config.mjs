@@ -1,8 +1,8 @@
+import netlify from "@astrojs/netlify";
+import preact from "@astrojs/preact";
+import tailwindcss from "@tailwindcss/vite";
 // @ts-check
 import { defineConfig, envField } from "astro/config";
-import tailwindcss from "@tailwindcss/vite";
-import preact from "@astrojs/preact";
-import netlify from "@astrojs/netlify";
 
 // https://astro.build/config
 export default defineConfig({
