@@ -78,6 +78,7 @@ const htmxTarget = htmxPartialPath
         hx-target={htmxTarget}
         hx-swap={htmxPartialPath ? "outerHTML" : undefined}
         hx-select={htmxTarget}
+        preload={htmxPartialPath ? "" : undefined}
       >
         <span class="rotate-3 inline-block group-active:scale-95 group-hover:underline transition-transform">
           Next
