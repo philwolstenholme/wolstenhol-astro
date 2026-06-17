@@ -258,9 +258,11 @@
   }
 }
 
-/* ─── Simple scroller ────────────────────────────────────────────────────── */
-
 .scroller-affordance {
   background: radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)) 0
     100%;
+}
+
+[x-cloak] {
+  display: none !important;
 }

@@ -18,7 +18,17 @@ export function SpotifyGenresLede({ genres }: { genres: Genre[] }) {
         }
         const g = byGenreName[part.value];
         return (
-          <mark data-genre-mark class="group cursor-help" tabIndex={0} title={g.artist}>
+          <mark
+            class="group cursor-help"
+            tabIndex={0}
+            title={g.artist}
+            {...{
+              "x-data": "{ open: false }",
+              "@blur": "open = false",
+              "@click":
+                "const p = $el.closest('p'); p && (p.classList.add('select-none'), setTimeout(() => p.classList.remove('select-none'), 1000)); open ? $el.blur() : void 0; open = !open",
+            }}
+          >
             {g.genre}
             <span class="hidden group-focus:inline"> ({g.artist})</span>
           </mark>

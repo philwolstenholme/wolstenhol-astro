@@ -20,23 +20,3 @@ const { artists, randomGenres } = data.data;
   <SpotifyGenresLede genres={randomGenres} />
   <SpotifyMusicPlayer client:visible artists={artists as SpotifyArtist[]} />
 </Section>
-
-<script>
-  document
-    .querySelectorAll<HTMLElement>("[data-genre-mark]")
-    .forEach((mark) => {
-      let open = false;
-      mark.addEventListener("click", () => {
-        const p = mark.closest("p");
-        if (p) {
-          p.classList.add("select-none");
-          setTimeout(() => p.classList.remove("select-none"), 1000);
-        }
-        if (open) mark.blur();
-        open = !open;
-      });
-      mark.addEventListener("blur", () => {
-        open = false;
-      });
-    });
-</script>

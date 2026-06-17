@@ -29,13 +29,14 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
   url: new URL(Astro.request.url),
   searchParam,
 });
-
-const focusExpr = `$event.target.id === 'paginated-grid-${searchParam}' && $focus.within($event.target).first()`;
 ---
 
-<div x-data x-on:htmx:after-swap={focusExpr}>
-  {
-    data && data.length > 0 ? (
+{
+  data && data.length > 0 ? (
+    <div
+      x-data
+      @htmx:after-swap={`$event.target.id === 'paginated-grid-${searchParam}' && $focus.within($event.target).first()`}
+    >
       <div id={`paginated-grid-${searchParam}`}>
         <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
           {data.map((item: any) => (
@@ -53,8 +54,8 @@ const focusExpr = `$event.target.id === 'paginated-grid-${searchParam}' && $focu
           pageUrl={pageUrl}
         />
       </div>
-    ) : (
-      <slot name="empty" />
-    )
-  }
-</div>
+    </div>
+  ) : (
+    <slot name="empty" />
+  )
+}
