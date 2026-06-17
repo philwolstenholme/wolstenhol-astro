@@ -1,20 +1,43 @@
 ---
 import { markdownToTxt } from "markdown-to-txt";
 import type { CollectionEntry } from "astro:content";
+import {
+  grungeWallSrc,
+  grungeWallSrcSet,
+  randomGrungeOpacity,
+} from "../../helpers/textures";
 
 const { item: post } = Astro.props as {
   item: CollectionEntry<"dev-to-posts">["data"];
 };
+
+// Same randomised grunge as the original's green blog cards. The overlay is
+// positioned inside an inner wrapper so the `<a>` itself stays unpositioned and
+// `expand-clickable-area`'s full-card click target keeps working.
+const grungeOpacity = randomGrungeOpacity();
 ---
 
 <li
-  class="expand-clickable-area bg-cover row-span-2 gap-0 grid grid-rows-subgrid shadow-hard border border-medium-dark rounded"
+  class="expand-clickable-area row-span-2 gap-0 grid grid-rows-subgrid shadow-hard border border-medium-dark rounded"
 >
   <a
     href={post.canonical_url}
-    class="row-span-1 text-white bg-medium rounded-t font-bold font-serif p-4"
+    class="row-span-1 text-white bg-medium rounded-t font-bold font-serif transition-colors hocus:bg-medium-dark"
   >
-    {post.title}
+    <span class="relative block overflow-hidden rounded-t p-4">
+      <img
+        src={grungeWallSrc}
+        srcset={grungeWallSrcSet}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        crossorigin="anonymous"
+        class="opacity-grunge pointer-events-none absolute inset-0 block h-full w-full object-cover mix-blend-multiply"
+        style={`--opacity: ${grungeOpacity}`}
+      />
+      <span class="relative">{post.title}</span>
+    </span>
   </a>
   <div class="row-span-1 p-4 border-t bg-medium/15 border-medium rounded-b">
     <div class="text-xs mb-2 text-gray-800">

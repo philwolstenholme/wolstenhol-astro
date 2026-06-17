@@ -1,5 +1,10 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import {
+  grungeWallSrc,
+  grungeWallSrcSet,
+  randomGrungeOpacity,
+} from "../../helpers/textures";
 
 const { item } = Astro.props;
 
@@ -10,11 +15,7 @@ const outerClass =
 
 // Each testimonial gets its own randomised grunge intensity, just like the
 // original site, so no two purple cards look quite the same.
-const grungeOpacity = Math.round((Math.random() / 1.5) * 100) / 100;
-const grungeSrc =
-  "https://wolstenhol.me/proxy/cloudinary/image/upload/c_fill,g_north,w_365,h_153,f_auto,q_70,fl_progressive/v1661284312/one-offs/white-grungy-wall-textured-background.jpg";
-const grungeSrcSet =
-  "https://wolstenhol.me/proxy/cloudinary/image/upload/c_fill,g_north,w_730,h_306,f_auto,q_70,fl_progressive/v1661284312/one-offs/white-grungy-wall-textured-background.jpg 2x";
+const grungeOpacity = randomGrungeOpacity();
 const imgClass =
   "object-cover aspect-none w-full h-full mix-blend-luminosity transition-opacity" +
   (hasHref ? " group-hocus:opacity-10" : "");
@@ -78,14 +79,14 @@ const containerClass = hasHref
     <li class={outerClass}>
       <figure class="stack grid-cols-[1fr] shadow-hard border border-purple-900 rounded bg-purple-700 text-white contain-content relative grid h-full">
         <img
-          src={grungeSrc}
-          srcset={grungeSrcSet}
+          src={grungeWallSrc}
+          srcset={grungeWallSrcSet}
           alt=""
           aria-hidden="true"
           loading="lazy"
           decoding="async"
           crossorigin="anonymous"
-          class="opacity-grunge pointer-events-none block h-full w-full object-cover mix-blend-multiply"
+          class="opacity-grunge pointer-events-none absolute inset-0 block h-full w-full object-cover mix-blend-multiply"
           style={`--opacity: ${grungeOpacity}`}
         />
         <div class="isolate flex flex-col justify-center space-y-3 p-4 text-center">
