@@ -12,8 +12,24 @@ const As = as;
 
   :root {
     --space: 1rem;
-    --space-md: calc(var(--space) * 2);
-    --content-max-width: theme(--container-5xl);
+    --space-md: 1.25rem;
+    --content-max-width: 100%;
+
+    @media (min-width: 640px) {
+      --content-max-width: 540px;
+    }
+
+    @media (min-width: 768px) {
+      --content-max-width: 720px;
+    }
+
+    @media (min-width: 1024px) {
+      --content-max-width: 960px;
+    }
+
+    @media (min-width: 1280px) {
+      --content-max-width: calc(72rem - 16px);
+    }
   }
 
   .constrain-content {
