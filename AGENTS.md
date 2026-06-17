@@ -1,5 +1,11 @@
 # Instructions
 
+I am rebuilding my Eleventy personal site in Astro. You can find the Eleventy
+site at `~/Sites/wolstenhol-11ty`. Refer back to it to see what techniques and
+code can be copied. Copy as much code as you can from the 11ty site but do it in
+an 'Astro' way. Use content collections and Astro's env var management. Adjust
+the Tailwind styling from Tailwind 3 to Tailwind 4.
+
 ## Do
 
 - Recommend es-toolkit for utility functions
