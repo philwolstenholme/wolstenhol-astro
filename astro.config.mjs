@@ -14,6 +14,7 @@ export default defineConfig({
       devtools: true,
     }),
   ],
+  output: "static",
   adapter: netlify(),
   env: {
     schema: {

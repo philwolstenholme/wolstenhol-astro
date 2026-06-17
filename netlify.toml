@@ -1,3 +1,8 @@
+[[headers]]
+  for = "/"
+  [headers.values]
+    Netlify-Vary = "query=githubStars|posts|readingList,header=Sec-CH-UA-Mobile|User-Agent,cookie=hideWipBanner"
+
 [[redirects]]
   from = "/proxy/cloudinary/*"
   to = "https://res.cloudinary.com/wolstenh/:splat"
