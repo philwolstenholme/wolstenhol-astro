@@ -46,7 +46,7 @@ if (Astro.response) {
     <Content>
       <div class="md:grid grid-cols-[fit-content(300px)_auto] gap-4">
         <img
-          class="rounded-full size-24 bg-yellow-300 block min-w-24 min-h-24"
+          class="rounded-full size-24 bg-yellow-300 block min-w-24 min-h-24 transition-transform duration-300 hover:-rotate-6 hover:scale-125 hover:transform-gpu"
           alt="Phil Wolstenholme (me!)"
           src="https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,f_auto,q_auto,w_96/v1545084898/avatar_egzcjk.png"
           srcset="https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,f_auto,q_auto,w_192/v1545084898/avatar_egzcjk.png 2x"
@@ -85,8 +85,9 @@ if (Astro.response) {
             I'm a lead frontend engineer at <a
               href="https://digitalblog.coop.co.uk">Co-op</a
             >. I have a wide range of skills, knowledge, and experience,
-            particularly focussed on accessibility and frontend web performance.
-            Outside of work I'm interested in science, the environment,
+            particularly focussed on <span class="highlight"
+              >accessibility and frontend web performance</span
+            >. Outside of work I'm interested in science, the environment,
             bouldering, bikes (everyday/utility), and open source software.
           </p>
           <ul class="space-x-2">
@@ -156,10 +157,19 @@ if (Astro.response) {
   >
     <Content class="space-y-2">
       <p>
-        © 1989-{new Date().getFullYear()} Phil Wolstenholme unless otherwise stated
-        (there might be the odd Creative Commons license image within articles)
+        © <span title="🎂">1989</span>-{new Date().getFullYear()} Phil Wolstenholme
+        unless otherwise stated (there might be the odd Creative Commons license image
+        within articles)
       </p>
       <p>Built with Astro, Tailwind, and Preact.</p>
+      <p>
+        <StyledTextLink
+          href="https://www.freepik.com/free-photo/white-grungy-wall-textured-background_15599830.htm"
+        >
+          [One of the grunge textures] Image by rawpixel.com
+        </StyledTextLink>
+        on Freepik
+      </p>
     </Content>
     <!-- two col grid on desktop -->
     <!-- copyright thing -->

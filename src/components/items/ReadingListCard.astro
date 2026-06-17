@@ -7,7 +7,7 @@ const { item: article } = Astro.props as {
 ---
 
 <li
-  class="expand-clickable-area row-span-2 grid grid-rows-subgrid p-4 font-serif bg-oc-yellow-2 bg-cover shadow border rounded"
+  class="expand-clickable-area row-span-2 grid grid-rows-subgrid p-4 font-serif bg-oc-yellow-2 bg-paper-grunge shadow-hard border border-gray-300 rounded transition-all duration-75 hover:scale-105 hover:bg-oc-yellow-3 hover:shadow-lg focus-within:scale-105 focus-within:bg-oc-yellow-3 focus-within:shadow-lg"
 >
   <a href={article.url} class="text-binding-dark font-bold row-span-1">
     {article.title}

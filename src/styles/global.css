@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Hover *and* focus in one go, matching the original wolstenhol.me site. A lot
+ * of the card interactions (lifting captions, fading talk thumbnails, swapping
+ * background colours) hang off this variant. */
+@custom-variant hocus (&:hover, &:focus);
+@custom-variant group-hocus (&:is(:where(.group):hover *), &:is(:where(.group):focus *));
+
 /* Make a custom fallback font based on the local Times New Roman */
 @font-face {
   font-family: "Roboto Slab-fallback";
@@ -75,6 +81,47 @@
     background-image: url("/graph-paper.svg");
     background-size: 12px;
   }
+
+  /* The reading-list "sticky notes" carry the subtle grunge tile blended over
+   * their yellow with `luminosity`, so it adds paper texture without tinting
+   * the colour — straight from the original site's `.reading-list-link`. */
+  .bg-paper-grunge {
+    background-image: url(https://wolstenhol.me/proxy/cloudinary/image/upload/c_crop,f_auto,h_200,w_200,q_auto:eco/v1473712910/subtle_grunge_ux3r0f.png);
+    background-blend-mode: luminosity;
+  }
+
+  /* The white grungy wall texture that sits over the purple testimonial cards
+   * on the original site. Used as a mix-blend-multiply <img> overlay so each
+   * card can have its own randomised grunge intensity via `--opacity`. */
+  .opacity-grunge {
+    opacity: var(--opacity, 0.3);
+  }
+
+  /* Highlighter-marker effect, ported wholesale from wolstenhol.me.
+   * https://max.hn/thoughts/how-to-create-a-highlighter-marker-effect-in-css */
+  mark,
+  .highlight,
+  .highlight-links a {
+    margin: -0.1em -0.4em;
+    padding: 0.1em 0.4em;
+    border-radius: 0.8em 0.3em;
+    background: transparent;
+    background-image: linear-gradient(
+      to right,
+      rgba(255, 225, 0, 0.1),
+      rgba(255, 225, 0, 0.7) 4%,
+      rgba(255, 225, 0, 0.4)
+    );
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+}
+
+/* Match the site's yellow text selection rather than the browser default. */
+::selection,
+::target-text {
+  background-color: var(--color-yellow-300);
+  color: black;
 }
 
 @theme {
@@ -85,6 +132,10 @@
   --color-medium-dark: #1e785a;
   --color-oc-yellow-2: #ffec99;
   --color-oc-yellow-3: #ffe066;
+
+  /* The offset, blur-less "hard" shadow used on every card on the original
+   * site. It's what gives the cards their slightly cut-out, sticker-y feel. */
+  --shadow-hard: 2px 2px 0 rgba(0, 0, 0, 0.15);
 
   @keyframes typewriter {
     from {
