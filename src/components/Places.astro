@@ -5,6 +5,7 @@ import Lede from "./Lede.astro";
 import PaginatedGrid from "./PaginatedGrid.astro";
 import PlacesCard from "./items/PlacesCard.astro";
 import { getItemsPerPage } from "../helpers/getItemsPerPage";
+import { sortBy } from "es-toolkit";
 
 const searchParam = "places";
 const anchor = "places";
@@ -15,10 +16,10 @@ const itemsPerPage = getItemsPerPage({
 });
 
 const placesCollection = await getCollection("places");
-const items = placesCollection.map((entry) => ({
-  id: entry.id,
-  ...entry.data,
-}));
+const items = sortBy(
+  placesCollection.map((entry) => ({ id: entry.id, ...entry.data })),
+  [(p) => (p.likedAt ? -new Date(p.likedAt).getTime() : Infinity)],
+);
 ---
 
 <Section heading="Places">
