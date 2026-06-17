@@ -29,3 +29,4 @@ the Tailwind styling from Tailwind 3 to Tailwind 4.
 ## Don't
 
 - Never recommend Lodash for utility functions
+- Don't commit or push without being explicitly asked to
