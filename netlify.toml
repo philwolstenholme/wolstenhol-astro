@@ -1,0 +1,28 @@
+[[redirects]]
+  from = "/proxy/cloudinary/*"
+  to = "https://res.cloudinary.com/wolstenh/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/proxy/jsdelivr/*"
+  to = "https://cdn.jsdelivr.net/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/proxy/gstatic/*"
+  to = "https://t2.gstatic.com/:splat"
+  status = 200
+  
+[[plugins]]
+  package = "netlify-plugin-inline-critical-css"
+  [plugins.inputs]
+    dimensions = [
+      { width = 640, height = 1136 },
+      { width = 768, height = 1280 },
+      { width = 1024, height = 600 },
+      { width = 1280, height = 800 },
+      { width = 1536, height = 2048 }
+    ]
+    # Whether to remove the inlined styles from any stylesheet referenced in the HTML.
+    # Revisit when I have more than one page. Removing the critical CSS per page results in a unique async loaded CSS file for every page, meaning you can’t rely on cache across multiple pages.
+    extract = false

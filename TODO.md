@@ -69,3 +69,9 @@
 - [ ] Textarea
 - [ ] Button
 - [ ] Form validation
+
+## Netlify
+
+- [ ] Contact form handler
+- [ ] What to do about things like `/api/fake-edge-messages-endpoint` - they are referened in blog post
+- [ ] Setup proxies

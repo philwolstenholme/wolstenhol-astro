@@ -24,6 +24,7 @@ the Tailwind styling from Tailwind 3 to Tailwind 4.
 - When editing a .astro file keep all logic in the frontmatter script tag, and do not remove the `---` characters.
 - Delete any Playwright screenshots after using them to check your work. Do not commit them.
 - Prefer using braces for all if statements, even if they are one line.
+- Avoid merge commits. If you need to merge, rebase instead or cherry-pick
 
 ## Don't
 
