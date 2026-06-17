@@ -1,4 +1,5 @@
-import { defineCollection, z } from "astro:content";
+import { z } from "astro/zod";
+import { defineCollection } from "astro:content";
 import { GITHUB_PAT } from "astro:env/server";
 import emojiRegex from "emoji-regex";
 import { Octokit } from "octokit";

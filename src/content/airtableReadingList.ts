@@ -1,4 +1,5 @@
-import { defineCollection, z } from "astro:content";
+import { z } from "astro/zod";
+import { defineCollection } from "astro:content";
 import { AIRTABLE_KEY } from "astro:env/server";
 import metascraperFactory from "metascraper";
 import metascraperDescription from "metascraper-description";

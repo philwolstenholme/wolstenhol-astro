@@ -1,4 +1,5 @@
-import { defineCollection, z } from "astro:content";
+import { z } from "astro/zod";
+import { defineCollection } from "astro:content";
 import { DEV_TO_API_KEY } from "astro:env/server";
 
 import { devtoArticleSchema } from "./schemas/devtoArticle";

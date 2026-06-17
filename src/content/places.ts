@@ -1,6 +1,7 @@
 import { createHmac } from "crypto";
 
-import { defineCollection, z } from "astro:content";
+import { z } from "astro/zod";
+import { defineCollection } from "astro:content";
 import { GOOGLE_MAPS_KEY, GOOGLE_MAPS_SECRET, FOURSQUARE_OAUTH_TOKEN } from "astro:env/server";
 import { sampleSize } from "es-toolkit";
 
@@ -67,7 +68,7 @@ export const places = defineCollection({
     lng: z.number(),
     address: z.string(),
     city: z.string(),
-    url: z.string().url().optional(),
+    url: z.url().optional(),
     tip: z.string().nullable().optional(),
     likedAt: z.string().nullable().optional(),
     mapUrl: z.string().nullable(),
