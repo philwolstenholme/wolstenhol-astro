@@ -1,0 +1,75 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Section } from "./Section";
+import Lede from "./Lede.astro";
+import InstagramCard from "./items/InstagramCard.astro";
+
+interface Props {
+  collection: CollectionEntry<"instagram">[];
+}
+
+const { collection } = Astro.props;
+
+if (!collection || collection.length === 0) {
+  return;
+}
+
+// Astro re-sorts collection entries by ID — sort newest-first here instead.
+const posts = [...collection].sort((a, b) => b.data.takenAt - a.data.takenAt);
+---
+
+<Section heading="Photos">
+  <Lede>Photos and videos from Instagram.</Lede>
+
+  <div
+    class="relative mt-12"
+    x-data="{
+      scrollLeft: 0,
+      get overflowing() {
+        const el = this.$refs.list;
+        return el ? this.scrollLeft < el.scrollWidth - el.clientWidth - 1 : false;
+      }
+    }"
+  >
+    <div class="relative overflow-x-hidden">
+      <ul
+        x-ref="list"
+        role="list"
+        aria-label="Instagram posts"
+        class="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 scrollbar-none [&::-webkit-scrollbar]:hidden"
+        x-on:scroll.passive="scrollLeft = $el.scrollLeft"
+      >
+        {
+          posts.map((entry) => (
+            <li class="snap-start shrink-0 w-91.25">
+              <InstagramCard post={entry.data} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="flex h-10 justify-end mt-2">
+      <div
+        x-cloak
+        x-show="overflowing"
+        class="mt-1 ml-3 transform-gpu rounded text-sm font-bold text-gray-600 transition-all duration-300"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 translate-y-4"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 translate-y-4"
+      >
+        <span>There&rsquo;s more!</span>
+        <button
+          type="button"
+          class="ml-1 rounded px-2 py-1 font-bold text-white shadow-(--shadow-hard) transition-colors bg-instagram hocus:bg-instagram-dark"
+          x-on:click="$refs.list.scrollBy({ left: 365 + 20, behavior: 'smooth' })"
+        >
+          scroll this way <span aria-hidden="true">➜</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</Section>

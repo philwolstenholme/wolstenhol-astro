@@ -1,0 +1,128 @@
+---
+import type { CollectionEntry } from "astro:content";
+import clsx from "clsx";
+
+type Post = CollectionEntry<"instagram">["data"];
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { isParty } = post;
+
+// Build Alpine event handler strings server-side (matches the 11ty Vue computed approach).
+const onMouseenter = post.isVideo ? "$refs.video && $refs.video.pause()" : null;
+const onMouseenterOnce = isParty ? "fireConfetti()" : null;
+const onMouseleave = post.isVideo ? "$refs.video && $refs.video.play()" : null;
+---
+
+<figure
+  tabindex="0"
+  x-data="instagramCard"
+  class={clsx(
+    "group relative flex aspect-square select-none overflow-hidden rounded bg-linear-to-t from-black to-gray-900 shadow-(--shadow-hard) contain-content",
+    isParty && "card-instagram--party",
+  )}
+  x-on:mouseenter={onMouseenter}
+  x-on:mouseenter.once={onMouseenterOnce}
+  x-on:mouseleave={onMouseleave}
+  x-on:focus={onMouseenter}
+  x-on:focus.once={onMouseenterOnce}
+  x-on:blur={onMouseleave}
+  data-lightbox-image={!post.isVideo ? post.cloudinaryUrl : undefined}
+  x-init={!post.isVideo ? "$root.setAttribute('role', 'button')" : undefined}
+  x-on:click.prevent={!post.isVideo
+    ? "if (useLightbox) $root.dispatchEvent(new CustomEvent('pw-lightbox-open', { bubbles: true }))"
+    : undefined}
+  x-on:keydown.enter.prevent={!post.isVideo ? "$root.click()" : undefined}
+  x-on:keydown.space={!post.isVideo ? "$root.click()" : undefined}
+>
+  <div class="flex flex-col justify-center">
+    {
+      post.isVideo && post.videoUrl ? (
+        <video
+          x-ref="video"
+          class="inset-0 h-full w-full object-cover transition-opacity group-hocus:opacity-50"
+          poster={post.cloudinaryUrl}
+          muted
+          loop
+          autoplay
+          playsinline
+          disablepictureinpicture
+          disableRemotePlayback
+          preload="none"
+        >
+          <source src={post.videoUrl} />
+        </video>
+      ) : (
+        <img
+          src={post.cloudinaryUrl}
+          srcset={post.cloudinarySrcset}
+          alt={post.accessibilityCaption ?? ""}
+          width="365"
+          height="365"
+          sizes="365px"
+          class="card-instagram__img w-full transition-opacity group-hocus:opacity-50"
+          loading="lazy"
+          decoding="async"
+        />
+      )
+    }
+
+    <figcaption
+      class="pointer-events-none absolute bottom-0 z-1 max-h-full w-full translate-y-full transform-gpu space-y-3 bg-linear-to-t from-black p-5 text-xs font-bold text-white transition-transform group-hocus:translate-y-0"
+    >
+      {
+        (post.likeCount > 0 || post.commentCount > 0 || post.locationName) && (
+          <div class="space-y-2">
+            {(post.likeCount > 0 || post.commentCount > 0) && (
+              <p>
+                {post.likeCount > 0 && (
+                  <>
+                    <span aria-hidden="true" class="text-red-500">
+                      ♥
+                    </span>
+                    <span class="sr-only">Likes: </span>
+                    <span class="mr-2 inline-block">{post.likeCount}</span>
+                  </>
+                )}
+                {post.commentCount > 0 && (
+                  <>
+                    <span aria-hidden="true">💬</span>
+                    <span class="sr-only">Comments: </span>
+                    <span class="inline-block">{post.commentCount}</span>
+                  </>
+                )}
+              </p>
+            )}
+            {post.locationName && (
+              <p>
+                <span aria-hidden="true" class="mr-1">
+                  📍
+                </span>
+                <span class="sr-only">Tagged location: </span>
+                <span>{post.locationName}</span>
+              </p>
+            )}
+          </div>
+        )
+      }
+      {
+        post.caption && (
+          <p class="card-instagram__caption-text">{post.caption}</p>
+        )
+      }
+      {
+        isParty && (
+          <span
+            class="absolute -top-8 right-8 text-6xl sm:hidden lg:inline-block lg:text-4xl xl:text-6xl"
+            aria-hidden="true"
+          >
+            🥳
+          </span>
+        )
+      }
+    </figcaption>
+  </div>
+</figure>

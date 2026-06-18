@@ -2,6 +2,7 @@ import { airtableReadingList } from "./content/airtableReadingList";
 import { devToPosts } from "./content/devToPosts";
 import { devToReadingList } from "./content/devToReadingList";
 import { githubStars } from "./content/githubStars";
+import { instagram } from "./content/instagram";
 import { places } from "./content/places";
 import { speaking } from "./content/speaking";
 import { spotify } from "./content/spotify";
@@ -14,4 +15,5 @@ export const collections = {
   speaking,
   places,
   spotify,
+  instagram,
 };

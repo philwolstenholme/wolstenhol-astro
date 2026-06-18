@@ -125,7 +125,7 @@ if (Astro.response) {
     <script>
       import "../assets/alpine.ts";
     </script>
-    <script type="speculationrules">
+    <script is:inline type="speculationrules">
       {
         "prerender": [
           {
@@ -150,5 +150,9 @@ if (Astro.response) {
     min-height: 100vh;
     display: grid;
     grid-template-rows: auto 1fr auto;
+    /* Without an explicit column, the auto implicit column expands to the
+       max-content size of any horizontal scroller. minmax(0, 1fr) caps it
+       at the viewport width by allowing the track to shrink to 0. */
+    grid-template-columns: minmax(0, 1fr);
   }
 </style>
