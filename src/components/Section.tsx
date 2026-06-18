@@ -1,10 +1,9 @@
 import clsx from "clsx";
-import type { JSX } from "preact";
-import type { ComponentChildren } from "preact";
+import type { JSX, ComponentChildren, HTMLAttributes } from "preact";
 
 import { Heading } from "./Heading";
 
-export interface SectionProps extends JSX.HTMLAttributes<HTMLElement> {
+export interface SectionProps extends HTMLAttributes<HTMLElement> {
   class?: string;
   children?: ComponentChildren;
   heading?: string;

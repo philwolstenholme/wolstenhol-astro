@@ -1,3 +1,5 @@
+declare module "@alpinejs/focus";
+
 // Extend Astro's JSX attribute types to include HTMX and preload attributes
 declare namespace astroHTML.JSX {
   interface HTMLAttributes {
