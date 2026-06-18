@@ -10,27 +10,32 @@ export function SpotifyGenresLede({ genres }: { genres: Genre[] }) {
   const parts = listFormatter.formatToParts(genres.map((g) => g.genre));
 
   return (
-    <p class="mt-3 max-w-3xl font-serif leading-relaxed tracking-widest">
+    <p class="mt-3 max-w-3xl font-serif leading-relaxed tracking-widest select-none">
       According to the Spotify API, I've been listening to a bit of{" "}
       {parts.map((part) => {
         if (part.type === "literal") {
           return part.value;
         }
+
         const g = byGenreName[part.value];
+
         return (
           <mark
-            class="group cursor-help"
+            class="cursor-help"
             tabIndex={0}
             title={g.artist}
             {...{
               "x-data": "{ open: false }",
+              "@focus": "open = true; $dispatch('play-sound', 'slide')",
               "@blur": "open = false",
-              "@click":
-                "const p = $el.closest('p'); p && (p.classList.add('select-none'), setTimeout(() => p.classList.remove('select-none'), 1000)); open ? $el.blur() : void 0; open = !open",
+              "@click": "open = !open; $dispatch('play-sound', 'slide')",
             }}
           >
             {g.genre}
-            <span class="hidden group-focus:inline"> ({g.artist})</span>
+            <span x-show="open" x-cloak>
+              {" "}
+              ({g.artist})
+            </span>
           </mark>
         );
       })}{" "}
