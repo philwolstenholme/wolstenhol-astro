@@ -1,17 +1,16 @@
 import { defineSound, ensureReady } from "@web-kits/audio";
 
-import { click, tap, pageEnter } from "../../public/patches/minimal";
+import { click, tap, pageEnter, slide } from "../../public/patches/minimal";
 
 const playClick = defineSound(click);
 const playTap = defineSound(tap);
 const playPageEnter = defineSound(pageEnter);
+const playSlide = defineSound(slide);
 
 // pageEnter has a ~58ms envelope (attack 3ms + decay 40ms + release 15ms).
 // Speculation-rules prerendering makes navigations near-instant, so we delay
 // just enough for the sound to audibly begin before the page swaps.
 const NAV_SOUND_DELAY_MS = 60;
-
-const PAGINATION_SELECTOR = ".pagination__button";
 
 let ready = false;
 
@@ -47,7 +46,7 @@ document.addEventListener(
     const anchor = target.closest("a");
     if (!anchor) return;
 
-    const isPagination = !!anchor.closest(PAGINATION_SELECTOR);
+    const isHtmx = !!anchor.closest("[hx-get]");
     const href = anchor.getAttribute("href");
 
     // Skip modifier-key combos, new-tab links, non-navigating hrefs.
@@ -62,8 +61,8 @@ document.addEventListener(
       !href.startsWith("mailto:") &&
       !href.startsWith("tel:");
 
-    if (isPagination) {
-      // HTMX handles pagination navigation; just play the sound without redirecting.
+    if (isHtmx) {
+      // HTMX handles the navigation; just play a sound without redirecting.
       playTap();
     } else if (isPlainNav) {
       e.preventDefault();
@@ -77,3 +76,10 @@ document.addEventListener(
   },
   true,
 );
+
+const sounds: Record<string, () => void> = { slide: playSlide };
+
+document.addEventListener("play-sound", (e: Event) => {
+  if (!ready || isMuted()) return;
+  sounds[(e as CustomEvent<string>).detail]?.();
+});

@@ -4,6 +4,15 @@
 
 <button
   id="mute-toggle"
+  x-data="{
+    muted: false,
+    init() { this.muted = localStorage.getItem('audioMuted') === 'true'; },
+    toggle() { this.muted = !this.muted; localStorage.setItem('audioMuted', String(this.muted)); }
+  }"
+  x-bind:aria-pressed="String(muted)"
+  x-bind:aria-label="muted ? 'Unmute sounds' : 'Mute sounds'"
+  x-bind:title="muted ? 'Unmute sounds' : 'Mute sounds'"
+  x-on:click="toggle()"
   aria-pressed="false"
   aria-label="Mute sounds"
   title="Mute sounds"
@@ -11,7 +20,7 @@
 >
   <!-- SpeakerHigh — shown when unmuted -->
   <svg
-    id="mute-toggle__icon--on"
+    x-show="!muted"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 256 256"
     fill="currentColor"
@@ -25,39 +34,17 @@
   </svg>
   <!-- SpeakerX — shown when muted -->
   <svg
-    id="mute-toggle__icon--off"
+    x-show="muted"
+    x-cloak
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 256 256"
     fill="currentColor"
     width="24"
     height="24"
     aria-hidden="true"
-    class="hidden"
   >
     <path
       d="M155.51,24.81a8,8,0,0,0-8.42.88L77.25,80H32A16,16,0,0,0,16,96v64a16,16,0,0,0,16,16H77.25l69.84,54.31A8,8,0,0,0,160,224V32A8,8,0,0,0,155.51,24.81ZM32,96H72v64H32ZM144,207.64,88,164.09V91.91l56-43.55Zm101.66-61.3a8,8,0,0,1-11.32,11.32L216,139.31l-18.34,18.35a8,8,0,0,1-11.32-11.32L204.69,128l-18.35-18.34a8,8,0,0,1,11.32-11.32L216,116.69l18.34-18.35a8,8,0,0,1,11.32,11.32L227.31,128Z"
     ></path>
   </svg>
 </button>
-
-<script>
-  const btn = document.getElementById("mute-toggle")!;
-  const iconOn = document.getElementById("mute-toggle__icon--on")!;
-  const iconOff = document.getElementById("mute-toggle__icon--off")!;
-
-  function applyMuteState(muted: boolean) {
-    iconOn.classList.toggle("hidden", muted);
-    iconOff.classList.toggle("hidden", !muted);
-    btn.setAttribute("aria-pressed", String(muted));
-    btn.setAttribute("aria-label", muted ? "Unmute sounds" : "Mute sounds");
-    btn.setAttribute("title", muted ? "Unmute sounds" : "Mute sounds");
-  }
-
-  applyMuteState(localStorage.getItem("audioMuted") === "true");
-
-  btn.addEventListener("click", () => {
-    const nowMuted = !(localStorage.getItem("audioMuted") === "true");
-    localStorage.setItem("audioMuted", String(nowMuted));
-    applyMuteState(nowMuted);
-  });
-</script>
