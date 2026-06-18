@@ -187,6 +187,8 @@
   --color-foursquare-dark: #ce225a;
   --color-spotify: #1db954;
   --color-spotify-dark: #1aa64b;
+  --color-instagram: #e1306c;
+  --color-instagram-dark: #c13584;
 
   /* The offset, blur-less "hard" shadow used on every card on the original
    * site. It's what gives the cards their slightly cut-out, sticker-y feel. */
@@ -200,6 +202,15 @@
       width: 100%;
     }
   }
+}
+
+/* ─── Instagram card ─────────────────────────────────────────────────────── */
+
+.card-instagram__caption-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* ─── Music card ─────────────────────────────────────────────────────────── */
