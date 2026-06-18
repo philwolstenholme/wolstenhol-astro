@@ -1,7 +1,12 @@
 ---
 import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
 import { Section } from "./Section";
+
+interface Props {
+  collection?: CollectionEntry<"dev-to-posts">[];
+}
 import Lede from "./Lede.astro";
 import { StyledTextLink } from "./StyledTextLink";
 import PaginatedGrid from "./PaginatedGrid.astro";
