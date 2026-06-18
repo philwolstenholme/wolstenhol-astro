@@ -15,6 +15,7 @@
     "format:check": "oxfmt --check . && prettier --check \"src/**/*.astro\""
   },
   "dependencies": {
+    "@aduptive/instagram-scraper": "^1.0.3",
     "@alpinejs/focus": "^3.15.12",
     "@astrojs/netlify": "^7.0.13",
     "@astrojs/preact": "^5.1.5",
