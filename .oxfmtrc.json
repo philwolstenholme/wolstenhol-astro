@@ -7,5 +7,6 @@
   "trailingComma": "all",
   "sortTailwindcss": true,
   "sortPackageJson": true,
-  "sortImports": true
+  "sortImports": true,
+  "ignoreFiles": ["netlify.toml"]
 }

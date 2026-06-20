@@ -2,8 +2,7 @@
   "recommendations": [
     "astro-build.astro-vscode",
     "oxc.oxc-vscode",
-    "esbenp.prettier-vscode",
-    "tamasfe.even-better-toml"
+    "esbenp.prettier-vscode"
   ],
   "unwantedRecommendations": []
 }
