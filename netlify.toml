@@ -1,22 +1,22 @@
 [[headers]]
-for = "/"
-[headers.values]
-Netlify-Vary = "query=githubStars|posts|readingList,header=Sec-CH-UA-Mobile|User-Agent,cookie=hideWipBanner"
+  for = "/"
+  [headers.values]
+    Netlify-Vary = "query=githubStars|posts|readingList,header=Sec-CH-UA-Mobile|User-Agent,cookie=hideWipBanner"
 
 [[redirects]]
-from = "/proxy/cloudinary/*"
-to = "https://res.cloudinary.com/wolstenh/:splat"
-status = 200
+  from = "/proxy/cloudinary/*"
+  to = "https://res.cloudinary.com/wolstenh/:splat"
+  status = 200
 
 [[redirects]]
-from = "/proxy/jsdelivr/*"
-to = "https://cdn.jsdelivr.net/:splat"
-status = 200
+  from = "/proxy/jsdelivr/*"
+  to = "https://cdn.jsdelivr.net/:splat"
+  status = 200
 
 [[redirects]]
-from = "/proxy/gstatic/*"
-to = "https://t2.gstatic.com/:splat"
-status = 200
+  from = "/proxy/gstatic/*"
+  to = "https://t2.gstatic.com/:splat"
+  status = 200 
 
 # [[plugins]]
 #   package = "netlify-plugin-critical-css"
