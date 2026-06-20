@@ -8,7 +8,7 @@
  * of the card interactions (lifting captions, fading talk thumbnails, swapping
  * background colours) hang off this variant. */
 @custom-variant hocus (&:hover, &:focus);
-@custom-variant group-hocus (&:is(:where(.group):hover *), &:is(:where(.group):focus *));
+@plugin "./group-hocus-plugin.js";
 
 /* Make a custom fallback font based on the local Times New Roman */
 @font-face {

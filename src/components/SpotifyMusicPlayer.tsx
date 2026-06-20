@@ -23,6 +23,8 @@ export interface SpotifyArtist {
   top_track: SpotifyTrack | null;
 }
 
+const DIGIT_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+
 function cloudinaryUrl(spotifyUrl: string, size = 145): string {
   return spotifyUrl.replace(
     "https://i.scdn.co/image/",
@@ -38,6 +40,7 @@ interface MusicCardProps {
   progress: number;
   onPlay: () => void;
   onStop: () => void;
+  keyHint?: string;
 }
 
 function MusicCard({
@@ -48,6 +51,7 @@ function MusicCard({
   progress,
   onPlay,
   onStop,
+  keyHint,
 }: MusicCardProps) {
   const playButtonRef = useRef<HTMLAnchorElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -94,11 +98,20 @@ function MusicCard({
         tempoAnimationDuration ? { animationDuration: `${tempoAnimationDuration}s` } : undefined
       }
       class={clsx(
-        "card-music contain-content group relative flex w-full select-none overflow-hidden rounded bg-linear-to-b from-spotify to-black shadow-hard",
+        "card-music contain-content group/card relative flex w-full select-none overflow-hidden rounded bg-linear-to-b from-spotify to-black shadow-hard",
         isPlaying && "card-music--playing",
       )}
     >
       <h3 class="sr-only">{artist.name}</h3>
+
+      {keyHint && (
+        <div
+          aria-hidden="true"
+          class="absolute top-2 right-2 z-10 flex h-5 w-5 items-center justify-center rounded border border-yellow-300/60 text-xs font-bold text-yellow-300 opacity-0 transition-opacity duration-150 group-[.keyboard-active]/player:opacity-100"
+        >
+          {keyHint}
+        </div>
+      )}
 
       <figure>
         <img
@@ -189,7 +202,7 @@ function MusicCard({
       )}
 
       <div class="absolute bottom-0 left-0 z-10 block p-2 text-xs font-bold">
-        <div class="card-music__caption group-hocus:-translate-y-1 relative inline-block transform-gpu p-1 px-2 text-yellow-300 transition-transform duration-75">
+        <div class="card-music__caption group-hocus/card:-translate-y-1 relative inline-block transform-gpu p-1 px-2 text-yellow-300 transition-transform duration-75">
           <span class="relative z-10 text-black">{artist.name}</span>
         </div>
       </div>
@@ -220,6 +233,11 @@ export function SpotifyMusicPlayer({ artists }: Props) {
   const scrollerRef = useRef<HTMLUListElement>(null);
   const scrollAmountRef = useRef(0);
   const [overflowing, setOverflowing] = useState({ left: false, right: true });
+  const [isKeyboardActive, setIsKeyboardActive] = useState(false);
+  const playingUrlRef = useRef(playingUrl);
+  useEffect(() => {
+    playingUrlRef.current = playingUrl;
+  }, [playingUrl]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -238,13 +256,35 @@ export function SpotifyMusicPlayer({ artists }: Props) {
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && playingUrl) {
+      if (e.key === "Escape" && playingUrlRef.current) {
         setPlayingUrl(null);
       }
     };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, [playingUrl]);
+  }, []);
+
+  useEffect(() => {
+    if (!isKeyboardActive) return;
+    const handler = (e: KeyboardEvent) => {
+      const digit = DIGIT_KEYS.indexOf(e.key);
+      if (digit === -1) return;
+      const artist = artists[digit];
+      if (!artist?.top_track?.preview_url) return;
+      const url = artist.top_track.preview_url;
+      if (playingUrlRef.current === url) {
+        const audio = audioRef.current;
+        if (audio) {
+          audio.currentTime = 0;
+          audio.play().catch(console.error);
+        }
+      } else {
+        setPlayingUrl(url);
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [isKeyboardActive, artists]);
 
   // ── Scroller: overflow detection + initial-scroll correction ─────────────
   // Matches PwSimpleScroller.js exactly.
@@ -316,7 +356,21 @@ export function SpotifyMusicPlayer({ artists }: Props) {
     "M38.1641.04794c-1.64041.13229-2.275409.58208-3.09562 2.11666-.582078 1.08479-.661458 1.48167-.529169 2.72521.3175 2.54 2.248959 4.97417 5.053539 6.35 1.93146.89958 2.06375.92604 5.95313 1.05833 3.28083.10584 3.86291.18521 3.30729.4498-1.13771.52916-4.25979 1.16416-8.86354 1.82562-2.06375.29104-5.31813.89958-7.14375 1.32292a67.997917 67.997917 0 01-4.974169 1.00541c-.740831.10584-1.87854.37042-5.21229 1.21709a828.41042 828.41042 0 01-9.921881 2.38125 25.664583 25.664583 0 00-2.645829.79375 16.66875 16.66875 0 01-2.43416.66146c-.63501.10583-1.19063.26458-1.29646.42333-.0794.13229-.423341.23812-.76729.23812-.34396 0-.687921.10584-.79376.26459-.0794.10583-.529161.3175-1.005411.39687-1.402289.3175-2.804589 1.13771-3.174999 1.93146-.21167.39687-.44979 1.50813-.52917 2.48708-.18521 1.77271-.18521 1.79917.97896 3.59834 1.40229 2.19604 2.169579 2.77812 4.392079 3.36021a12.435417 12.435417 0 007.27604-.52917 263.8425 263.8425 0 0122.754171-5.42396 134.14375 134.14375 0 0110.583329-1.98437 105.80687 105.80687 0 005.08-.79375l3.175-.52917c3.04271-.60854 3.83646-.47625 2.8575.50271a12.329583 12.329583 0 01-1.98437 2.54 11.1125 11.1125 0 00-1.5875 1.93145c0 .1323-.37042.97896-.82021 1.85209-.97896 1.93146-1.32292 3.04271-1.05833 3.22792.13229.0529.29104.5027.39687.95249.0794.4498.58209 1.29646 1.08479 1.85209.52917.58208.92605 1.13771.92605 1.24354 0 .26458 2.27541 1.95792 3.38666 2.54 1.48167.79375 3.62479.37042 4.89479-.9525a1.0583333 1.0583333 0 011.13771-.3175c.66146.18521 2.24896-.84667 4.36563-2.83104.97896-.89959 1.40229-1.27 4.47146-3.75709 3.28083-2.64583 7.14375-6.93208 8.04333-8.91645a11.377083 11.377083 0 01.68792-1.19063c.26458-.44979.635-1.08479.79375-1.45521.47625-1.16416.89958-1.95791 1.37583-2.69875.26458-.37041.47625-1.00541.47625-1.34937 0-.37042.10583-.76729.26458-.84667.13229-.0794.37042-.58208.50271-1.08479.21167-.76729.15875-1.24354-.3175-2.43417-1.16416-3.12208-2.77812-4.86833-6.40291-6.93208-5.47688-3.12208-8.99584-4.52438-12.8323-5.15938l-3.0427-.52916-3.57188-.52917a233.33604 233.33604 0 01-5.95312-.635C50.2291.15377 40.01619-.11082 38.1641.04793";
 
   return (
-    <div class="relative mt-12">
+    <div
+      class={clsx("group/player relative mt-12", isKeyboardActive && "keyboard-active")}
+      onMouseEnter={() => setIsKeyboardActive(true)}
+      onMouseLeave={(e) => {
+        if (!e.currentTarget.contains(document.activeElement)) {
+          setIsKeyboardActive(false);
+        }
+      }}
+      onFocus={() => setIsKeyboardActive(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+          setIsKeyboardActive(false);
+        }
+      }}
+    >
       <button
         type="button"
         inert={!overflowing.left ? true : undefined}
@@ -371,6 +425,7 @@ export function SpotifyMusicPlayer({ artists }: Props) {
                   }
                 }}
                 onStop={() => setPlayingUrl(null)}
+                keyHint={DIGIT_KEYS[i]}
               />
             </li>
           ))}
@@ -430,8 +485,11 @@ export function SpotifyMusicPlayer({ artists }: Props) {
       </p>
       <p class="mt-2 pb-0.5 text-xs opacity-90">
         Press the pause icon or the{" "}
-        <kbd class="rounded border border-gray-300 bg-white p-0.5">esc</kbd> key to stop the
-        previews.
+        <kbd class="rounded border border-gray-300 bg-white p-0.5">esc</kbd> key to stop. Hover or
+        focus this section, then press{" "}
+        <kbd class="rounded border border-gray-300 bg-white p-0.5">1</kbd>–
+        <kbd class="rounded border border-gray-300 bg-white p-0.5">9</kbd> or{" "}
+        <kbd class="rounded border border-gray-300 bg-white p-0.5">0</kbd> to play each artist.
       </p>
       <audio
         ref={audioRef}
