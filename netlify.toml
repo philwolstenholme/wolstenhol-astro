@@ -14,7 +14,7 @@
   status = 200
   
 [[plugins]]
-  package = "netlify-plugin-inline-critical-css"
+  package = "netlify-plugin-critical-css"
   [plugins.inputs]
     dimensions = [
       { width = 640, height = 1136 },
