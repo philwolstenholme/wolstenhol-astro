@@ -46,6 +46,7 @@
     "nano-staged": "^1.0.2",
     "netlify-cli": "^26.1.0",
     "netlify-plugin-critical-css": "^1.0.4",
+    "netlify-plugin-inline-critical-css": "^2.0.0",
     "oxfmt": "^0.55.0",
     "oxlint": "^1.70.0",
     "oxlint-tsgolint": "^0.23.0",
