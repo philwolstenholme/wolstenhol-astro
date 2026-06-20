@@ -1,31 +1,31 @@
 [[headers]]
-  for = "/"
-  [headers.values]
-    Netlify-Vary = "query=githubStars|posts|readingList,header=Sec-CH-UA-Mobile|User-Agent,cookie=hideWipBanner"
+for = "/"
+[headers.values]
+Netlify-Vary = "query=githubStars|posts|readingList,header=Sec-CH-UA-Mobile|User-Agent,cookie=hideWipBanner"
 
 [[redirects]]
-  from = "/proxy/cloudinary/*"
-  to = "https://res.cloudinary.com/wolstenh/:splat"
-  status = 200
+from = "/proxy/cloudinary/*"
+to = "https://res.cloudinary.com/wolstenh/:splat"
+status = 200
 
 [[redirects]]
-  from = "/proxy/jsdelivr/*"
-  to = "https://cdn.jsdelivr.net/:splat"
-  status = 200
+from = "/proxy/jsdelivr/*"
+to = "https://cdn.jsdelivr.net/:splat"
+status = 200
 
 [[redirects]]
-  from = "/proxy/gstatic/*"
-  to = "https://t2.gstatic.com/:splat"
-  status = 200
-  
-[[plugins]]
-  package = "netlify-plugin-critical-css"
-  [plugins.inputs]
-    base = "dist"
-    dimensions = [
-      { width = 640, height = 1136 },
-      { width = 768, height = 1280 },
-      { width = 1024, height = 600 },
-      { width = 1280, height = 800 },
-      { width = 1536, height = 2048 }
-    ]
+from = "/proxy/gstatic/*"
+to = "https://t2.gstatic.com/:splat"
+status = 200
+
+# [[plugins]]
+#   package = "netlify-plugin-critical-css"
+#   [plugins.inputs]
+#     base = "dist"
+#     dimensions = [
+#       { width = 640, height = 1136 },
+#       { width = 768, height = 1280 },
+#       { width = 1024, height = 600 },
+#       { width = 1280, height = 800 },
+#       { width = 1536, height = 2048 }
+#     ]
