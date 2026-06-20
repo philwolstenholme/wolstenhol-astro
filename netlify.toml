@@ -14,9 +14,9 @@
   status = 200
   
 [[plugins]]
-  base = "dist"
   package = "netlify-plugin-critical-css"
   [plugins.inputs]
+    base = "dist"
     dimensions = [
       { width = 640, height = 1136 },
       { width = 768, height = 1280 },
