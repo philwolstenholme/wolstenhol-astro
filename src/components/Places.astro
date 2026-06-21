@@ -2,17 +2,8 @@
 import { getCollection } from "astro:content";
 import { Section } from "./Section";
 import Lede from "./Lede.astro";
-import PaginatedGrid from "./PaginatedGrid.astro";
+import HorizontalScroller from "./HorizontalScroller.astro";
 import PlacesCard from "./items/PlacesCard.astro";
-import { getItemsPerPage } from "../helpers/getItemsPerPage";
-
-const searchParam = "places";
-const anchor = "places";
-const itemsPerPage = getItemsPerPage({
-  isMobile: Astro.locals.isMobile,
-  mobileItemsPerPage: 4,
-  desktopItemsPerPage: 6,
-});
 
 const placesCollection = await getCollection("places");
 const items = placesCollection.map((entry) => ({
@@ -21,7 +12,7 @@ const items = placesCollection.map((entry) => ({
 }));
 ---
 
-<Section heading="Places">
+<Section hasScroller heading="Places">
   <Lede>
     <p class="max-w-3xl font-serif leading-relaxed tracking-widest mt-3">
       A randomised asortment of places I've liked on Foursquare at one point -
@@ -29,17 +20,13 @@ const items = placesCollection.map((entry) => ({
       Manchester that closed thirteen years ago…
     </p>
   </Lede>
-  <div class="mt-8">
-    <PaginatedGrid
-      items={items}
-      itemsPerPage={itemsPerPage}
-      searchParam={searchParam}
-      anchor={anchor}
-      itemComponent={PlacesCard}
-    >
-      <p slot="empty" class="text-center text-gray-500 py-8">
-        No places found. Add some to <code>src/content/places.json</code>.
-      </p>
-    </PaginatedGrid>
-  </div>
+  <HorizontalScroller label="Places" theme="instagram" class="mt-8">
+    {
+      items.map((item) => (
+        <li class="shrink-0 flex snap-center grow-0 max-w-[min(365px,100vw-2.5rem)]">
+          <PlacesCard item={item} />
+        </li>
+      ))
+    }
+  </HorizontalScroller>
 </Section>
