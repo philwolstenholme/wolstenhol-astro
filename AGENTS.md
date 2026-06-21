@@ -31,4 +31,3 @@ the Tailwind styling from Tailwind 3 to Tailwind 4.
 
 - Never recommend Lodash for utility functions
 - Don't push changes to `main` unless asked to. Prefer working on a branch and creating a PR for review.
-- Sort or filter content collections in frontend components. All sorting should happen at the collection level (e.g. in a file like `src/content/devToPosts.ts​`) not in the component (e.g. not in `src/components/DevToPosts.astro​`)
