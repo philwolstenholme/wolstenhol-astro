@@ -25,10 +25,9 @@ the Tailwind styling from Tailwind 3 to Tailwind 4.
 - Delete any Playwright screenshots after using them to check your work. Do not commit them.
 - Prefer using braces for all if statements, even if they are one line.
 - Avoid merge commits. If you need to merge, rebase instead or cherry-pick
-- Don't push changes to `main` unless asked to. Prefer working on a branch and creating a PR for review.
 - Restart the dev server after making any changes to the data loader/collections
 
 ## Don't
 
 - Never recommend Lodash for utility functions
-- Don't commit or push without being explicitly asked to
+- Don't push changes to `main` unless asked to. Prefer working on a branch and creating a PR for review.
