@@ -1,4 +1,5 @@
 import { defineMiddleware } from "astro:middleware";
+
 import { detectMobile } from "./helpers/detectMobile";
 
 const PAGINATION_PARAMS = ["githubStars", "posts", "readingList", "speaking"];
