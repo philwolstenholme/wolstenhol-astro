@@ -16,11 +16,13 @@ import SpeakingCard from "../../components/items/SpeakingCard.astro";
 
 const searchParam = "speaking";
 const htmxPartialPath = "/partials/speaking";
-const itemsPerPage = getItemsPerPage({
-  astroRequest: Astro.request,
-  mobileItemsPerPage: 5,
-  desktopItemsPerPage: 12,
-});
+const itemsPerPage =
+  Number(Astro.url.searchParams.get("perPage")) ||
+  getItemsPerPage({
+    astroRequest: Astro.request,
+    mobileItemsPerPage: 5,
+    desktopItemsPerPage: 12,
+  });
 
 const collection = await getCollection("speaking");
 const items = collection.map((entry) => entry.data);

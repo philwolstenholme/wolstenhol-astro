@@ -17,11 +17,13 @@ import { mergeReadingLists } from "../../helpers/mergeReadingLists";
 
 const searchParam = "readingList";
 const htmxPartialPath = "/partials/reading-list";
-const itemsPerPage = getItemsPerPage({
-  astroRequest: Astro.request,
-  mobileItemsPerPage: 5,
-  desktopItemsPerPage: 12,
-});
+const itemsPerPage =
+  Number(Astro.url.searchParams.get("perPage")) ||
+  getItemsPerPage({
+    astroRequest: Astro.request,
+    mobileItemsPerPage: 5,
+    desktopItemsPerPage: 12,
+  });
 
 const [devToCollection, airtableCollection] = await Promise.all([
   getCollection("dev-to-reading-list"),
