@@ -1,11 +1,11 @@
 ---
 name: "Syntax Quiz"
 url: "https://syntax-quiz.netlify.app"
-color: "#3178c6"
+color: "#192F21"
 tags: work
 weight: -2
 happyWithScreenshot: true
-cloudinarySuffix: "/v1782050561/portfolio/syntax-quiz-netlify-app.png"
+cloudinarySuffix: "v1782050561/portfolio/syntax-quiz-netlify-app.png"
 ---
 
 - A TypeScript and JavaScript quiz app with five difficulty levels, from basic syntax fundamentals up to hard advanced concepts
