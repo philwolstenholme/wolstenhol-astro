@@ -8,3 +8,4 @@
 - [ ] Copy the 11ty site's approach to using `content-visibility` to improve rendering performance.
 - [ ] Look for ways to improve the loading and rendering performance of the site. Pick three of the highest impact changes and implement them.
 - [ ] Write a README summarising the approach taken to implement the site, including any performance improvements made, and any other interesting things about the site.
+- [ ] Look through the whole codebase for duplication, over-complicated code, or redundant comments and remove them.
