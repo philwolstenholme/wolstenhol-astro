@@ -236,6 +236,11 @@ html {
   }
 }
 
+button {
+  user-select: none;
+  cursor: pointer;
+}
+
 /* ─── Instagram card ─────────────────────────────────────────────────────── */
 
 .card-instagram__caption-text {

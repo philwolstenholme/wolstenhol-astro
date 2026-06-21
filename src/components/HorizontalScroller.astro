@@ -47,6 +47,7 @@ const arrowRight =
       "group absolute -left-12 bottom-5 top-0 hidden w-8 transform-gpu transition-all md:block",
       themeArrowClasses[theme],
     )}
+    x-cloak
     x-bind:class="{ 'opacity-0 translate-x-12 pointer-events-none': !overflowing.left }"
     x-bind:inert="!overflowing.left"
     x-on:click="scrollLeft()"
