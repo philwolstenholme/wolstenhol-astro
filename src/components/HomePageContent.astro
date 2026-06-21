@@ -4,6 +4,7 @@ import Angle from "./Angle.astro";
 import Content from "./Content.astro";
 import Layout from "../layouts/Layout.astro";
 import { StyledTextLink } from "./StyledTextLink.tsx";
+import { SocialLinks } from "./SocialLinks.tsx";
 import { Section } from "./Section.tsx";
 import GithubStars from "./GithubStars.astro";
 import DevToPosts from "./DevToPosts.astro";
@@ -92,48 +93,7 @@ const spotifyData = spotifyCollection[0];
             Outside of work I'm interested in science, the environment,
             bouldering, bikes (everyday/utility), and open source software.
           </p>
-          <ul class="space-x-2 hue-rotate-links">
-            <li class="inline">
-              <StyledTextLink
-                class="text-yellow-400"
-                href="https://twitter.com/philw_">Twitter/X</StyledTextLink
-              >
-            </li>
-            <li class="inline">
-              <StyledTextLink
-                class="text-yellow-400"
-                href="https://bsky.app/profile/wolstenhol.me"
-                >Bluesky</StyledTextLink
-              >
-            </li>
-            <li class="inline">
-              <StyledTextLink
-                class="text-yellow-400"
-                href="https://github.com/philwolstenholme"
-                >Github</StyledTextLink
-              >
-            </li>
-            <li class="inline">
-              <StyledTextLink
-                class="text-yellow-400"
-                href="https://www.linkedin.com/in/phil-wolstenholme"
-                >LinkedIn</StyledTextLink
-              >
-            </li>
-            <li class="inline">
-              <StyledTextLink
-                class="text-yellow-400"
-                href="https://wolstenhol.me/contact">Email</StyledTextLink
-              >
-            </li>
-            <li class="inline">
-              <StyledTextLink
-                class="text-yellow-400"
-                href="https://www.drupal.org/u/phil-wolstenholme"
-                >Drupal.org</StyledTextLink
-              >
-            </li>
-          </ul>
+          <SocialLinks />
         </div>
       </div>
     </Content>
