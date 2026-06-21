@@ -14,7 +14,7 @@ export default defineConfig({
       devtools: true,
     }),
   ],
-  adapter: netlify(),
+  adapter: netlify({ edgeMiddleware: true }),
   env: {
     schema: {
       DEV_TO_API_KEY: envField.string({
