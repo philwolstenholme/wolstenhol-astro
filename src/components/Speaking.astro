@@ -13,11 +13,12 @@ import PaginatedGrid from "./PaginatedGrid.astro";
 import Lede from "./Lede.astro";
 import SpeakingCard from "./items/SpeakingCard.astro";
 
-const { collection: collectionProp, isMobile } = Astro.props;
+const { collection: collectionProp, isMobile: isMobileProp } = Astro.props;
 
 const searchParam = "speaking";
 const anchor = "speaking";
-const itemsPerPage = getItemsPerPage({ astroRequest: Astro.request, isMobile });
+const isMobile = isMobileProp ?? Astro.locals.isMobile ?? false;
+const itemsPerPage = getItemsPerPage({ isMobile });
 const collection = collectionProp || (await getCollection("speaking"));
 
 const items = collection.map((entry) => entry.data);

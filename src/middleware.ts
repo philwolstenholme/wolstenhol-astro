@@ -5,6 +5,8 @@ import { detectMobile } from "./helpers/detectMobile";
 const PAGINATION_PARAMS = ["githubStars", "posts", "readingList", "speaking"];
 
 export const onRequest = defineMiddleware((context, next) => {
+  context.locals.isMobile = detectMobile(context.request);
+
   const url = new URL(context.request.url);
 
   if (url.pathname === "/") {
@@ -15,7 +17,7 @@ export const onRequest = defineMiddleware((context, next) => {
     }
 
     // Serve the prerendered mobile variant to mobile visitors.
-    if (detectMobile(context.request)) {
+    if (context.locals.isMobile) {
       return context.rewrite(new URL("/index-mobile", url));
     }
   }
