@@ -34,10 +34,7 @@ const { artists, randomGenres } = data.data;
         ))
       }
     </HorizontalScroller>
-    <SpotifyAudioController
-      client:visible
-      artists={artists as SpotifyArtist[]}
-    />
+    <SpotifyAudioController client:load artists={artists as SpotifyArtist[]} />
   </div>
   <p class="mt-4 max-w-prose text-xs font-bold opacity-90">
     You can click the cards above to play a little preview of the artist,

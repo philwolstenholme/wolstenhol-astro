@@ -74,6 +74,8 @@ const tempoAnimationDuration = bpm > 0 ? `${1 / (bpm / 60) / 2}s` : undefined;
         class="outline-offset-invert group absolute inset-0 text-yellow-300"
         role="button"
         aria-pressed="false"
+        x-data
+        x-on:click.prevent={`$dispatch('spotify:play', { url: '${previewUrl}' })`}
       >
         <div class="absolute left-0 top-0 z-10 p-2">
           <span class="sr-only">Play 30 second preview of {artist.name}</span>

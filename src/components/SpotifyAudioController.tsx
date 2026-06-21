@@ -122,16 +122,13 @@ export function SpotifyAudioController({ artists }: Props) {
     playerEl()?.classList.toggle("keyboard-active", isKeyboardActive);
   }, [isKeyboardActive, playerEl]);
 
-  // Click delegation on the player container
+  // Listen for spotify:play events dispatched by SpotifyMusicCard via Alpine
   useEffect(() => {
     const player = playerEl();
     if (!player) return;
 
-    const handleClick = (e: Event) => {
-      const btn = (e.target as Element).closest("[data-spotify-play-button]");
-      if (!btn) return;
-      e.preventDefault();
-      const url = btn.closest<HTMLElement>("[data-spotify-card]")?.dataset.previewUrl;
+    const handlePlay = (e: Event) => {
+      const { url } = (e as CustomEvent<{ url: string }>).detail;
       if (!url) return;
       if (playingUrlRef.current === url) {
         stop();
@@ -140,8 +137,8 @@ export function SpotifyAudioController({ artists }: Props) {
       }
     };
 
-    player.addEventListener("click", handleClick);
-    return () => player.removeEventListener("click", handleClick);
+    player.addEventListener("spotify:play", handlePlay);
+    return () => player.removeEventListener("spotify:play", handlePlay);
   }, [playerEl, play, stop]);
 
   // Keyboard shortcuts
