@@ -94,7 +94,68 @@ if (Astro.response) {
     />
     <meta name="theme-color" content="#161616" />
   </head>
-  <body class="bg-subtle-grunge" hx-ext="preload">
+  <body class="bg-subtle-grunge connection--unknown" hx-ext="preload">
+    <script is:inline>
+      if (navigator.connection && navigator.connection.effectiveType) {
+        document.body.classList.remove("connection--unknown");
+        document.body.classList.add(
+          `connection--${navigator.connection.effectiveType}`,
+        );
+      }
+    </script>
+    <div
+      class="pointer-events-none absolute inset-0 overflow-hidden"
+      aria-hidden="true"
+    >
+      <img
+        hidden
+        data-frivolous-grunge
+        class="absolute inline opacity-40 mix-blend-multiply"
+        loading="eager"
+        fetchpriority="high"
+        alt=""
+        width="500"
+        height="451"
+        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        srcset="
+          https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,q_10,w_500,fl_progressive/v1614122419/one-offs/cup-coffee-stain-2.jpg  1x,
+          https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,q_10,w_1000,fl_progressive/v1614122419/one-offs/cup-coffee-stain-2.jpg 2x
+        "
+        style="left: -230px; top: 600px"
+      />
+      <img
+        hidden
+        data-frivolous-grunge
+        class="absolute inline object-cover object-left opacity-40 mix-blend-multiply"
+        loading="lazy"
+        decoding="async"
+        alt=""
+        width="112"
+        height="405"
+        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        srcset="
+          https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,q_10,w_500,fl_progressive/v1614122419/one-offs/cup-coffee-stain-2.jpg  1x,
+          https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,q_10,w_1000,fl_progressive/v1614122419/one-offs/cup-coffee-stain-2.jpg 2x
+        "
+        style="right: 0; top: 1900px; height: 405px; width: 9%"
+      />
+      <img
+        hidden
+        data-frivolous-grunge
+        class="absolute inline -rotate-45 opacity-40 mix-blend-multiply"
+        loading="lazy"
+        decoding="async"
+        alt=""
+        width="500"
+        height="451"
+        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        srcset="
+          https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,q_10,w_500,fl_progressive/v1614122419/one-offs/cup-coffee-stain-2.jpg  1x,
+          https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,q_10,w_1000,fl_progressive/v1614122419/one-offs/cup-coffee-stain-2.jpg 2x
+        "
+        style="left: -230px; top: 2900px"
+      />
+    </div>
     {
       Astro.cookies.has("hideWipBanner") === false && (
         <div
@@ -147,6 +208,7 @@ if (Astro.response) {
 
 <style is:global>
   body {
+    position: relative;
     min-height: 100vh;
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -154,5 +216,9 @@ if (Astro.response) {
        max-content size of any horizontal scroller. minmax(0, 1fr) caps it
        at the viewport width by allowing the track to shrink to 0. */
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  body:not(.connection--unknown):not(.connection--4g) [data-frivolous-grunge] {
+    display: none !important;
   }
 </style>
