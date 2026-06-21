@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { sortBy } from "es-toolkit";
 import { Section } from "./Section";
 import Lede from "./Lede.astro";
 import InstagramCard from "./items/InstagramCard.astro";
@@ -15,7 +16,7 @@ if (!collection || collection.length === 0) {
   return;
 }
 
-const posts = collection;
+const posts = sortBy(collection, [(entry) => entry.data.takenAt]).reverse();
 ---
 
 <Section hasScroller heading="Photos">

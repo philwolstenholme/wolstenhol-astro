@@ -29,10 +29,7 @@ export const devToPosts = defineCollection({
 
       return posts
         .filter((post: any) => !post.title.startsWith(READING_LIST_TITLE_PREFIX))
-        .map((post: any) => ({
-          ...post,
-          id: String(post.id),
-        }));
+        .map((post: any) => ({ ...post, id: String(post.id) }));
     } catch (error) {
       console.error("DEV.to posts fetch failed:", error);
       return [];

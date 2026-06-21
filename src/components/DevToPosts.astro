@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { sortBy } from "es-toolkit";
 
 import { Section } from "./Section";
 
@@ -19,7 +20,9 @@ const anchor = "posts";
 const itemsPerPage = 3;
 const collection = collectionProp || (await getCollection("dev-to-posts"));
 
-const items = collection.map((entry) => entry.data);
+const items = sortBy(collection, [(entry) => entry.data.published_at ?? ""])
+  .reverse()
+  .map((entry) => entry.data);
 ---
 
 <Section heading="Posts">

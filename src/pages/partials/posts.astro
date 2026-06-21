@@ -2,6 +2,7 @@
 export const prerender = false;
 
 import { getCollection } from "astro:content";
+import { sortBy } from "es-toolkit";
 import { paginate } from "../../helpers/paginate";
 import { setupPartial } from "../../helpers/setupPartial";
 import PaginatedGrid from "../../components/PaginatedGrid.astro";
@@ -12,7 +13,9 @@ const itemsPerPage = 3;
 const htmxPartialPath = "/partials/posts";
 
 const collection = await getCollection("dev-to-posts");
-const items = collection.map((entry) => entry.data);
+const items = sortBy(collection, [(entry) => entry.data.published_at ?? ""])
+  .reverse()
+  .map((entry) => entry.data);
 
 const { index } = paginate({
   items,

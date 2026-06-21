@@ -2,6 +2,7 @@
 export const prerender = false;
 
 import { getCollection } from "astro:content";
+import { sortBy } from "es-toolkit";
 import { paginate } from "../../helpers/paginate";
 import { setupPartial } from "../../helpers/setupPartial";
 import { getItemsPerPage } from "../../helpers/getItemsPerPage";
@@ -15,7 +16,9 @@ const itemsPerPage =
   getItemsPerPage({ isMobile: Astro.locals.isMobile });
 
 const collection = await getCollection("speaking");
-const items = collection.map((entry) => entry.data);
+const items = sortBy(collection, [(entry) => parseInt(entry.id, 10)]).map(
+  (entry) => entry.data,
+);
 
 const { index } = paginate({
   items,
