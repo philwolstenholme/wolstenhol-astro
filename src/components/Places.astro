@@ -15,7 +15,10 @@ const itemsPerPage = getItemsPerPage({
 });
 
 const placesCollection = await getCollection("places");
-const items = placesCollection.map((entry) => ({ id: entry.id, ...entry.data }));
+const items = placesCollection.map((entry) => ({
+  id: entry.id,
+  ...entry.data,
+}));
 ---
 
 <Section heading="Places">
