@@ -6,3 +6,5 @@
 - [ ] Copy the tweets component but make it show Bluesky posts to start with. Copy the existing approach as much as possible.
 - [ ] Copy the contact form page from the 11ty repo. I have already enabled Netlify form detection. Use Alpine for any JS validation. Use HTMX for any interaction with the sever side.
 - [ ] Copy the 11ty site's approach to using `content-visibility` to improve rendering performance.
+- [ ] Look for ways to improve the loading and rendering performance of the site. Pick three of the highest impact changes and implement them.
+- [ ] Write a README summarising the approach taken to implement the site, including any performance improvements made, and any other interesting things about the site.
