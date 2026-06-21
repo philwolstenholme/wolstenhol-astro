@@ -10,3 +10,4 @@
 - [ ] Look through the whole codebase for duplication, over-complicated code, or redundant comments and remove them.
 - [ ] Look for chances to use more modern CSS features. To get ideas, check 'CSS wrapped' blog posts like <https://developer.chrome.com/blog/css-wrapped-2025> and <https://developer.chrome.com/blog/css-wrapped-2024> and <https://developer.chrome.com/blog/css-wrapped-2023>
 - [ ] Look for ways to replace our use of Preact with Alpine, implement the best option.
+- [ ] Add a bit of grunge to the work card screenshots, like the maps images have.
