@@ -1,13 +1,13 @@
 ---
-name: 'Lasttramfrom.com'
-url: 'https://www.lasttramfrom.com'
+name: "Lasttramfrom.com"
+url: "https://www.lasttramfrom.com"
 tags: work
 work_tags:
   - Vue
   - Nuxt
   - Serverless
 happyWithScreenshot: true
-cloudinarySuffix: 'v1668726981/portfolio/lasttramfrom.com.png'
+cloudinarySuffix: "v1668726981/portfolio/lasttramfrom.com.png"
 ---
 
 - Scrapes (via a Netlify function) the Transport for Greater Manchester to show you the time of the last Manchester Metrolink tram home (sorry TFGM!)

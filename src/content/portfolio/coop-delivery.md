@@ -1,13 +1,13 @@
 ---
-name: 'Co-op delivery'
-url: 'https://shop.coop.co.uk'
-color: '#03b0e7'
+name: "Co-op delivery"
+url: "https://shop.coop.co.uk"
+color: "#03b0e7"
 tags: work
 work_tags:
   - Coop
   - React
 happyWithScreenshot: true
-cloudinarySuffix: 'v1668726981/portfolio/shop.coop.co.uk.png?v=1'
+cloudinarySuffix: "v1668726981/portfolio/shop.coop.co.uk.png?v=1"
 weight: -2
 ---
 

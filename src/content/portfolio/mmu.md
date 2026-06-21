@@ -1,14 +1,14 @@
 ---
-name: 'Manchester Metropolitan University'
-url: 'https://www.mmu.ac.uk'
-color: '#00c1d4'
+name: "Manchester Metropolitan University"
+url: "https://www.mmu.ac.uk"
+color: "#00c1d4"
 tags: work
 work_tags:
   - Drupal
   - Vue
   - Tailwind
 happyWithScreenshot: true
-cloudinarySuffix: 'v1668726981/portfolio/mmu.ac.uk.png'
+cloudinarySuffix: "v1668726981/portfolio/mmu.ac.uk.png"
 ---
 
 - Used Drupal to develop functionality and implement designs produced by MMU's own designers

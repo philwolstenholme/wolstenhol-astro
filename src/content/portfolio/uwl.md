@@ -1,14 +1,14 @@
 ---
-name: 'University of West London'
-url: 'https://www.uwl.ac.uk'
-color: '#0068b3'
+name: "University of West London"
+url: "https://www.uwl.ac.uk"
+color: "#0068b3"
 tags: work
 work_tags:
   - Drupal
   - Vue
   - Tailwind
 happyWithScreenshot: true
-cloudinarySuffix: 'v1668726981/portfolio/uwl.ac.uk.png'
+cloudinarySuffix: "v1668726981/portfolio/uwl.ac.uk.png"
 ---
 
 - Developed a new Drupal theme that incorporated Atomic Design, Pattern Lab, utility-first/atomic CSS (Tailwind), a more modern build process, standardised typographic and spacing scales, and provided (for the first time) a set of reusable components for CTI's Drupal team. I named the theme after the Manchester-based atomic scientist Ernest Rutherford

@@ -1,13 +1,13 @@
 ---
-name: 'Durham University'
-url: 'https://www.durham.ac.uk'
-color: '#68246d'
+name: "Durham University"
+url: "https://www.durham.ac.uk"
+color: "#68246d"
 tags: work
 work_tags:
   - Pattern Lab
   - Prototyping
 happyWithScreenshot: true
-cloudinarySuffix: 'v1668726981/portfolio/durham.ac.uk.png'
+cloudinarySuffix: "v1668726981/portfolio/durham.ac.uk.png"
 ---
 
 - Designing and building an HTML prototype of a complete website overhaul

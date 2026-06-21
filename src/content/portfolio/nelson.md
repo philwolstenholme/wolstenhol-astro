@@ -1,13 +1,13 @@
 ---
-name: 'Project NELSON'
-url: 'https://www.ctidigital.com/our-clients/nelson-royal-navy'
+name: "Project NELSON"
+url: "https://www.ctidigital.com/our-clients/nelson-royal-navy"
 tags: work
 work_tags:
   - Vue
   - Vuetify
   - Torpedos!
 happyWithScreenshot: true
-cloudinarySuffix: 'v1668726981/portfolio/ctidigital.com-our-clients-nelson-royal-navy.png'
+cloudinarySuffix: "v1668726981/portfolio/ctidigital.com-our-clients-nelson-royal-navy.png"
 ---
 
 - Prototyping a Vue.js inventory tracking app to be used by the Royal Navy onboard aircraft carriers

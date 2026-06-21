@@ -1,15 +1,15 @@
 ---
-name: 'CTI Voyager'
-url: 'https://www.ctidigital.com/drupal/drupal-consultancy-and-development-agency'
+name: "CTI Voyager"
+url: "https://www.ctidigital.com/drupal/drupal-consultancy-and-development-agency"
 prevent_link: true
 tags: work
-color: '#27CFED'
+color: "#27CFED"
 work_tags:
   - Drupal
   - Tailwind
   - Alpine
 happyWithScreenshot: true
-cloudinarySuffix: 'v1668726981/portfolio/ctidigital.com-drupal-drupal-consultancy-and-development-agency.png'
+cloudinarySuffix: "v1668726981/portfolio/ctidigital.com-drupal-drupal-consultancy-and-development-agency.png"
 ---
 
 - Largely created and led the development of Voyager, an internal Drupal distribution, theme, Composer template and set of custom modules that helps CTI deliver fantastic Drupal sites
