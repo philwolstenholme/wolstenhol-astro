@@ -1,13 +1,19 @@
-import { file } from "astro/loaders";
 import { z } from "astro/zod";
 import { defineCollection } from "astro:content";
 
+import speakingItems from "./speaking.json";
+
 export const speaking = defineCollection({
-  loader: file("./src/content/speaking.json"),
+  // Inline loader: assign zero-padded numeric IDs so Astro's alphabetical
+  // sort of entry IDs ("00", "01", …) preserves the JSON array order.
+  loader: () =>
+    speakingItems.map((item, index) => ({
+      ...item,
+      id: String(index).padStart(2, "0"),
+    })),
   schema: z.discriminatedUnion("type", [
     z.object({
       type: z.literal("thumbnail"),
-      order: z.number(),
       href: z.url().optional(),
       imageSrc: z.url(),
       imageAlt: z.string().optional(),
@@ -16,7 +22,6 @@ export const speaking = defineCollection({
     }),
     z.object({
       type: z.literal("quote"),
-      order: z.number(),
       href: z.url().optional(),
       quote: z.string(),
       attribution: z.string(),

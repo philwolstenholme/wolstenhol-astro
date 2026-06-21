@@ -1,7 +1,6 @@
 [
   {
     "id": "nextjs-conf-london-2022",
-    "order": 0,
     "type": "thumbnail",
     "imageSrc": "https://wolstenhol.me/proxy/cloudinary/image/upload/c_fill,f_auto,g_center,w_272,h_153,q_auto,y_0/v1666475523/one-offs/nextconf-london.jpg",
     "imageAlt": "",
@@ -10,7 +9,6 @@
   },
   {
     "id": "matt-collier-quote",
-    "order": 1,
     "type": "quote",
     "quote": "I had the chance to interview the joyous Phil Wolstenholme after his superb talk",
     "attribution": "Matt Collier",
@@ -18,7 +16,6 @@
   },
   {
     "id": "mcrfred-2022",
-    "order": 2,
     "type": "thumbnail",
     "imageSrc": "https://wolstenhol.me/proxy/cloudinary/image/upload/c_fill,f_auto,g_center,w_272,h_153,q_auto,y_0/v1666475523/one-offs/1666298366856.jpg",
     "imageAlt": "",
@@ -27,7 +24,6 @@
   },
   {
     "id": "katie-raby-quote",
-    "order": 3,
     "type": "quote",
     "quote": "Honestly fantastic! It has really inspired me to work on my personal site again",
     "attribution": "Katie Raby",
@@ -35,7 +31,6 @@
   },
   {
     "id": "drupalcon-europe-2020",
-    "order": 4,
     "type": "thumbnail",
     "href": "https://www.youtube.com/watch?v=MYY1teFZ_Fk",
     "imageSrc": "https://wolstenhol.me/proxy/cloudinary/image/upload/c_fill,f_auto,g_center,w_272,h_153,q_auto,y_0/v1610202401/one-offs/EoyOVx4XMAEHdx_.jpg",
@@ -45,7 +40,6 @@
   },
   {
     "id": "daniel-lemon-quote",
-    "order": 5,
     "type": "quote",
     "quote": "Phil Wolstenholme gave an insightful and well thought out presentation.",
     "attribution": "Daniel Lemon, Amazee Labs",
@@ -53,7 +47,6 @@
   },
   {
     "id": "drupalcon-europe-2019",
-    "order": 6,
     "type": "thumbnail",
     "href": "https://www.youtube.com/watch?v=TBLlwvM_uPc",
     "imageSrc": "https://wolstenhol.me/proxy/cloudinary/image/fetch/c_fill,f_auto,g_face,w_272,h_153,q_auto/https://img.youtube.com/vi/TBLlwvM_uPc/maxresdefault.jpg",
@@ -63,7 +56,6 @@
   },
   {
     "id": "jack-garratt-quote",
-    "order": 7,
     "type": "quote",
     "quote": "Stunning talk – those tips on Twig syntax gotchas were worth it alone. Many 'thank you's!",
     "attribution": "Jack Garratt on YouTube",
@@ -71,7 +63,6 @@
   },
   {
     "id": "just-another-human-quote",
-    "order": 8,
     "type": "quote",
     "quote": "Brilliant talk. If this guy made a 10 hour series on Drupal & Vue development I'd watch it ASAP.",
     "attribution": "'just another human' on YouTube",
@@ -79,7 +70,6 @@
   },
   {
     "id": "nwdug-2019",
-    "order": 9,
     "type": "thumbnail",
     "imageSrc": "https://wolstenhol.me/proxy/cloudinary/image/fetch/c_crop,g_xy_center,w_544,h_306,x_557,y_522,q_auto/https://pbs.twimg.com/media/EQhHVx7XYAALhh-%3Fformat%3Djpg",
     "imageAlt": "",
@@ -88,7 +78,6 @@
   },
   {
     "id": "nwdug-unconference-2019",
-    "order": 10,
     "type": "thumbnail",
     "imageSrc": "https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,f_auto,w_272,h_153,q_auto/v1609337202/one-offs/EGqx-wNX4AEZ7ZM.jpg",
     "imageAlt": "",
@@ -97,7 +86,6 @@
   },
   {
     "id": "nwdug-2018",
-    "order": 11,
     "type": "thumbnail",
     "imageSrc": "https://wolstenhol.me/proxy/cloudinary/image/fetch/c_lfill,f_auto,g_face,w_272,h_153,q_auto/v1609338082/https://pbs.twimg.com/media/D8zLonEWsAAyfqy%3Fformat=jpg",
     "imageAlt": "",
@@ -106,7 +94,6 @@
   },
   {
     "id": "vuejs-manchester-2018",
-    "order": 12,
     "type": "thumbnail",
     "href": "https://twitter.com/vuejsmcr/status/1037036688491638784",
     "imageSrc": "https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,f_auto,w_272,h_153,q_auto/v1609271232/one-offs/vuejs-manchester-navy.jpg",
@@ -116,7 +103,6 @@
   },
   {
     "id": "nwdug-unconference-2018",
-    "order": 13,
     "type": "thumbnail",
     "imageSrc": "https://wolstenhol.me/proxy/cloudinary/image/fetch/c_lfill,f_auto,g_face,w_272,h_153,q_auto/v1609338082/https://pbs.twimg.com/media/DrE8EgyWkAIXaEs%3Fformat=jpg",
     "imageAlt": "",
@@ -125,7 +111,6 @@
   },
   {
     "id": "nwdug-unconference-2017",
-    "order": 14,
     "type": "thumbnail",
     "imageSrc": "https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,f_auto,h_153,q_auto/v1609337202/one-offs/IMG_20171104_112942_1.webp",
     "imageAlt": "",
@@ -134,7 +119,6 @@
   },
   {
     "id": "phil-norton-quote",
-    "order": 15,
     "type": "quote",
     "quote": "Phil normally delivers really good talks, and this was no exception.",
     "attribution": "Phil Norton",
@@ -142,7 +126,6 @@
   },
   {
     "id": "drupalcamp-london-2017",
-    "order": 16,
     "type": "thumbnail",
     "href": "https://www.youtube.com/watch?v=oX7iCufDiHM",
     "imageSrc": "https://wolstenhol.me/proxy/cloudinary/image/fetch/c_lfill,f_auto,g_face,w_272,h_153,q_auto/https://i3.ytimg.com/vi/CJgtt1XGtkU/maxresdefault.jpg",

@@ -15,8 +15,7 @@ if (!collection || collection.length === 0) {
   return;
 }
 
-// Astro re-sorts collection entries by ID — sort newest-first here instead.
-const posts = [...collection].sort((a, b) => b.data.takenAt - a.data.takenAt);
+const posts = collection;
 ---
 
 <Section heading="Photos">

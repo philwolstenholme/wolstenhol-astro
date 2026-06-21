@@ -13,10 +13,7 @@ interface Props {
 
 const { collection: collectionProp } = Astro.props;
 const collection = collectionProp || (await getCollection("speaking"));
-// Astro re-sorts collection entries by ID — restore the intended JSON order.
-const items = [...collection]
-  .sort((a, b) => a.data.order - b.data.order)
-  .map((entry) => entry.data);
+const items = collection.map((entry) => entry.data);
 ---
 
 <Section heading="Speaking">
