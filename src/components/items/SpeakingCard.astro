@@ -66,7 +66,7 @@ const Tag = (hasHref ? "a" : "div") as "a" | "div";
           loading="lazy"
           decoding="async"
           crossorigin="anonymous"
-          class="opacity-grunge pointer-events-none absolute inset-0 block h-full w-full object-cover mix-blend-multiply"
+          class="opacity-grunge pointer-events-none absolute inset-0 block h-full w-full object-cover mix-blend-multiply slow-connection:hidden"
           style={`--opacity: ${grungeOpacity}`}
         />
         <div class="isolate flex flex-col justify-center space-y-3 p-4 text-center">

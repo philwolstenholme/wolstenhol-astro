@@ -35,7 +35,7 @@ const formattedDate = dateStr
         loading="lazy"
         decoding="async"
         crossorigin="anonymous"
-        class="opacity-grunge pointer-events-none absolute inset-0 block h-full w-full object-cover mix-blend-multiply"
+        class="opacity-grunge pointer-events-none absolute inset-0 block h-full w-full object-cover mix-blend-multiply slow-connection:hidden"
         style={`--opacity: ${grungeOpacity}`}
       />
       <span class="relative">{post.title}</span>
