@@ -483,7 +483,7 @@ export function SpotifyMusicPlayer({ artists }: Props) {
         Spotify API. I also use the Spotify API to get the tempo/BPM of the preview song, and I use
         this to influence the speed that a card bops at while it&rsquo;s playing.
       </p>
-      <p class="hidden pb-0.5 text-xs opacity-90 pointer-fine:block mt-2">
+      <p class="mt-2 hidden pb-0.5 text-xs opacity-90 pointer-fine:block">
         Press the pause icon or the{" "}
         <kbd class="rounded border border-gray-300 bg-white p-0.5">esc</kbd> key to stop. Hover or
         focus this section, then press{" "}
