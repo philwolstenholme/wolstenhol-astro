@@ -1,0 +1,147 @@
+---
+import type { SpotifyArtist } from "../SpotifyAudioController";
+
+interface Props {
+  artist: SpotifyArtist;
+  index: number;
+}
+
+const DIGIT_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+const CLOUDINARY_PREFIX = "https://wolstenhol.me/proxy/cloudinary/image/upload";
+
+const cloudinaryUrl = (spotifyUrl: string, size = 145) =>
+  spotifyUrl.replace(
+    "https://i.scdn.co/image/",
+    `${CLOUDINARY_PREFIX}/w_${size},h_${size},c_fill,f_auto,q_auto:low/spotify/`,
+  );
+
+const { artist, index } = Astro.props;
+
+const keyHint = DIGIT_KEYS[index];
+const previewUrl = artist.top_track?.preview_url ?? null;
+const imageUrl = artist.images[0] ? cloudinaryUrl(artist.images[0].url) : "";
+const imageUrl2x = artist.images[0]
+  ? cloudinaryUrl(artist.images[0].url, 290)
+  : "";
+const bpm = artist.top_track?.features?.tempo ?? 0;
+const tempoAnimationDuration = bpm > 0 ? `${1 / (bpm / 60) / 2}s` : undefined;
+---
+
+<article
+  data-spotify-card
+  data-index={index}
+  data-preview-url={previewUrl ?? ""}
+  data-artist={artist.name}
+  data-track={artist.top_track?.name ?? ""}
+  style={tempoAnimationDuration
+    ? `animation-duration: ${tempoAnimationDuration}`
+    : undefined}
+  class="card-music contain-content group/card relative flex w-full select-none overflow-hidden rounded bg-linear-to-b from-spotify to-black shadow-hard"
+>
+  <h3 class="sr-only">{artist.name}</h3>
+
+  {
+    keyHint && (
+      <div
+        aria-hidden="true"
+        class="absolute right-2 top-2 z-10 hidden h-5 w-5 items-center justify-center rounded border border-yellow-300/60 text-xs font-bold text-yellow-300 opacity-0 transition-opacity duration-150 group-[.keyboard-active]/player:opacity-100 pointer-fine:flex"
+      >
+        {keyHint}
+      </div>
+    )
+  }
+
+  <figure>
+    <img
+      src={imageUrl}
+      srcset={`${imageUrl2x} 2x`}
+      alt={artist.name}
+      class="card-music__image mix-blend-soft-light transition-all"
+      loading="lazy"
+      crossorigin="anonymous"
+      width={145}
+      height={145}
+    />
+    <figcaption class="sr-only">{artist.name}</figcaption>
+  </figure>
+
+  {
+    previewUrl && (
+      <a
+        data-spotify-play-button
+        href={previewUrl}
+        target="spotify-preview"
+        class="outline-offset-invert group absolute inset-0 text-yellow-300"
+        role="button"
+        aria-pressed="false"
+      >
+        <div class="absolute left-0 top-0 z-10 p-2">
+          <span class="sr-only">Play 30 second preview of {artist.name}</span>
+          <svg
+            data-play-icon
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <polygon points="5,3 19,12 5,21" />
+          </svg>
+          <svg
+            data-pause-icon
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+            class="hidden"
+          >
+            <rect x="6" y="4" width="4" height="16" rx="1" />
+            <rect x="14" y="4" width="4" height="16" rx="1" />
+          </svg>
+        </div>
+
+        <video
+          data-spotify-video
+          aria-hidden="true"
+          hidden
+          class="pointer-events-none absolute block h-full w-full object-cover object-top-left mix-blend-luminosity opacity-0 transition-opacity motion-reduce:hidden"
+          loop
+          muted
+          playsinline
+          preload="none"
+        >
+          <source
+            src="https://wolstenhol.me/proxy/cloudinary/video/upload/v1650231745/11ty/static.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </a>
+    )
+  }
+
+  <div class="absolute bottom-0 left-0 z-10 block p-2 text-xs font-bold">
+    <div
+      class="card-music__caption group-hocus/card:-translate-y-1 relative inline-block transform-gpu p-1 px-2 text-yellow-300 transition-transform duration-75"
+    >
+      <span class="relative z-10 text-black">{artist.name}</span>
+    </div>
+  </div>
+
+  {
+    previewUrl && (
+      <progress
+        data-spotify-progress
+        value="0"
+        max="1"
+        hidden
+        class="card-music__progress absolute bottom-0 w-full text-spotify"
+      />
+    )
+  }
+</article>
+```

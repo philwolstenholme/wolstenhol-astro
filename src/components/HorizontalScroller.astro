@@ -3,7 +3,7 @@ import clsx from "clsx";
 
 interface Props {
   label: string;
-  theme?: "instagram" | "speaking";
+  theme?: "instagram" | "speaking" | "spotify";
   scrollFull?: boolean;
   class?: string;
 }
@@ -18,11 +18,13 @@ const {
 const themeArrowClasses = {
   instagram: "text-instagram hocus:text-instagram-dark",
   speaking: "text-purple-700 hocus:text-purple-800",
+  spotify: "text-green-700 hocus:text-green-800",
 };
 
 const themeButtonClasses = {
   instagram: "bg-instagram hocus:bg-instagram-dark",
   speaking: "bg-purple-700 hocus:bg-purple-800",
+  spotify: "bg-green-700 hocus:bg-green-600",
 };
 
 const arrowLeft =

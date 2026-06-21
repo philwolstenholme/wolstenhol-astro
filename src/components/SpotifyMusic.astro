@@ -2,8 +2,10 @@
 import type { CollectionEntry } from "astro:content";
 import { Section } from "./Section";
 import { SpotifyGenresLede } from "./SpotifyGenresLede";
-import { SpotifyMusicPlayer } from "./SpotifyMusicPlayer";
-import type { SpotifyArtist } from "./SpotifyMusicPlayer";
+import HorizontalScroller from "./HorizontalScroller.astro";
+import SpotifyMusicCard from "./items/SpotifyMusicCard.astro";
+import { SpotifyAudioController } from "./SpotifyAudioController";
+import type { SpotifyArtist } from "./SpotifyAudioController";
 
 interface Props {
   data: CollectionEntry<"spotify"> | undefined;
@@ -18,5 +20,38 @@ const { artists, randomGenres } = data.data;
 
 <Section heading="Music">
   <SpotifyGenresLede genres={randomGenres} />
-  <SpotifyMusicPlayer client:visible artists={artists as SpotifyArtist[]} />
+  <div class="group/player relative mt-12" data-spotify-player>
+    <HorizontalScroller
+      label="What I've been listening to"
+      theme="spotify"
+      scrollFull={true}
+    >
+      {
+        (artists as SpotifyArtist[]).map((artist, i) => (
+          <li tabindex="-1" class="relative mb-3 shrink-0 grow-0 snap-center">
+            <SpotifyMusicCard artist={artist} index={i} />
+          </li>
+        ))
+      }
+    </HorizontalScroller>
+    <SpotifyAudioController
+      client:visible
+      artists={artists as SpotifyArtist[]}
+    />
+  </div>
+  <p class="mt-4 max-w-prose text-xs font-bold opacity-90">
+    You can click the cards above to play a little preview of the artist,
+    courtesy of the Spotify API. I also use the Spotify API to get the tempo/BPM
+    of the preview song, and I use this to influence the speed that a card bops
+    at while it&rsquo;s playing.
+  </p>
+  <p class="mt-2 hidden pb-0.5 text-xs opacity-90 pointer-fine:block">
+    Press the pause icon or the{" "}
+    <kbd class="rounded border border-gray-300 bg-white p-0.5">esc</kbd> key to stop.
+    Hover or focus this section, then press{" "}
+    <kbd class="rounded border border-gray-300 bg-white p-0.5">1</kbd
+    >&ndash;<kbd class="rounded border border-gray-300 bg-white p-0.5">9</kbd> or
+    <kbd class="rounded border border-gray-300 bg-white p-0.5">0</kbd> to play each
+    artist.
+  </p>
 </Section>
