@@ -25,7 +25,26 @@ Alpine.data("horizontalScroller", ({ scrollFull = false }: { scrollFull?: boolea
 
     observer.observe(firstItem);
     observer.observe(lastItem);
-    this._cleanup = () => observer.disconnect();
+
+    const inertObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.intersectionRatio > 0.5) {
+            entry.target.removeAttribute("inert");
+          } else {
+            entry.target.setAttribute("inert", "inert");
+          }
+        });
+      },
+      { root: list, threshold: 0.5 },
+    );
+
+    list.querySelectorAll("li").forEach((item) => inertObserver.observe(item));
+
+    this._cleanup = () => {
+      observer.disconnect();
+      inertObserver.disconnect();
+    };
 
     this.scrollAmount = scrollFull ? list.offsetWidth : list.offsetWidth / 2;
 
@@ -40,11 +59,22 @@ Alpine.data("horizontalScroller", ({ scrollFull = false }: { scrollFull?: boolea
     this._cleanup?.();
   },
 
+  focusOnFirstItem() {
+    setTimeout(() => {
+      const list = this.$refs.scroller as HTMLElement;
+      (list?.querySelectorAll("li[tabindex]:not([inert])")[0] as HTMLElement)?.focus({
+        preventScroll: true,
+      });
+    }, 750);
+  },
+
   scrollLeft() {
     (this.$refs.scroller as HTMLElement)?.scrollBy({
       left: -this.scrollAmount,
       behavior: "smooth",
     });
+
+    this.focusOnFirstItem();
   },
 
   scrollRight() {
@@ -52,5 +82,7 @@ Alpine.data("horizontalScroller", ({ scrollFull = false }: { scrollFull?: boolea
       left: this.scrollAmount,
       behavior: "smooth",
     });
+
+    this.focusOnFirstItem();
   },
 }));
