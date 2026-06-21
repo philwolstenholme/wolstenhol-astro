@@ -35,84 +35,98 @@ const arrowRight =
 ---
 
 <div
-  class={clsx("relative col-[full]", className)}
+  class={clsx("col-[full] constrain-content", className)}
   x-data={`horizontalScroller({ scrollFull: ${scrollFull} })`}
 >
   {
-    /* Left nav button — sits at the viewport left edge, slides off-screen
-      (-translate-x-full) and fades out when there's nothing to scroll left. */
+    /*
+    Scroller row: spans full width. Buttons are positioned absolutely within
+    this div so their vertical extent is bounded by the scroller height alone,
+    not by the "There's more" row below.
+  */
   }
-  <button
-    type="button"
-    class={clsx(
-      "group absolute left-0 bottom-5 top-0 hidden w-8 transform-gpu transition-all md:block",
-      themeArrowClasses[theme],
-    )}
-    x-cloak
-    x-bind:class="{ 'opacity-0 -translate-x-full pointer-events-none': !overflowing.left }"
-    x-bind:inert="!overflowing.left"
-    x-on:click="scrollLeft()"
-  >
-    <span class="sr-only">Back</span>
-    <svg
-      class="group-hocus:rotate-6 rotate-3 transform-gpu"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 84.663887 42.437332"
-      focusable="false"
-      role="presentation"
-    >
-      <path class="fill-current" d={arrowLeft}></path>
-    </svg>
-  </button>
-
-  <div class="relative overflow-x-hidden">
-    <div
+  <div class="col-[full] relative">
+    <button
+      type="button"
+      class={clsx(
+        "group absolute inset-y-0 left-0 hidden w-10 items-center justify-center transform-gpu transition-all md:flex",
+        themeArrowClasses[theme],
+      )}
       x-cloak
-      class="scroller-affordance pointer-events-none absolute bottom-5 left-0 top-0 z-10 w-3 rotate-180 transform-gpu transition-transform"
-      x-bind:class="{ '-translate-x-3': !overflowing.left }"
+      x-bind:class="{ 'opacity-0 -translate-x-full pointer-events-none': !overflowing.left }"
+      x-bind:inert="!overflowing.left"
+      x-on:click="scrollLeft()"
     >
+      <span class="sr-only">Back</span>
+      <span class="rounded bg-white/10 p-2">
+        <svg
+          class="group-hocus:rotate-6 rotate-3 transform-gpu"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 84.663887 42.437332"
+          focusable="false"
+          role="presentation"
+        >
+          <path class="fill-current" d={arrowLeft}></path>
+        </svg>
+      </span>
+    </button>
+
+    <div class="relative overflow-x-hidden">
+      <div
+        x-cloak
+        class="scroller-affordance pointer-events-none absolute bottom-5 left-0 top-0 z-10 w-3 rotate-180 transform-gpu transition-transform"
+        x-bind:class="{ '-translate-x-3': !overflowing.left }"
+      >
+      </div>
+
+      <ul
+        x-ref="scroller"
+        role="list"
+        aria-label={label}
+        class="scroller-x-pad relative flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-none scroll-smooth [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
+      >
+        <slot />
+      </ul>
+
+      <div
+        x-cloak
+        class="scroller-affordance pointer-events-none absolute bottom-5 right-0 top-0 z-10 w-3 transform-gpu transition-transform"
+        x-bind:class="{ 'translate-x-3': !overflowing.right }"
+      >
+      </div>
     </div>
 
-    <ul
-      x-ref="scroller"
-      role="list"
-      aria-label={label}
-      class="scroller-x-pad relative flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-none scroll-smooth [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
+    <button
+      type="button"
+      class={clsx(
+        "group absolute inset-y-0 right-0 hidden w-10 items-center justify-center transform-gpu transition-all md:flex",
+        themeArrowClasses[theme],
+      )}
+      x-bind:class="{ 'opacity-0 translate-x-full pointer-events-none': !overflowing.right }"
+      x-bind:inert="!overflowing.right"
+      x-on:click="scrollRight()"
     >
-      <slot />
-    </ul>
-
-    <div
-      x-cloak
-      class="scroller-affordance pointer-events-none absolute bottom-5 right-0 top-0 z-10 w-3 transform-gpu transition-transform"
-      x-bind:class="{ 'translate-x-3': !overflowing.right }"
-    >
-    </div>
+      <span class="sr-only">Forward</span>
+      <span class="rounded bg-white/10 p-2">
+        <svg
+          class="group-hocus:-rotate-6 -rotate-3 transform-gpu"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 84.663887 42.437332"
+          focusable="false"
+          role="presentation"
+        >
+          <path class="fill-current" d={arrowRight}></path>
+        </svg>
+      </span>
+    </button>
   </div>
 
-  {/* Right nav button */}
-  <button
-    type="button"
-    class={clsx(
-      "group absolute right-0 bottom-5 top-0 hidden w-8 transform-gpu transition-all md:block",
-      themeArrowClasses[theme],
-    )}
-    x-bind:class="{ 'opacity-0 translate-x-full pointer-events-none': !overflowing.right }"
-    x-bind:inert="!overflowing.right"
-    x-on:click="scrollRight()"
-  >
-    <span class="sr-only">Forward</span>
-    <svg
-      class="group-hocus:-rotate-6 -rotate-3 transform-gpu"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 84.663887 42.437332"
-      focusable="false"
-      role="presentation"
-    >
-      <path class="fill-current" d={arrowRight}></path>
-    </svg>
-  </button>
-
+  {
+    /*
+    "There's more" row: not col-[full], so it lands in grid-column: content
+    and aligns with headings and body text above the scroller.
+  */
+  }
   <div class="flex h-10 justify-end">
     <div
       class="ml-3 mt-3 transform-gpu rounded text-sm font-bold text-gray-600 transition-all duration-300"
