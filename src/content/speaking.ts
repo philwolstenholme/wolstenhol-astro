@@ -7,6 +7,7 @@ export const speaking = defineCollection({
   schema: z.discriminatedUnion("type", [
     z.object({
       type: z.literal("thumbnail"),
+      order: z.number(),
       href: z.url().optional(),
       imageSrc: z.url(),
       imageAlt: z.string().optional(),
@@ -15,6 +16,7 @@ export const speaking = defineCollection({
     }),
     z.object({
       type: z.literal("quote"),
+      order: z.number(),
       href: z.url().optional(),
       quote: z.string(),
       attribution: z.string(),
