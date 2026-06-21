@@ -42,8 +42,10 @@ const As = as;
       1fr [full-end];
   }
 
-  :where(.constrain-content) > * {
-    grid-column: content;
+  @layer base {
+    :where(.constrain-content) > * {
+      grid-column: content;
+    }
   }
 </style>
 
