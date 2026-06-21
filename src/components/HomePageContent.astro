@@ -106,26 +106,24 @@ const spotifyData = spotifyCollection[0];
     </Content>
   </Angle>
   <main class="space-y-12 py-8">
-    <Content>
-      <div class="space-y-9">
-        <Section heading="Meanwhile, elsewhere on the internet…">
-          <Lede>
-            Posts from Bluesky or Mastodon, blog posts from DEV/Medium, talks
-            from YouTube and beyond, photos from Instagram, music from Spotify,
-            and nice places from Foursquare (lol, I know, but I've built the API
-            integration now so Foursquare lives on on this website!).
-          </Lede>
-        </Section>
+    <Content class="space-y-9">
+      <Section heading="Meanwhile, elsewhere on the internet…">
+        <Lede>
+          Posts from Bluesky or Mastodon, blog posts from DEV/Medium, talks from
+          YouTube and beyond, photos from Instagram, music from Spotify, and
+          nice places from Foursquare (lol, I know, but I've built the API
+          integration now so Foursquare lives on on this website!).
+        </Lede>
+      </Section>
 
-        <DevToPosts collection={devToPostsCollection} />
-        <GithubStars collection={githubStarsCollection} isMobile={isMobile} />
-        <DevToReadingList isMobile={isMobile} />
-        <Speaking collection={speakingCollection} />
-        <WorkPreview collection={portfolioCollection} />
-        <SpotifyMusic data={spotifyData} />
-        <Instagram collection={instagramCollection} />
-        <Places />
-      </div>
+      <DevToPosts collection={devToPostsCollection} />
+      <GithubStars collection={githubStarsCollection} isMobile={isMobile} />
+      <DevToReadingList isMobile={isMobile} />
+      <Speaking collection={speakingCollection} />
+      <WorkPreview collection={portfolioCollection} />
+      <SpotifyMusic data={spotifyData} />
+      <Instagram collection={instagramCollection} />
+      <Places />
     </Content>
   </main>
   <Angle

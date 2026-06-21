@@ -35,22 +35,21 @@ const arrowRight =
 ---
 
 <div
-  class={clsx("relative", className)}
+  class={clsx("relative col-[full]", className)}
   x-data={`horizontalScroller({ scrollFull: ${scrollFull} })`}
 >
   {
-    /* Left nav button — positioned outside the scroller via absolute -left-12.
-      Translates inward (opacity-0 translate-x-12) when not overflowing so it
-      hides without overlapping content. */
+    /* Left nav button — sits at the viewport left edge, slides off-screen
+      (-translate-x-full) and fades out when there's nothing to scroll left. */
   }
   <button
     type="button"
     class={clsx(
-      "group absolute -left-12 bottom-5 top-0 hidden w-8 transform-gpu transition-all md:block",
+      "group absolute left-0 bottom-5 top-0 hidden w-8 transform-gpu transition-all md:block",
       themeArrowClasses[theme],
     )}
     x-cloak
-    x-bind:class="{ 'opacity-0 translate-x-12 pointer-events-none': !overflowing.left }"
+    x-bind:class="{ 'opacity-0 -translate-x-full pointer-events-none': !overflowing.left }"
     x-bind:inert="!overflowing.left"
     x-on:click="scrollLeft()"
   >
@@ -78,7 +77,7 @@ const arrowRight =
       x-ref="scroller"
       role="list"
       aria-label={label}
-      class="relative flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-none scroll-smooth [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
+      class="scroller-x-pad relative flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-none scroll-smooth [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
     >
       <slot />
     </ul>
@@ -95,10 +94,10 @@ const arrowRight =
   <button
     type="button"
     class={clsx(
-      "group absolute -right-12 bottom-5 top-0 hidden w-8 transform-gpu transition-all md:block",
+      "group absolute right-0 bottom-5 top-0 hidden w-8 transform-gpu transition-all md:block",
       themeArrowClasses[theme],
     )}
-    x-bind:class="{ 'opacity-0 -translate-x-12 pointer-events-none': !overflowing.right }"
+    x-bind:class="{ 'opacity-0 translate-x-full pointer-events-none': !overflowing.right }"
     x-bind:inert="!overflowing.right"
     x-on:click="scrollRight()"
   >

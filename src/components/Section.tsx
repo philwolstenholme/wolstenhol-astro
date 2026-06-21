@@ -8,6 +8,7 @@ export interface SectionProps extends HTMLAttributes<HTMLElement> {
   children?: ComponentChildren;
   heading?: string;
   lede?: JSX.Element | string;
+  hasScroller?: boolean;
 }
 
 export const Section = ({
@@ -15,10 +16,14 @@ export const Section = ({
   children,
   heading,
   lede,
+  hasScroller = false,
   ...rest
 }: SectionProps) => {
   return (
-    <section class={clsx(className, "group/section")} {...rest}>
+    <section
+      class={clsx(className, "group/section", hasScroller && "col-[full] constrain-content")}
+      {...rest}
+    >
       {heading && (
         <Heading as="h2" class="mt-3 scroll-mt-8">
           {heading}
