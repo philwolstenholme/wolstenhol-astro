@@ -72,48 +72,56 @@ const urlToHostname = (url: string) => new URL(url).hostname;
                 id={slugify(data.name)}
               >
                 <div class="flex grid-cols-2 flex-col gap-10 md:grid">
-                  <div class={index % 2 !== 0 ? "col-start-2" : ""}>
-                    <div class="grid">
-                      <div
-                        class="work-card__image-bg col-start-1 row-start-1 -rotate-3 transform rounded-2xl"
-                        style={
-                          data.color ? `--brand-colour: ${data.color}` : ""
-                        }
-                      />
-                      {data.url && !data.prevent_link ? (
-                        <a
-                          class="relative col-start-1 row-start-1"
-                          href={data.url}
-                        >
+                  {data.cloudinarySuffix && (
+                    <div class={index % 2 !== 0 ? "col-start-2" : ""}>
+                      <div class="grid">
+                        <div
+                          class="work-card__image-bg col-start-1 row-start-1 -rotate-3 transform rounded-2xl"
+                          style={
+                            data.color ? `--brand-colour: ${data.color}` : ""
+                          }
+                        />
+                        {data.url && !data.prevent_link ? (
+                          <a
+                            class="relative col-start-1 row-start-1"
+                            href={data.url}
+                          >
+                            <img
+                              src={`https://res.cloudinary.com/wolstenh/image/upload/c_scale,w_560,f_auto,q_auto/${data.cloudinarySuffix}`}
+                              srcset={`https://res.cloudinary.com/wolstenh/image/upload/c_scale,w_560,f_auto,q_auto/${data.cloudinarySuffix} 1x, https://res.cloudinary.com/wolstenh/image/upload/c_scale,w_1120,f_auto,q_auto/${data.cloudinarySuffix} 2x`}
+                              width="548"
+                              height="344"
+                              loading={index > 0 ? "lazy" : "eager"}
+                              fetchpriority={index > 0 ? "low" : "high"}
+                              alt={`${urlToHostname(data.url)} screenshot`}
+                              class="screenshot rounded-2xl border-2 border-white bg-white object-cover object-top shadow-hard"
+                            />
+                          </a>
+                        ) : (
                           <img
                             src={`https://res.cloudinary.com/wolstenh/image/upload/c_scale,w_560,f_auto,q_auto/${data.cloudinarySuffix}`}
-                            srcset={`https://res.cloudinary.com/wolstenh/image/upload/c_scale,w_560,f_auto,q_auto/${data.cloudinarySuffix} 1x, https://res.cloudinary.com/wolstenh/image/upload/c_scale,w_1120,f_auto,q_auto/${data.cloudinarySuffix} 2x`}
+                            srcset={`https://res.cloudinary.com/wolstenh/image/upload/c_scale,w_1120,f_auto,q_auto/${data.cloudinarySuffix} 2x`}
                             width="548"
                             height="344"
                             loading={index > 0 ? "lazy" : "eager"}
-                            fetchpriority={index > 0 ? "low" : "high"}
-                            alt={`${urlToHostname(data.url)} screenshot`}
-                            class="screenshot rounded-2xl border-2 border-white bg-white object-cover object-top shadow-hard"
+                            alt={
+                              data.url
+                                ? `${urlToHostname(data.url)} screenshot`
+                                : `${data.name} screenshot`
+                            }
+                            class="screenshot relative col-start-1 row-start-1 rounded-2xl border-2 border-white bg-white object-cover object-top shadow-hard"
                           />
-                        </a>
-                      ) : (
-                        <img
-                          src={`https://res.cloudinary.com/wolstenh/image/upload/c_scale,w_560,f_auto,q_auto/${data.cloudinarySuffix}`}
-                          srcset={`https://res.cloudinary.com/wolstenh/image/upload/c_scale,w_1120,f_auto,q_auto/${data.cloudinarySuffix} 2x`}
-                          width="548"
-                          height="344"
-                          loading={index > 0 ? "lazy" : "eager"}
-                          alt={
-                            data.url
-                              ? `${urlToHostname(data.url)} screenshot`
-                              : `${data.name} screenshot`
-                          }
-                          class="screenshot relative col-start-1 row-start-1 rounded-2xl border-2 border-white bg-white object-cover object-top shadow-hard"
-                        />
-                      )}
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div class={index % 2 !== 0 ? "col-start-1 row-start-1" : ""}>
+                  )}
+                  <div
+                    class={
+                      data.cloudinarySuffix && index % 2 !== 0
+                        ? "col-start-1 row-start-1"
+                        : ""
+                    }
+                  >
                     <h3 class="mb-4 font-serif text-2xl font-bold xl:mb-5 xl:text-4xl">
                       {data.name}
                     </h3>
