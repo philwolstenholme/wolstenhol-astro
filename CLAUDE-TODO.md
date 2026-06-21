@@ -5,3 +5,4 @@
 - [ ] Create a shared header that all the pages will use. Copy the 11ty header, it should link to each of the homepage sections using anchor links but also link to the standalone pages.
 - [ ] Copy the tweets component but make it show Bluesky posts to start with. Copy the existing approach as much as possible.
 - [ ] Copy the contact form page from the 11ty repo. I have already enabled Netlify form detection. Use Alpine for any JS validation. Use HTMX for any interaction with the sever side.
+- [ ] Copy the 11ty site's approach to using `content-visibility` to improve rendering performance.
