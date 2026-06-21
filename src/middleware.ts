@@ -1,26 +1,7 @@
-import { UAParser } from "ua-parser-js";
 import { defineMiddleware } from "astro:middleware";
+import { detectMobile } from "./helpers/detectMobile";
 
 const PAGINATION_PARAMS = ["githubStars", "posts", "readingList", "speaking"];
-
-function isMobileRequest(request: Request): boolean {
-  // Prefer Sec-CH-UA-Mobile client hint — precise and cheap.
-  const clientHint = request.headers.get("Sec-CH-UA-Mobile");
-  if (clientHint !== null) {
-    return clientHint === "?1";
-  }
-
-  // Fall back to UA sniffing when the client hint isn't sent.
-  const ua = request.headers.get("User-Agent");
-  if (ua) {
-    const { device } = UAParser(ua);
-    return (["mobile", "wearable"] as (typeof device.type)[]).includes(
-      device.type,
-    );
-  }
-
-  return false;
-}
 
 export const onRequest = defineMiddleware((context, next) => {
   const url = new URL(context.request.url);
@@ -33,7 +14,7 @@ export const onRequest = defineMiddleware((context, next) => {
     }
 
     // Serve the prerendered mobile variant to mobile visitors.
-    if (isMobileRequest(context.request)) {
+    if (detectMobile(context.request)) {
       return context.rewrite(new URL("/index-mobile", url));
     }
   }
