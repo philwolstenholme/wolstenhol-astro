@@ -6,15 +6,17 @@ import {
   grungeWallSrcSet,
   randomGrungeOpacity,
 } from "../../helpers/textures";
+import { longDateFormatter } from "../../helpers/longDateFormatter";
 
 const { item: post } = Astro.props as {
   item: CollectionEntry<"dev-to-posts">["data"];
 };
 
-// Same randomised grunge as the original's green blog cards. The overlay is
-// positioned inside an inner wrapper so the `<a>` itself stays unpositioned and
-// `expand-clickable-area`'s full-card click target keeps working.
 const grungeOpacity = randomGrungeOpacity();
+const dateStr = post.published_at || post.published_timestamp;
+const formattedDate = dateStr
+  ? longDateFormatter.format(new Date(dateStr))
+  : "";
 ---
 
 <li
@@ -42,11 +44,7 @@ const grungeOpacity = randomGrungeOpacity();
   <div class="row-span-1 p-4 border-t bg-medium/15 border-medium rounded-b">
     <div class="text-xs mb-2 text-gray-800">
       <span>
-        {
-          new Date(
-            post.published_at || post.published_timestamp || "",
-          ).toLocaleDateString()
-        }
+        {formattedDate}
         <span>·</span>
         {post.reading_time_minutes} min read
       </span>

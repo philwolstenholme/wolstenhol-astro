@@ -17,12 +17,7 @@ const { collection: collectionProp, isMobile } = Astro.props;
 
 const searchParam = "speaking";
 const anchor = "speaking";
-const itemsPerPage = getItemsPerPage({
-  astroRequest: Astro.request,
-  isMobile,
-  mobileItemsPerPage: 5,
-  desktopItemsPerPage: 12,
-});
+const itemsPerPage = getItemsPerPage({ astroRequest: Astro.request, isMobile });
 const collection = collectionProp || (await getCollection("speaking"));
 
 const items = collection.map((entry) => entry.data);

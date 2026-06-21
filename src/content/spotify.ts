@@ -3,21 +3,7 @@ import { defineCollection } from "astro:content";
 import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN } from "astro:env/server";
 import { compact, sampleSize } from "es-toolkit";
 
-// Genres to exclude — the 11ty site excluded these as "boring sounding".
 const EXCLUDED_GENRES = ["modern alternative rock", "modern rock", "alternative rock"];
-
-// Picks the first genre not already in usedGenres, then marks it as used.
-function pickGenreNotUsed(genres: string[], usedGenres: string[], index = 0): string | undefined {
-  if (index >= genres.length) {
-    return undefined;
-  }
-  const genre = genres[index];
-  if (!usedGenres.includes(genre)) {
-    usedGenres.push(genre);
-    return genre;
-  }
-  return pickGenreNotUsed(genres, usedGenres, index + 1);
-}
 
 export const spotify = defineCollection({
   loader: async () => {
@@ -67,14 +53,25 @@ export const spotify = defineCollection({
 
       const topArtists = topArtistsData.items;
 
-      // 3. Fetch the top track for every artist in parallel (market=GB matches the 11ty site).
+      // 3. Fetch the top track and audio features for every artist in parallel.
+      //    Audio features are optional — Spotify deprecated this endpoint for apps
+      //    created after Nov 2024, so errors are swallowed.
       const artists: SpotifyArtistWithTrack[] = await Promise.all(
         topArtists.map(async (artist) => {
           try {
             const data = (await spotifyFetch(`/artists/${artist.id}/top-tracks?market=GB`)) as {
               tracks: SpotifyTrack[];
             };
-            return { ...artist, top_track: data.tracks[0] ?? null };
+            const top_track = data.tracks[0] ?? null;
+            if (top_track?.id) {
+              try {
+                const features = await spotifyFetch(`/audio-features/${top_track.id}`);
+                (top_track as unknown as Record<string, unknown>).features = features;
+              } catch {
+                // silently skip — used only for BPM-driven card animation
+              }
+            }
+            return { ...artist, top_track };
           } catch (err) {
             console.error(`top-tracks for ${artist.name}:`, err);
             return { ...artist, top_track: null };
@@ -82,30 +79,14 @@ export const spotify = defineCollection({
         }),
       );
 
-      // 4. Fetch audio features for each top track in parallel (optional — Spotify
-      //    deprecated this endpoint for apps created after Nov 2024, so we swallow errors).
-      await Promise.all(
-        artists.map(async (artist) => {
-          if (!artist.top_track?.id) {
-            return;
-          }
-          try {
-            const features = await spotifyFetch(`/audio-features/${artist.top_track.id}`);
-            (artist.top_track as unknown as Record<string, unknown>).features = features;
-          } catch {
-            // silently skip — used only for BPM-driven card animation
-          }
-        }),
-      );
-
-      // 5. Pick one unique genre per artist, favouring the longest (most ridiculous) names.
-      //    Replicates the lodash-based logic from the 11ty site exactly.
+      // 4. Pick one unique genre per artist, favouring the longest (most ridiculous) names.
       const usedGenres = [...EXCLUDED_GENRES];
       const artistGenres = compact(
         artists.map((artist) => {
           const sortedGenres = [...artist.genres].sort((a, b) => b.length - a.length);
-          const genre = pickGenreNotUsed(sortedGenres, usedGenres);
+          const genre = sortedGenres.find((g) => !usedGenres.includes(g));
           if (genre && genre.length > 4) {
+            usedGenres.push(genre);
             return { artist: artist.name, genre };
           }
           return undefined;

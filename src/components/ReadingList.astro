@@ -15,12 +15,7 @@ const { isMobile } = Astro.props;
 
 const searchParam = "readingList";
 const anchor = "reading";
-const itemsPerPage = getItemsPerPage({
-  astroRequest: Astro.request,
-  isMobile,
-  mobileItemsPerPage: 5,
-  desktopItemsPerPage: 12,
-});
+const itemsPerPage = getItemsPerPage({ astroRequest: Astro.request, isMobile });
 
 const [devToCollection, airtableCollection] = await Promise.all([
   getCollection("dev-to-reading-list"),
