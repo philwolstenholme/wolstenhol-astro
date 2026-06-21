@@ -126,6 +126,19 @@
     opacity: var(--opacity, 0.3);
   }
 
+  .text-fill-transparent {
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+  }
+
+  .links-underline a {
+    text-decoration: underline;
+  }
+
+  .work-card__image-bg {
+    background-color: var(--brand-colour, rgb(252, 211, 77));
+  }
+
   /* Highlighter-marker effect, ported wholesale from wolstenhol.me.
    * https://max.hn/thoughts/how-to-create-a-highlighter-marker-effect-in-css */
   mark,
