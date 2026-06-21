@@ -315,7 +315,7 @@ button {
  * Uses the same formula as constrain-content's 1fr side columns so the
  * first item lines up with headings and body text above the scroller. */
 .scroller-x-pad {
-  padding-inline: max(var(--space-md), (100% - var(--content-max-width)) / 2);
+  padding-inline: max(var(--space-md), (100vw - var(--content-max-width)) / 2);
 }
 
 [x-cloak] {
