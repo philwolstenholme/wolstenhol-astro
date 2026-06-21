@@ -11,7 +11,7 @@ export const portfolio = defineCollection({
     tags: z.union([z.string(), z.array(z.string())]).optional(),
     work_tags: z.array(z.string()).optional(),
     happyWithScreenshot: z.boolean().optional(),
-    cloudinarySuffix: z.string(),
+    cloudinarySuffix: z.string().optional(),
     permalink: z.union([z.boolean(), z.string()]).optional(),
     weight: z.number().optional(),
     prevent_link: z.boolean().optional(),

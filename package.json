@@ -43,6 +43,8 @@
     "@astrojs/check": "^0.9.9",
     "@types/alpinejs": "^3.13.11",
     "@types/canvas-confetti": "^1.9.0",
+    "capture-website": "^5.1.0",
+    "front-matter": "^4.0.2",
     "nano-staged": "^1.0.2",
     "netlify-cli": "^26.1.0",
     "oxfmt": "^0.55.0",
