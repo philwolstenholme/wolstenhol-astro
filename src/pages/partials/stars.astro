@@ -12,7 +12,7 @@ const searchParam = "githubStars";
 const htmxPartialPath = "/partials/stars";
 const itemsPerPage =
   Number(Astro.url.searchParams.get("perPage")) ||
-  getItemsPerPage({ astroRequest: Astro.request });
+  getItemsPerPage({ isMobile: Astro.locals.isMobile });
 
 const collection = await getCollection("github-stars");
 const items = collection.map((entry) => entry.data);

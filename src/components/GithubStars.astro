@@ -14,11 +14,12 @@ import PaginatedGrid from "./PaginatedGrid.astro";
 import Lede from "./Lede.astro";
 import GithubStarCard from "./items/GithubStarCard.astro";
 
-const { collection: collectionProp, isMobile } = Astro.props;
+const { collection: collectionProp, isMobile: isMobileProp } = Astro.props;
 
 const searchParam = "githubStars";
 const anchor = "stars";
-const itemsPerPage = getItemsPerPage({ astroRequest: Astro.request, isMobile });
+const isMobile = isMobileProp ?? Astro.locals.isMobile ?? false;
+const itemsPerPage = getItemsPerPage({ isMobile });
 const collection = collectionProp || (await getCollection("github-stars"));
 
 const items = collection.map((entry) => entry.data);

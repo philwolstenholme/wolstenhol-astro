@@ -11,11 +11,12 @@ interface Props {
   isMobile?: boolean;
 }
 
-const { isMobile } = Astro.props;
+const { isMobile: isMobileProp } = Astro.props;
 
 const searchParam = "readingList";
 const anchor = "reading";
-const itemsPerPage = getItemsPerPage({ astroRequest: Astro.request, isMobile });
+const isMobile = isMobileProp ?? Astro.locals.isMobile ?? false;
+const itemsPerPage = getItemsPerPage({ isMobile });
 
 const [devToCollection, airtableCollection] = await Promise.all([
   getCollection("dev-to-reading-list"),

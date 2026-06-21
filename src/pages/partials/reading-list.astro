@@ -13,7 +13,7 @@ const searchParam = "readingList";
 const htmxPartialPath = "/partials/reading-list";
 const itemsPerPage =
   Number(Astro.url.searchParams.get("perPage")) ||
-  getItemsPerPage({ astroRequest: Astro.request });
+  getItemsPerPage({ isMobile: Astro.locals.isMobile });
 
 const [devToCollection, airtableCollection] = await Promise.all([
   getCollection("dev-to-reading-list"),

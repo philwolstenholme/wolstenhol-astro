@@ -12,7 +12,7 @@ const searchParam = "speaking";
 const htmxPartialPath = "/partials/speaking";
 const itemsPerPage =
   Number(Astro.url.searchParams.get("perPage")) ||
-  getItemsPerPage({ astroRequest: Astro.request });
+  getItemsPerPage({ isMobile: Astro.locals.isMobile });
 
 const collection = await getCollection("speaking");
 const items = collection.map((entry) => entry.data);
