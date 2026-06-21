@@ -3,6 +3,11 @@
   [headers.values]
     Netlify-Vary = "query=githubStars|posts|readingList,header=Sec-CH-UA-Mobile|User-Agent,cookie=hideWipBanner"
 
+[[headers]]
+  for = "/index-mobile"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+
 [[redirects]]
   from = "/proxy/cloudinary/*"
   to = "https://res.cloudinary.com/wolstenh/:splat"

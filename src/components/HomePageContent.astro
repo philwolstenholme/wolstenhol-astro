@@ -14,6 +14,12 @@ import Places from "./Places.astro";
 import SpotifyMusic from "./SpotifyMusic.astro";
 import Instagram from "./Instagram.astro";
 
+interface Props {
+  isMobile?: boolean;
+}
+
+const { isMobile } = Astro.props;
+
 // Fetch all collections in parallel for better performance
 const [
   devToPostsCollection,
@@ -145,9 +151,9 @@ const spotifyData = spotifyCollection[0];
         </Section>
 
         <DevToPosts collection={devToPostsCollection} />
-        <GithubStars collection={githubStarsCollection} />
-        <DevToReadingList collection={readingListCollection} />
-        <Speaking collection={speakingCollection} />
+        <GithubStars collection={githubStarsCollection} isMobile={isMobile} />
+        <DevToReadingList isMobile={isMobile} />
+        <Speaking collection={speakingCollection} isMobile={isMobile} />
         <SpotifyMusic data={spotifyData} />
         <Instagram collection={instagramCollection} />
         <Places />

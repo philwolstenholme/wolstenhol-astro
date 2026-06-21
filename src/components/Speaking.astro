@@ -6,18 +6,20 @@ import { Section } from "./Section";
 
 interface Props {
   collection?: CollectionEntry<"speaking">[];
+  isMobile?: boolean;
 }
 import { getItemsPerPage } from "../helpers/getItemsPerPage";
 import PaginatedGrid from "./PaginatedGrid.astro";
 import Lede from "./Lede.astro";
 import SpeakingCard from "./items/SpeakingCard.astro";
 
-const { collection: collectionProp } = Astro.props;
+const { collection: collectionProp, isMobile } = Astro.props;
 
 const searchParam = "speaking";
 const anchor = "speaking";
 const itemsPerPage = getItemsPerPage({
   astroRequest: Astro.request,
+  isMobile,
   mobileItemsPerPage: 5,
   desktopItemsPerPage: 12,
 });
