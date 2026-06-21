@@ -5,11 +5,8 @@ import Content from "../components/Content.astro";
 import PaginatedGrid from "../components/PaginatedGrid.astro";
 import GithubStarCard from "../components/items/GithubStarCard.astro";
 import { getItemsPerPage } from "../helpers/getItemsPerPage";
-import { setupPartial } from "../helpers/setupPartial";
 
 export const prerender = false;
-
-setupPartial(Astro, "githubStars", 0);
 
 const itemsPerPage = getItemsPerPage({
   isMobile: Astro.locals.isMobile,
