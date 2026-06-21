@@ -48,25 +48,31 @@ const arrowRight =
     <button
       type="button"
       class={clsx(
-        "group absolute inset-y-0 left-0 z-10 hidden w-10 items-center justify-center transform-gpu transition-all md:flex",
+        "group absolute scroller-x-pad inset-y-0 left-0 z-10 hidden w-10 items-center justify-center transform-gpu transition-all md:flex",
         themeArrowClasses[theme],
       )}
       x-cloak
-      x-bind:class="{ 'opacity-0 -translate-x-full pointer-events-none': !overflowing.left }"
+      x-bind:class="{ 'opacity-0 pointer-events-none': !overflowing.left }"
       x-bind:inert="!overflowing.left"
       x-on:click="scrollLeft()"
     >
       <span class="sr-only">Back</span>
-      <span class="rounded bg-white/10 p-2">
-        <svg
-          class="block h-auto w-8 group-hocus:rotate-6 rotate-3 transform-gpu"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 84.663887 42.437332"
-          focusable="false"
-          role="presentation"
+      <span
+        class="rounded-full bg-white/40 p-0.75 aspect-square backdrop-blur-[2px] shadow-hard"
+      >
+        <span
+          class="bg-white p-2 rounded-full grid place-content-center aspect-square"
         >
-          <path class="fill-current" d={arrowLeft}></path>
-        </svg>
+          <svg
+            class="block h-auto w-8 group-hocus:-rotate-6 -rotate-3 transform-gpu"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 84.663887 42.437332"
+            focusable="false"
+            role="presentation"
+          >
+            <path class="fill-current" d={arrowLeft}></path>
+          </svg></span
+        >
       </span>
     </button>
 
@@ -98,24 +104,30 @@ const arrowRight =
     <button
       type="button"
       class={clsx(
-        "group absolute inset-y-0 right-0 z-10 hidden w-10 items-center justify-center transform-gpu transition-all md:flex",
+        "group absolute scroller-x-pad inset-y-0 right-0 z-10 hidden w-10 items-center justify-center transform-gpu transition-all md:flex",
         themeArrowClasses[theme],
       )}
-      x-bind:class="{ 'opacity-0 translate-x-full pointer-events-none': !overflowing.right }"
+      x-bind:class="{ 'opacity-0 pointer-events-none': !overflowing.right }"
       x-bind:inert="!overflowing.right"
       x-on:click="scrollRight()"
     >
       <span class="sr-only">Forward</span>
-      <span class="rounded bg-white/10 p-2">
-        <svg
-          class="block h-auto w-8 group-hocus:-rotate-6 -rotate-3 transform-gpu"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 84.663887 42.437332"
-          focusable="false"
-          role="presentation"
+      <span
+        class="rounded-full bg-white/40 p-0.75 aspect-square backdrop-blur-[2px] shadow-hard"
+      >
+        <span
+          class="bg-white p-2 rounded-full grid place-content-center aspect-square"
         >
-          <path class="fill-current" d={arrowRight}></path>
-        </svg>
+          <svg
+            class="block h-auto w-8 group-hocus:-rotate-6 -rotate-3 transform-gpu"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 84.663887 42.437332"
+            focusable="false"
+            role="presentation"
+          >
+            <path class="fill-current" d={arrowRight}></path>
+          </svg></span
+        >
       </span>
     </button>
   </div>

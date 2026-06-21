@@ -28,7 +28,7 @@ const Tag = (hasHref ? "a" : "div") as "a" | "div";
 
 {
   isThumbnail ? (
-    <li class={outerClass}>
+    <div class={outerClass}>
       <Tag href={hasHref ? item.href : undefined} class={containerClass}>
         <h3 class="sr-only">{item.talkTitle}</h3>
         <img
@@ -56,9 +56,9 @@ const Tag = (hasHref ? "a" : "div") as "a" | "div";
           </dl>
         </div>
       </Tag>
-    </li>
+    </div>
   ) : (
-    <li class={outerClass}>
+    <div class={outerClass}>
       <figure class="stack grid-cols-[1fr] shadow-hard border border-purple-900 rounded bg-purple-700 text-white contain-content relative grid h-full">
         <img
           src={grungeWallSrc}
@@ -86,6 +86,6 @@ const Tag = (hasHref ? "a" : "div") as "a" | "div";
           </figcaption>
         </div>
       </figure>
-    </li>
+    </div>
   )
 }
