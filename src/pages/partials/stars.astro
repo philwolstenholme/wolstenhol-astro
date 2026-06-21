@@ -1,15 +1,9 @@
 ---
 export const prerender = false;
 
-Astro.response.headers.set(
-  "Cache-Control",
-  "public, max-age=300, stale-while-revalidate=3600",
-);
-Astro.response.headers.set("Netlify-CDN-Cache-Control", "s-maxage=31536000");
-Astro.response.headers.set("X-Robots-Tag", "noindex");
-
 import { getCollection } from "astro:content";
-import { paginate, buildPageHref } from "../../helpers/paginate";
+import { paginate } from "../../helpers/paginate";
+import { setupPartial } from "../../helpers/setupPartial";
 import { getItemsPerPage } from "../../helpers/getItemsPerPage";
 import PaginatedGrid from "../../components/PaginatedGrid.astro";
 import GithubStarCard from "../../components/items/GithubStarCard.astro";
@@ -18,11 +12,7 @@ const searchParam = "githubStars";
 const htmxPartialPath = "/partials/stars";
 const itemsPerPage =
   Number(Astro.url.searchParams.get("perPage")) ||
-  getItemsPerPage({
-    astroRequest: Astro.request,
-    mobileItemsPerPage: 5,
-    desktopItemsPerPage: 12,
-  });
+  getItemsPerPage({ astroRequest: Astro.request });
 
 const collection = await getCollection("github-stars");
 const items = collection.map((entry) => entry.data);
@@ -35,18 +25,7 @@ const { index } = paginate({
   onlyFullPages: true,
 });
 
-const htmxCurrentUrl = Astro.request.headers.get("HX-Current-Url");
-const pageUrl = htmxCurrentUrl ? new URL(htmxCurrentUrl) : undefined;
-if (htmxCurrentUrl) {
-  Astro.response.headers.set(
-    "HX-Replace-Url",
-    buildPageHref({
-      currentUrl: new URL(htmxCurrentUrl),
-      param: searchParam,
-      index,
-    }),
-  );
-}
+const pageUrl = setupPartial(Astro, searchParam, index);
 ---
 
 <PaginatedGrid

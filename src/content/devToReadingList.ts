@@ -25,10 +25,9 @@ export const devToReadingList = defineCollection({
 
       const readingList = await response.json();
 
-      // Map the response items to match our schema
       return readingList.map((item: any) => ({
         ...item,
-        id: String(item.id), // Convert ID to string to match schema
+        id: String(item.id),
       }));
     } catch (error) {
       console.error("Error fetching DEV.to reading list:", error);

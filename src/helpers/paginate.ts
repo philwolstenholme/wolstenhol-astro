@@ -15,9 +15,7 @@ export const buildPageHref = ({
   anchor,
   index,
 }: PageHrefOptions): string => {
-  const url = currentUrl
-    ? new URL(typeof currentUrl === "string" ? currentUrl : currentUrl.toString())
-    : new URL(base, "");
+  const url = currentUrl ? new URL(currentUrl.toString()) : new URL(base, "");
 
   const searchParams = url.searchParams;
 
@@ -89,12 +87,10 @@ export const paginate = <T>({
 
   const chunks = chunk(collectionData, itemsPerPage);
 
-  let index = 0;
   const parsedPaginationParam = Number(url.searchParams.get(searchParam));
-
-  if (Number.isInteger(parsedPaginationParam)) {
-    index = clamp(parsedPaginationParam, 0, chunks.length - 1);
-  }
+  const index = Number.isInteger(parsedPaginationParam)
+    ? clamp(parsedPaginationParam, 0, Math.max(chunks.length - 1, 0))
+    : 0;
 
   const hasPrev = index > 0;
   const hasNext = index < chunks.length - 1;

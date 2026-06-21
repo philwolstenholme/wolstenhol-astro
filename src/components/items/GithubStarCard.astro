@@ -10,14 +10,11 @@ const hasSensibleDescription = Boolean(
   star.description && star.description.length > 1,
 );
 
-const yearsOld =
-  new Date().getFullYear() - new Date(star.created_at).getFullYear();
-const isAnniversary =
-  yearsOld > 0 &&
-  new Date().getMonth() === new Date(star.created_at).getMonth();
-const isNew =
-  yearsOld === 0 &&
-  new Date().getMonth() === new Date(star.created_at).getMonth();
+const now = new Date();
+const createdAt = new Date(star.created_at);
+const yearsOld = now.getFullYear() - createdAt.getFullYear();
+const isAnniversary = yearsOld > 0 && now.getMonth() === createdAt.getMonth();
+const isNew = yearsOld === 0 && now.getMonth() === createdAt.getMonth();
 
 // Generate stable pseudo-random values based on star ID for consistent animations
 const hashCode = (str: string) => {

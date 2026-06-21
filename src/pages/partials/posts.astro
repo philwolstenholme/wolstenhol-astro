@@ -1,15 +1,9 @@
 ---
 export const prerender = false;
 
-Astro.response.headers.set(
-  "Cache-Control",
-  "public, max-age=300, stale-while-revalidate=3600",
-);
-Astro.response.headers.set("Netlify-CDN-Cache-Control", "s-maxage=31536000");
-Astro.response.headers.set("X-Robots-Tag", "noindex");
-
 import { getCollection } from "astro:content";
-import { paginate, buildPageHref } from "../../helpers/paginate";
+import { paginate } from "../../helpers/paginate";
+import { setupPartial } from "../../helpers/setupPartial";
 import PaginatedGrid from "../../components/PaginatedGrid.astro";
 import DevToPostCard from "../../components/items/DevToPostCard.astro";
 
@@ -28,20 +22,7 @@ const { index } = paginate({
   onlyFullPages: true,
 });
 
-// Tell the browser to update the URL to match the server-side pagination format.
-// HX-Current-Url is sent automatically by HTMX with every request.
-const htmxCurrentUrl = Astro.request.headers.get("HX-Current-Url");
-const pageUrl = htmxCurrentUrl ? new URL(htmxCurrentUrl) : undefined;
-if (htmxCurrentUrl) {
-  Astro.response.headers.set(
-    "HX-Replace-Url",
-    buildPageHref({
-      currentUrl: new URL(htmxCurrentUrl),
-      param: searchParam,
-      index,
-    }),
-  );
-}
+const pageUrl = setupPartial(Astro, searchParam, index);
 ---
 
 <PaginatedGrid
