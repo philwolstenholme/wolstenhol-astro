@@ -55,13 +55,13 @@
 
 ##  Portfolio
 
-- [ ] Portfolio item screenshot
-- [ ] Typography setup
-- [ ] Alternating grid
+- [x] Portfolio item screenshot
+- [x] Typography setup
+- [x] Alternating grid
 
 ##  Github stars
 
-- [ ] Starred repo component
+- [x] Starred repo component
 
 ## Contact
 
