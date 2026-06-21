@@ -9,6 +9,7 @@ const {
   searchParam,
   htmxPartialPath,
   pageUrl,
+  itemsPerPage,
 } = Astro.props;
 
 // When rendered inside a partial response, Astro.request.url is the partial
@@ -43,7 +44,7 @@ const htmxTarget = htmxPartialPath
         })}
         hx-get={
           htmxPartialPath
-            ? buildPartialHref(htmxPartialPath, searchParam, prevIndex)
+            ? buildPartialHref(htmxPartialPath, searchParam, prevIndex, itemsPerPage)
             : undefined
         }
         hx-target={htmxTarget}
@@ -71,7 +72,7 @@ const htmxTarget = htmxPartialPath
         })}
         hx-get={
           htmxPartialPath
-            ? buildPartialHref(htmxPartialPath, searchParam, nextIndex)
+            ? buildPartialHref(htmxPartialPath, searchParam, nextIndex, itemsPerPage)
             : undefined
         }
         hx-target={htmxTarget}
