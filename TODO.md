@@ -12,16 +12,16 @@
 - [ ] Lede component
 - [ ] Horizontal scroller component
 - [ ] Footer
-- [ ] Big non homepage heading
+- [x] Big non homepage heading
 - [x] Highlighted text component
 - [ ] `content-visibility` bits
 - [ ] Bring background images locally or use correct Cloudinary proxy URL
 - [ ] Icon system for social media links, section headers etc
   - [ ] <https://github.com/natemoo-re/astro-icon>
-- [ ] List truncator for reading list (use HTMLX for partials?)
-- [ ] Custom fonts
-- [ ] Font subsetting
-- [ ] Favicons
+- [x] List truncator for reading list (use HTMLX for partials?)
+- [x] Custom fonts
+- [x] Font subsetting
+- [x] Favicons
 - [ ] Workbox/PWA?
   - [ ] Refresh for update if new version of site is available
 - [ ] OpenGraph images
