@@ -6,12 +6,14 @@ import {
   randomGrungeOpacity,
 } from "../../helpers/textures";
 
-const { item } = Astro.props;
+const { item, class: className } = Astro.props;
 
 const isThumbnail = item.type === "thumbnail";
 const hasHref = !!item.href;
-const outerClass =
-  "contain-content rounded shadow-hard overflow-hidden bg-purple-700";
+const outerClass = clsx(
+  "contain-content rounded shadow-hard overflow-hidden bg-purple-700",
+  className,
+);
 
 const grungeOpacity = randomGrungeOpacity();
 const imgClass =

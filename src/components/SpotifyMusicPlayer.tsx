@@ -377,7 +377,7 @@ export function SpotifyMusicPlayer({ artists }: Props) {
         type="button"
         inert={!overflowing.left ? true : undefined}
         class={clsx(
-          "group absolute -left-12 bottom-5 top-0 hidden w-8 translate-x-12 transform-gpu transition-all md:block",
+          "group absolute -left-12 bottom-5 top-0 hidden w-8 transform-gpu transition-all md:block",
           "text-green-700 hocus:text-green-800",
           !overflowing.left && "pointer-events-none opacity-0 translate-x-12",
         )}
@@ -446,7 +446,7 @@ export function SpotifyMusicPlayer({ artists }: Props) {
         type="button"
         inert={!overflowing.right ? true : undefined}
         class={clsx(
-          "group absolute -right-12 bottom-5 top-0 hidden w-8 -translate-x-12 transform-gpu transition-all md:block",
+          "group absolute -right-12 bottom-5 top-0 hidden w-8 transform-gpu transition-all md:block",
           "text-green-700 hocus:text-green-800",
           !overflowing.right && "pointer-events-none opacity-0 -translate-x-12",
         )}

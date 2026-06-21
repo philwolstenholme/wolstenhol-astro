@@ -3,24 +3,16 @@ import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
 import { Section } from "./Section";
+import Lede from "./Lede.astro";
+import SpeakingCard from "./items/SpeakingCard.astro";
+import HorizontalScroller from "./HorizontalScroller.astro";
 
 interface Props {
   collection?: CollectionEntry<"speaking">[];
-  isMobile?: boolean;
 }
-import { getItemsPerPage } from "../helpers/getItemsPerPage";
-import PaginatedGrid from "./PaginatedGrid.astro";
-import Lede from "./Lede.astro";
-import SpeakingCard from "./items/SpeakingCard.astro";
 
-const { collection: collectionProp, isMobile: isMobileProp } = Astro.props;
-
-const searchParam = "speaking";
-const anchor = "speaking";
-const isMobile = isMobileProp ?? Astro.locals.isMobile ?? false;
-const itemsPerPage = getItemsPerPage({ isMobile });
+const { collection: collectionProp } = Astro.props;
 const collection = collectionProp || (await getCollection("speaking"));
-
 const items = collection.map((entry) => entry.data);
 ---
 
@@ -29,14 +21,22 @@ const items = collection.map((entry) => entry.data);
     Talks I've given at conferences or other events. I'll link to slides or
     videos where they are available.
   </Lede>
-  <div class="mt-8">
-    <PaginatedGrid
-      items={items}
-      itemsPerPage={itemsPerPage}
-      searchParam={searchParam}
-      anchor={anchor}
-      itemComponent={SpeakingCard}
-      htmxPartialPath="/partials/speaking"
-    />
-  </div></Section
->
+  <HorizontalScroller
+    label="Public speaking that I've done"
+    theme="speaking"
+    class="mt-12"
+  >
+    {
+      items.map((item) => (
+        <SpeakingCard
+          item={item}
+          class={
+            item.type === "thumbnail"
+              ? "snap-start shrink-0 grow-0 w-68"
+              : "snap-start shrink-0 grow-0 w-91.25"
+          }
+        />
+      ))
+    }
+  </HorizontalScroller>
+</Section>
