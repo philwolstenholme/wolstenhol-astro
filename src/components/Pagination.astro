@@ -44,7 +44,12 @@ const htmxTarget = htmxPartialPath
         })}
         hx-get={
           htmxPartialPath
-            ? buildPartialHref(htmxPartialPath, searchParam, prevIndex, itemsPerPage)
+            ? buildPartialHref(
+                htmxPartialPath,
+                searchParam,
+                prevIndex,
+                itemsPerPage,
+              )
             : undefined
         }
         hx-target={htmxTarget}
@@ -72,7 +77,12 @@ const htmxTarget = htmxPartialPath
         })}
         hx-get={
           htmxPartialPath
-            ? buildPartialHref(htmxPartialPath, searchParam, nextIndex, itemsPerPage)
+            ? buildPartialHref(
+                htmxPartialPath,
+                searchParam,
+                nextIndex,
+                itemsPerPage,
+              )
             : undefined
         }
         hx-target={htmxTarget}
