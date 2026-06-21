@@ -6,6 +6,7 @@ import { Section } from "./Section";
 
 interface Props {
   collection?: CollectionEntry<"github-stars">[];
+  isMobile?: boolean;
 }
 import { getItemsPerPage } from "../helpers/getItemsPerPage";
 import { StyledTextLink } from "./StyledTextLink";
@@ -13,12 +14,13 @@ import PaginatedGrid from "./PaginatedGrid.astro";
 import Lede from "./Lede.astro";
 import GithubStarCard from "./items/GithubStarCard.astro";
 
-const { collection: collectionProp } = Astro.props;
+const { collection: collectionProp, isMobile } = Astro.props;
 
 const searchParam = "githubStars";
 const anchor = "stars";
 const itemsPerPage = getItemsPerPage({
   astroRequest: Astro.request,
+  isMobile,
   mobileItemsPerPage: 5,
   desktopItemsPerPage: 12,
 });
