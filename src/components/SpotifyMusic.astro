@@ -13,10 +13,10 @@ const { data } = Astro.props;
 
 if (!data) return;
 
-const { artists, genres } = data.data;
+const { artists, randomGenres } = data.data;
 ---
 
 <Section heading="Music">
-  <SpotifyGenresLede genres={genres} />
+  <SpotifyGenresLede genres={randomGenres} />
   <SpotifyMusicPlayer client:visible artists={artists as SpotifyArtist[]} />
 </Section>
