@@ -1,7 +1,7 @@
 import { z } from "astro/zod";
 import { defineCollection } from "astro:content";
 import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN } from "astro:env/server";
-import { sampleSize, compact } from "es-toolkit";
+import { compact } from "es-toolkit";
 
 // Genres to exclude — the 11ty site excluded these as "boring sounding".
 const EXCLUDED_GENRES = ["modern alternative rock", "modern rock", "alternative rock"];
@@ -112,11 +112,11 @@ export const spotify = defineCollection({
         }),
       );
 
-      const randomGenres = sampleSize(artistGenres, 6);
+      const genres = artistGenres.slice(0, 6);
 
-      console.log(`Spotify: ${artists.length} artists, ${randomGenres.length} genres`);
+      console.log(`Spotify: ${artists.length} artists, ${genres.length} genres`);
 
-      return [{ id: "data", artists, randomGenres }];
+      return [{ id: "data", artists, genres }];
     } catch (error) {
       console.error("Spotify fetch failed:", error);
       return [];
@@ -124,7 +124,7 @@ export const spotify = defineCollection({
   },
   schema: z.object({
     artists: z.array(z.unknown()),
-    randomGenres: z.array(
+    genres: z.array(
       z.object({
         artist: z.string(),
         genre: z.string(),

@@ -3,9 +3,8 @@ import { createHmac } from "crypto";
 import { z } from "astro/zod";
 import { defineCollection } from "astro:content";
 import { GOOGLE_MAPS_KEY, GOOGLE_MAPS_SECRET, FOURSQUARE_OAUTH_TOKEN } from "astro:env/server";
-import { sampleSize } from "es-toolkit";
 
-const SAMPLE_SIZE = 9;
+const PLACES_COUNT = 9;
 
 function signGoogleMapsUrl(url: string, secret: string): string {
   const urlObj = new URL(url);
@@ -49,7 +48,9 @@ export const places = defineCollection({
 
     const venues: any[] = data.response?.venues?.items ?? [];
 
-    return sampleSize(venues, SAMPLE_SIZE).map((v) => ({
+    const sortedVenues = [...venues].sort((a, b) => (b.ratedAt ?? 0) - (a.ratedAt ?? 0));
+
+    return sortedVenues.slice(0, PLACES_COUNT).map((v) => ({
       id: v.id,
       name: v.name,
       lat: v.location.lat,
