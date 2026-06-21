@@ -13,3 +13,4 @@ Tick items off as you complete them.
 - [ ] Look for chances to use more modern CSS features. To get ideas, check 'CSS wrapped' blog posts like <https://developer.chrome.com/blog/css-wrapped-2025> and <https://developer.chrome.com/blog/css-wrapped-2024> and <https://developer.chrome.com/blog/css-wrapped-2023>
 - [ ] Look for ways to replace our use of Preact with Alpine, implement the best option.
 - [ ] Add a bit of randomised grunge to the work card screenshots, like the maps images have.
+- [ ] Look for chances to simplify or shorten the codebase by using es-toolkit helpers. Look for sorting and filtering code and focus on these places first.
