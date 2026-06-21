@@ -107,7 +107,7 @@ function MusicCard({
       {keyHint && (
         <div
           aria-hidden="true"
-          class="absolute top-2 right-2 z-10 flex h-5 w-5 items-center justify-center rounded border border-yellow-300/60 text-xs font-bold text-yellow-300 opacity-0 transition-opacity duration-150 group-[.keyboard-active]/player:opacity-100"
+          class="absolute top-2 right-2 z-10 hidden h-5 w-5 items-center justify-center rounded border border-yellow-300/60 text-xs font-bold text-yellow-300 opacity-0 transition-opacity duration-150 group-[.keyboard-active]/player:opacity-100 pointer-fine:flex"
         >
           {keyHint}
         </div>
@@ -483,7 +483,7 @@ export function SpotifyMusicPlayer({ artists }: Props) {
         Spotify API. I also use the Spotify API to get the tempo/BPM of the preview song, and I use
         this to influence the speed that a card bops at while it&rsquo;s playing.
       </p>
-      <p class="mt-2 pb-0.5 text-xs opacity-90">
+      <p class="mt-2 hidden pb-0.5 text-xs opacity-90 pointer-fine:block">
         Press the pause icon or the{" "}
         <kbd class="rounded border border-gray-300 bg-white p-0.5">esc</kbd> key to stop. Hover or
         focus this section, then press{" "}
