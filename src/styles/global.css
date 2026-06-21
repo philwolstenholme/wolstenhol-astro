@@ -110,8 +110,18 @@ html {
 
   .hue-rotate,
   .hue-rotate-links a {
-    animation: hue-rotate 30s infinite;
+    animation: hue-spin 30s infinite;
     animation-delay: 10s;
+    /* pointer-local on the header writes --live-local-pointer-x-ratio and
+       --live-local-pointer-inside; both default to 0 when unset, so the
+       pointer contribution drops out cleanly on elements outside the header
+       or in browsers/devices where pointer-local isn't bound. */
+    filter: hue-rotate(
+      calc(
+        var(--hue-angle) + var(--live-local-pointer-x-ratio, 0) * 180deg *
+          var(--live-local-pointer-inside, 0)
+      )
+    );
   }
 
   .reading-list-link {
@@ -185,12 +195,15 @@ html {
   color: black;
 }
 
-@keyframes hue-rotate {
-  0% {
-    filter: hue-rotate(0deg);
-  }
-  100% {
-    filter: hue-rotate(360deg);
+@property --hue-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes hue-spin {
+  to {
+    --hue-angle: 360deg;
   }
 }
 

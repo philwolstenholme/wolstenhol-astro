@@ -20,9 +20,34 @@ if (Astro.response) {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-props-for="network">
   <head>
     <meta charset="UTF-8" />
+    <script is:inline>
+      (function () {
+        "use strict";
+        var o = {
+          constPrefix: "--const-",
+          root: typeof document < "u" ? document.documentElement : void 0,
+        };
+        function s() {
+          let i = o.root,
+            t = (n, r) => i.style.setProperty(o.constPrefix + n, String(r)),
+            e = document.createElement("div");
+          ((e.style.cssText =
+            "position:absolute;top:-9999px;width:100px;height:100px;overflow:scroll;visibility:hidden"),
+            (document.body ?? i).appendChild(e),
+            t("scrollbar-w", e.offsetWidth - e.clientWidth),
+            (e.style.scrollbarWidth = "thin"),
+            t("scrollbar-thin-w", e.offsetWidth - e.clientWidth),
+            e.remove(),
+            t("dpr", window.devicePixelRatio || 1),
+            t("cores", navigator.hardwareConcurrency || 0),
+            t("mem", navigator.deviceMemory || 0));
+        }
+        typeof document < "u" && s();
+      })();
+    </script>
     <meta name="viewport" content="width=device-width" />
     <link
       rel="apple-touch-icon"
