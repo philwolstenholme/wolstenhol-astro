@@ -21,18 +21,19 @@ const posts = collection;
 <Section hasScroller heading="Photos">
   <Lede>Photos and videos from Instagram.</Lede>
 
-  <HorizontalScroller
-    label="Instagram posts"
-    theme="instagram"
-    class="mt-12"
-    scrollFull={true}
-  >
-    {
-      posts.map((entry) => (
-        <li class="snap-start shrink-0 w-91.25">
-          <InstagramCard post={entry.data} />
-        </li>
-      ))
-    }
-  </HorizontalScroller>
+  <div class="col-[full] mt-12">
+    <HorizontalScroller
+      label="Instagram posts"
+      theme="instagram"
+      scrollFull={true}
+    >
+      {
+        posts.map((entry) => (
+          <li class="snap-start shrink-0 w-91.25">
+            <InstagramCard post={entry.data} />
+          </li>
+        ))
+      }
+    </HorizontalScroller>
+  </div>
 </Section>
