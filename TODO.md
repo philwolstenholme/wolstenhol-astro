@@ -46,8 +46,8 @@
 - [x] Diagonal section divider (clip path?)
 - [x] Reading list item component
 - [x] Speaking component
-- [ ] Music player component
-- [ ] Instagram card
+- [x] Music player component
+- [x] Instagram card
 - [ ] Bluesky post
 - [ ] Mastodon post
 - [ ] Twitter post
