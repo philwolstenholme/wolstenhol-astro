@@ -4,6 +4,10 @@
   --outline-size: max(4px, 0.08em);
 }
 
+html {
+  scroll-padding-top: max(20px, 5vh);
+}
+
 /* Hover *and* focus in one go, matching the original wolstenhol.me site. A lot
  * of the card interactions (lifting captions, fading talk thumbnails, swapping
  * background colours) hang off this variant. */
