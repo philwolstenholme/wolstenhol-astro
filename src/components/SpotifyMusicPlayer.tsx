@@ -1,6 +1,8 @@
 import clsx from "clsx";
 import { useState, useEffect, useRef } from "preact/hooks";
 
+import { ScrollerButton } from "./ScrollerButton";
+
 interface SpotifyImage {
   url: string;
   width: number;
@@ -469,13 +471,9 @@ export function SpotifyMusicPlayer({ artists }: Props) {
           )}
         >
           <span>There&rsquo;s more!</span>
-          <button
-            type="button"
-            class="shadow-hard hocus:bg-green-600 ml-1 rounded bg-green-700 px-2 py-1 font-bold text-white transition-colors"
-            onClick={scrollRight}
-          >
+          <ScrollerButton class="ml-1" onClick={scrollRight}>
             scroll this way <span aria-hidden="true">➜</span>
-          </button>
+          </ScrollerButton>
         </div>
       </div>
       <p class="mt-4 max-w-prose text-xs font-bold opacity-90">

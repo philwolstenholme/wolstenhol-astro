@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { Section } from "./Section";
+import { ScrollerButton } from "./ScrollerButton";
 import Lede from "./Lede.astro";
 import InstagramCard from "./items/InstagramCard.astro";
 
@@ -62,13 +63,13 @@ const posts = [...collection].sort((a, b) => b.data.takenAt - a.data.takenAt);
         x-transition:leave-end="opacity-0 translate-y-4"
       >
         <span>There&rsquo;s more!</span>
-        <button
-          type="button"
-          class="ml-1 rounded px-2 py-1 font-bold text-white shadow-(--shadow-hard) transition-colors bg-instagram hocus:bg-instagram-dark"
+        <ScrollerButton
+          class="ml-1"
+          color="instagram"
           x-on:click="$refs.list.scrollBy({ left: 365 + 20, behavior: 'smooth' })"
         >
           scroll this way <span aria-hidden="true">➜</span>
-        </button>
+        </ScrollerButton>
       </div>
     </div>
   </div>
