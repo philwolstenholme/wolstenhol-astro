@@ -233,8 +233,13 @@ html {
     background-color: var(--brand-colour, rgb(252, 211, 77));
   }
 
+  section:target h2 {
+    width: fit-content;
+  }
+
   /* Highlighter-marker effect, ported wholesale from wolstenhol.me.
    * https://max.hn/thoughts/how-to-create-a-highlighter-marker-effect-in-css */
+  section:target h2,
   mark,
   .highlight,
   .highlight-links a {
