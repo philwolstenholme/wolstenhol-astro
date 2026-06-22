@@ -9,6 +9,7 @@ interface Props {
   isMobile?: boolean;
 }
 import { getItemsPerPage } from "../helpers/getItemsPerPage";
+import { byStarredAtDesc } from "../helpers/getStarsSorted";
 import { StyledTextLink } from "./StyledTextLink";
 import PaginatedGrid from "./PaginatedGrid.astro";
 import Lede from "./Lede.astro";
@@ -22,7 +23,7 @@ const isMobile = isMobileProp ?? Astro.locals.isMobile ?? false;
 const itemsPerPage = getItemsPerPage({ isMobile });
 const collection = collectionProp || (await getCollection("github-stars"));
 
-const items = collection.map((entry) => entry.data);
+const items = collection.map((entry) => entry.data).sort(byStarredAtDesc);
 ---
 
 <Section id="stars" heading="Starred">

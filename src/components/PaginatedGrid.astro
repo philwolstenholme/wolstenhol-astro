@@ -11,6 +11,9 @@ const {
   itemComponent: Item,
   htmxPartialPath,
   pageUrl,
+  staticMode = false,
+  prevUrl,
+  nextUrl,
 } = Astro.props as {
   items: readonly unknown[];
   itemsPerPage: number;
@@ -20,23 +23,38 @@ const {
   itemComponent: any; // Component expected to output its own <li>
   htmxPartialPath?: string;
   pageUrl?: URL;
+  staticMode?: boolean;
+  prevUrl?: string | null;
+  nextUrl?: string | null;
 };
 
-const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
-  onlyFullPages,
-  items,
-  itemsPerPage,
-  url: new URL(Astro.request.url),
-  searchParam,
-});
+const { data, hasPrev, hasNext, prevIndex, nextIndex } = staticMode
+  ? {
+      data: items as unknown[],
+      hasPrev: prevUrl != null,
+      hasNext: nextUrl != null,
+      prevIndex: null as null,
+      nextIndex: null as null,
+    }
+  : paginate({
+      onlyFullPages,
+      items,
+      itemsPerPage,
+      url: new URL(Astro.request.url),
+      searchParam,
+    });
+
+const htmxAttrs = staticMode
+  ? {}
+  : {
+      "x-data": "",
+      "@htmx:after-swap": `$event.target.id === 'paginated-grid-${searchParam}' && $focus.within($event.target).first()`,
+    };
 ---
 
 {
   data && data.length > 0 ? (
-    <div
-      x-data
-      @htmx:after-swap={`$event.target.id === 'paginated-grid-${searchParam}' && $focus.within($event.target).first()`}
-    >
+    <div {...htmxAttrs}>
       <div id={`paginated-grid-${searchParam}`}>
         <ul class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(330px,1fr))]">
           {data.map((item: any) => (
@@ -53,6 +71,8 @@ const { data, hasPrev, hasNext, prevIndex, nextIndex } = paginate({
           htmxPartialPath={htmxPartialPath}
           pageUrl={pageUrl}
           itemsPerPage={itemsPerPage}
+          prevUrl={prevUrl}
+          nextUrl={nextUrl}
         />
       </div>
     </div>

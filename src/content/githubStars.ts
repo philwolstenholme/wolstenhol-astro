@@ -16,7 +16,21 @@ const githubStarSchema = z.object({
   stargazers_count: z.number(),
   language: z.string().nullable(),
   created_at: z.string(),
+  starred_at: z.string(),
 });
+
+type StarredItem = {
+  starred_at: string;
+  repo: {
+    id: number;
+    full_name: string;
+    html_url: string;
+    description: string | null;
+    stargazers_count: number;
+    language: string | null;
+    created_at: string;
+  };
+};
 
 export const githubStars = defineCollection({
   loader: async () => {
@@ -25,25 +39,31 @@ export const githubStars = defineCollection({
       return [];
     }
     try {
-      const octokit = new Octokit({
-        auth: GITHUB_PAT,
-      });
+      const octokit = new Octokit({ auth: GITHUB_PAT });
 
-      const { data } = await octokit.rest.activity.listReposStarredByUser({
+      const starParams = {
         username: GITHUB_USERNAME,
         per_page: 100,
-      });
+        headers: { accept: "application/vnd.github.star+json" },
+      };
 
-      const repos = data as Extract<(typeof data)[number], { id: number }>[];
+      const [page1, page2, page3] = await Promise.all([
+        octokit.rest.activity.listReposStarredByUser({ ...starParams, page: 1 }),
+        octokit.rest.activity.listReposStarredByUser({ ...starParams, page: 2 }),
+        octokit.rest.activity.listReposStarredByUser({ ...starParams, page: 3 }),
+      ]);
 
-      return repos.map((repo) => ({
-        id: String(repo.id),
-        full_name: repo.full_name,
-        html_url: repo.html_url,
-        description: repo.description ? stripEmojis(repo.description) : null,
-        stargazers_count: repo.stargazers_count,
-        language: repo.language ?? null,
-        created_at: repo.created_at,
+      const repos = [...page1.data, ...page2.data, ...page3.data] as unknown as StarredItem[];
+
+      return repos.map((item) => ({
+        id: String(item.repo.id),
+        full_name: item.repo.full_name,
+        html_url: item.repo.html_url,
+        description: item.repo.description ? stripEmojis(item.repo.description) : null,
+        stargazers_count: item.repo.stargazers_count,
+        language: item.repo.language ?? null,
+        created_at: item.repo.created_at,
+        starred_at: item.starred_at,
       }));
     } catch (error) {
       console.error("GitHub stars fetch failed:", error);

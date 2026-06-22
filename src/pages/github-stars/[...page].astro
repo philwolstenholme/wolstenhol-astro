@@ -1,21 +1,32 @@
 ---
-import { getCollection } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import Content from "../components/Content.astro";
-import PaginatedGrid from "../components/PaginatedGrid.astro";
-import GithubStarCard from "../components/items/GithubStarCard.astro";
-import { getItemsPerPage } from "../helpers/getItemsPerPage";
+export const prerender = true;
 
-export const prerender = false;
+import { chunk } from "es-toolkit";
+import { getSortedStars } from "../../helpers/getStarsSorted";
+import Layout from "../../layouts/Layout.astro";
+import Content from "../../components/Content.astro";
+import PaginatedGrid from "../../components/PaginatedGrid.astro";
+import GithubStarCard from "../../components/items/GithubStarCard.astro";
 
-const itemsPerPage = getItemsPerPage({
-  isMobile: Astro.locals.isMobile,
-  mobileItemsPerPage: 10,
-  desktopItemsPerPage: 36,
-});
+export async function getStaticPaths() {
+  const ITEMS_PER_PAGE = 36;
+  const BASE_PATH = "/github-stars";
 
-const collection = await getCollection("github-stars");
-const items = collection.map((entry) => entry.data);
+  const items = await getSortedStars();
+  const pages = chunk(items, ITEMS_PER_PAGE);
+
+  return pages.map((pageItems, i) => ({
+    params: { page: i === 0 ? undefined : String(i) },
+    props: {
+      items: pageItems,
+      itemsPerPage: ITEMS_PER_PAGE,
+      prevUrl: i === 0 ? null : i === 1 ? BASE_PATH : `${BASE_PATH}/${i - 1}`,
+      nextUrl: i < pages.length - 1 ? `${BASE_PATH}/${i + 1}` : null,
+    },
+  }));
+}
+
+const { items, itemsPerPage, prevUrl, nextUrl } = Astro.props;
 ---
 
 <Layout title="Github stars">
@@ -47,9 +58,10 @@ const items = collection.map((entry) => entry.data);
           items={items}
           itemsPerPage={itemsPerPage}
           searchParam="githubStars"
-          anchor="stars"
           itemComponent={GithubStarCard}
-          htmxPartialPath="/partials/stars"
+          staticMode={true}
+          prevUrl={prevUrl}
+          nextUrl={nextUrl}
         />
       </article>
     </Content>

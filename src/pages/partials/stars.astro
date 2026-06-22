@@ -1,10 +1,10 @@
 ---
 export const prerender = false;
 
-import { getCollection } from "astro:content";
 import { paginate } from "../../helpers/paginate";
 import { setupPartial } from "../../helpers/setupPartial";
 import { getItemsPerPage } from "../../helpers/getItemsPerPage";
+import { getSortedStars } from "../../helpers/getStarsSorted";
 import PaginatedGrid from "../../components/PaginatedGrid.astro";
 import GithubStarCard from "../../components/items/GithubStarCard.astro";
 
@@ -14,8 +14,7 @@ const itemsPerPage =
   Number(Astro.url.searchParams.get("perPage")) ||
   getItemsPerPage({ isMobile: Astro.locals.isMobile });
 
-const collection = await getCollection("github-stars");
-const items = collection.map((entry) => entry.data);
+const items = await getSortedStars();
 
 const { index } = paginate({
   items,

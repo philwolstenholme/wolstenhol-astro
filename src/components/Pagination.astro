@@ -10,7 +10,20 @@ const {
   htmxPartialPath,
   pageUrl,
   itemsPerPage,
-} = Astro.props;
+  prevUrl,
+  nextUrl,
+} = Astro.props as {
+  hasPrev: boolean;
+  hasNext: boolean;
+  prevIndex: number | null;
+  nextIndex: number | null;
+  searchParam: string;
+  htmxPartialPath?: string;
+  pageUrl?: URL;
+  itemsPerPage?: number;
+  prevUrl?: string | null;
+  nextUrl?: string | null;
+};
 
 // When rendered inside a partial response, Astro.request.url is the partial
 // endpoint URL. pageUrl carries the real page URL (from HX-Current-Url) so
@@ -37,11 +50,14 @@ const htmxTarget = htmxPartialPath
           backgroundImage:
             "url(https://res.cloudinary.com/wolstenh/image/upload/w_300/q_auto:good/f_auto/v1758225433/astro-site/black-masking-tape-1.png)",
         }}
-        href={buildPageHref({
-          currentUrl,
-          index: prevIndex,
-          param: searchParam,
-        })}
+        href={
+          prevUrl ??
+          buildPageHref({
+            currentUrl,
+            index: prevIndex,
+            param: searchParam,
+          })
+        }
         hx-get={
           htmxPartialPath
             ? buildPartialHref(
@@ -70,11 +86,14 @@ const htmxTarget = htmxPartialPath
           backgroundImage:
             "url(https://res.cloudinary.com/wolstenh/image/upload/w_300/q_auto:good/f_auto/v1758225433/astro-site/black-masking-tape-2.png)",
         }}
-        href={buildPageHref({
-          currentUrl,
-          index: nextIndex,
-          param: searchParam,
-        })}
+        href={
+          nextUrl ??
+          buildPageHref({
+            currentUrl,
+            index: nextIndex,
+            param: searchParam,
+          })
+        }
         hx-get={
           htmxPartialPath
             ? buildPartialHref(
