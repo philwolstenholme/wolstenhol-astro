@@ -27,7 +27,7 @@ export const Section = ({
       {...rest}
     >
       {heading && (
-        <Heading as="h2" class="mt-3 scroll-mt-8" data-section={id}>
+        <Heading as="h2" class="mt-3 scroll-mt-8" id={undefined} data-section={id}>
           {heading}
         </Heading>
       )}

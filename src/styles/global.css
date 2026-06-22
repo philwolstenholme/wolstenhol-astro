@@ -86,16 +86,6 @@ html {
   }
 }
 
-.hide-scrollbars {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
-}
-
 .header-nav {
   --scroll-indicator-width: 50px;
 
@@ -234,16 +224,13 @@ html {
     background-color: var(--brand-colour, rgb(252, 211, 77));
   }
 
-  section:target h2 {
-    width: fit-content;
-  }
-
   /* Highlighter-marker effect, ported wholesale from wolstenhol.me.
    * https://max.hn/thoughts/how-to-create-a-highlighter-marker-effect-in-css */
   section:target h2,
   mark,
   .highlight,
   .highlight-links a {
+    width: fit-content;
     margin: -0.1em -0.4em;
     padding: 0.1em 0.4em;
     border-radius: 0.8em 0.3em;

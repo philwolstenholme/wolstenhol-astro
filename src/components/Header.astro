@@ -2,21 +2,19 @@
 interface NavLink {
   label: string;
   href: string;
-  hash?: string;
-  path?: string;
 }
 
 const navLinks: NavLink[] = [
-  { label: "Words", href: "/#words", hash: "#words" },
-  { label: "Reading", href: "/#reading", hash: "#reading" },
-  { label: "Speaking", href: "/#speaking", hash: "#speaking" },
-  { label: "Music", href: "/#music", hash: "#music" },
-  // { label: "Photos", href: "/#photos", hash: "#photos" },
-  // { label: "Posts", href: "/#posts", hash: "#posts" },
-  { label: "Places", href: "/#places", hash: "#places" },
-  { label: "Work", href: "/work", path: "/work" },
-  // { label: "Contact", href: "/contact", path: "/contact" },
-  { label: "Starred", href: "/github-stars", path: "/github-stars" },
+  { label: "Words", href: "/#words" },
+  { label: "Reading", href: "/#reading" },
+  { label: "Speaking", href: "/#speaking" },
+  { label: "Music", href: "/#music" },
+  // { label: "Photos", href: "/#photos" },
+  // { label: "Posts", href: "/#posts" },
+  { label: "Places", href: "/#places" },
+  { label: "Work", href: "/work" },
+  // { label: "Contact", href: "/contact" },
+  { label: "Starred", href: "/github-stars" },
 ];
 ---
 
@@ -45,7 +43,7 @@ const navLinks: NavLink[] = [
       />
     </a>
     <nav
-      class="header-nav relative flex flex-1 items-center overscroll-contain overflow-x-auto hide-scrollbars"
+      class="header-nav relative flex flex-1 items-center overscroll-contain overflow-x-auto scrollbar-none"
       role="navigation"
       aria-label="Page sections"
     >
@@ -64,10 +62,8 @@ const navLinks: NavLink[] = [
             <li class="shrink-0">
               <a
                 href={link.href}
-                data-hash={link.hash ?? ""}
-                data-path={link.path ?? ""}
                 class="font-bold font-serif underline hocus:text-yellow-300"
-                x-bind:class="{ 'text-yellow-300': isActive($el.dataset.hash, $el.dataset.path) }"
+                x-bind:class="{ 'text-yellow-300': isActive($el) }"
               >
                 {link.label}
               </a>
