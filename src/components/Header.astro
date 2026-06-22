@@ -1,0 +1,71 @@
+---
+interface NavLink {
+  label: string;
+  href: string;
+  hash?: string;
+  path?: string;
+}
+
+const navLinks: NavLink[] = [
+  { label: "Posts", href: "/#posts", hash: "#posts" },
+  { label: "Stars", href: "/#stars", hash: "#stars" },
+  { label: "Reading", href: "/#reading", hash: "#reading" },
+  { label: "Speaking", href: "/#speaking", hash: "#speaking" },
+  { label: "Work", href: "/work", path: "/work", hash: "#work" },
+  { label: "Music", href: "/#music", hash: "#music" },
+  { label: "Photos", href: "/#photos", hash: "#photos" },
+  { label: "Places", href: "/#places", hash: "#places" },
+  { label: "All stars", href: "/github-stars", path: "/github-stars" },
+];
+---
+
+<header
+  class="sticky top-0 z-50 bg-binding-dark slow-connection:bg-none text-white"
+  x-data="pwHeader"
+>
+  <div
+    class="flex items-center overflow-x-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
+  >
+    <a
+      href="/"
+      class="shrink-0 flex items-center gap-2 px-3 py-2 border-r border-white/20 hocus:bg-white/10 transition-colors"
+      aria-label="Home"
+    >
+      <img
+        src="https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,f_auto,q_auto,w_32/v1545084898/avatar_egzcjk.png"
+        srcset="https://wolstenhol.me/proxy/cloudinary/image/upload/c_scale,f_auto,q_auto,w_64/v1545084898/avatar_egzcjk.png 2x"
+        class="size-8 rounded-full bg-yellow-300"
+        alt=""
+        width="32"
+        height="32"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </a>
+    <nav aria-label="Page sections">
+      <ul role="list" class="flex items-center m-0 p-0 list-none">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                data-hash={link.hash ?? ""}
+                data-path={link.path ?? ""}
+                class="block font-serif text-sm px-3 py-3 whitespace-nowrap transition-colors text-white hocus:text-yellow-300"
+                x-bind:class="{ 'text-yellow-300 font-bold': isActive($el.dataset.hash, $el.dataset.path) }"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+  <div
+    class="h-1.5 bg-gradient-to-b from-black/30 to-transparent pointer-events-none"
+    aria-hidden="true"
+  >
+  </div>
+</header>

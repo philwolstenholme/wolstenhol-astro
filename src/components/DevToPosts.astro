@@ -25,7 +25,7 @@ const items = sortBy(collection, [(entry) => entry.data.published_at ?? ""])
   .map((entry) => entry.data);
 ---
 
-<Section heading="Posts">
+<Section id="posts" heading="Posts">
   <Lede>
     <p class="max-w-3xl font-serif leading-relaxed tracking-widest mt-3">
       Blog posts I've posted on <StyledTextLink href="https://dev.to/philw_"

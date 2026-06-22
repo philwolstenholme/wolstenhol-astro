@@ -19,7 +19,7 @@ if (!collection || collection.length === 0) {
 const posts = sortBy(collection, [(entry) => entry.data.takenAt]).reverse();
 ---
 
-<Section hasScroller heading="Photos">
+<Section id="photos" hasScroller heading="Photos">
   <Lede>Photos and videos from Instagram.</Lede>
 
   <div class="col-[full] mt-12">

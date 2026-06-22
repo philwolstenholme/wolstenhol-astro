@@ -5,7 +5,8 @@
 }
 
 html {
-  scroll-padding-top: max(20px, 5vh);
+  /* Account for the sticky navigation header (~48px) plus breathing room */
+  scroll-padding-top: 3.5rem;
 }
 
 /* Hover *and* focus in one go, matching the original wolstenhol.me site. A lot

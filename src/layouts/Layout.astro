@@ -1,6 +1,7 @@
 ---
 import { StyledTextLink } from "../components/StyledTextLink";
 import MuteToggle from "../components/MuteToggle.astro";
+import Header from "../components/Header.astro";
 import "../styles/global.css";
 type Props = {
   title?: string;
@@ -164,6 +165,7 @@ if (Astro.response) {
         style="left: -230px; top: 2900px"
       />
     </div>
+    <Header />
     {
       Astro.cookies.has("hideWipBanner") === false && (
         <div
@@ -222,7 +224,6 @@ if (Astro.response) {
     position: relative;
     min-height: 100vh;
     display: grid;
-    grid-template-rows: auto 1fr auto;
     /* Without an explicit column, the auto implicit column expands to the
        max-content size of any horizontal scroller. minmax(0, 1fr) caps it
        at the viewport width by allowing the track to shrink to 0. */
