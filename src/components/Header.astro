@@ -12,6 +12,9 @@ const navLinks: NavLink[] = [
   // { label: "Photos", href: "/#photos" },
   // { label: "Posts", href: "/#posts" },
   { label: "Places", href: "/#places" },
+
+  // add divider here - above this are anchor links on the homepage, below this are links to other pages
+
   { label: "Work", href: "/work" },
   // { label: "Contact", href: "/contact" },
   { label: "Starred", href: "/github-stars" },
@@ -58,17 +61,29 @@ const navLinks: NavLink[] = [
         x-ref="list"
       >
         {
-          navLinks.map((link) => (
-            <li class="shrink-0">
-              <a
-                href={link.href}
-                class="font-bold font-serif underline hocus:text-yellow-300"
-                x-bind:class="{ 'text-yellow-300': isActive($el) }"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))
+          navLinks.map((link, i) => {
+            const isPageLink = !link.href.includes("#");
+            const prevIsAnchorLink =
+              i > 0 && navLinks[i - 1].href.includes("#");
+            return (
+              <>
+                {isPageLink && prevIsAnchorLink && (
+                  <li aria-hidden="true" class="select-none text-white/40">
+                    •
+                  </li>
+                )}
+                <li class="shrink-0">
+                  <a
+                    href={link.href}
+                    class="font-bold font-serif underline hocus:text-yellow-300"
+                    x-bind:class="{ 'text-yellow-300': isActive($el) }"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              </>
+            );
+          })
         }
       </ul>
       <div
