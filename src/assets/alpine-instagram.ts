@@ -12,6 +12,7 @@ Alpine.data("instagramCard", () => ({
   },
 
   async fireConfetti() {
+    document.dispatchEvent(new CustomEvent("play-sound", { detail: "playful-success" }));
     const { default: confetti } = await import("canvas-confetti");
     const el = this.$root as HTMLElement;
     const rect = el.getBoundingClientRect();

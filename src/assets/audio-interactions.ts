@@ -1,11 +1,13 @@
 import { defineSound, ensureReady } from "@web-kits/audio";
 
 import { click, tap, pageEnter, slide } from "../../public/patches/minimal";
+import { success as playfulSuccess } from "../../public/patches/playful";
 
 const playClick = defineSound(click);
 const playTap = defineSound(tap);
 const playPageEnter = defineSound(pageEnter);
 const playSlide = defineSound(slide);
+const playPlayfulSuccess = defineSound(playfulSuccess);
 
 // pageEnter has a ~58ms envelope (attack 3ms + decay 40ms + release 15ms).
 // Speculation-rules prerendering makes navigations near-instant, so we delay
@@ -77,9 +79,20 @@ document.addEventListener(
   true,
 );
 
-const sounds: Record<string, () => void> = { slide: playSlide };
+const sounds: Record<string, () => void> = {
+  slide: playSlide,
+  "playful-success": playPlayfulSuccess,
+};
 
-document.addEventListener("play-sound", (e: Event) => {
-  if (!ready || isMuted()) return;
+document.addEventListener("play-sound", async (e: Event) => {
+  if (isMuted()) {
+    return;
+  }
+
+  if (!ready) {
+    await ensureReady();
+    ready = true;
+  }
+
   sounds[(e as CustomEvent<string>).detail]?.();
 });
