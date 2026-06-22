@@ -5,7 +5,9 @@
 }
 
 html {
-  scroll-padding-top: max(20px, 5vh);
+  /* At least the header height; scales up with viewport so larger screens
+     get more breathing room when scrolling to an anchor. */
+  scroll-padding-top: clamp(3.5rem, 15vh, 10rem);
 }
 
 /* Hover *and* focus in one go, matching the original wolstenhol.me site. A lot
@@ -45,6 +47,74 @@ html {
     local("RobotoSlab-Bold"),
     url("/fonts/roboto-slab-v12-latin-700.woff2") format("woff2"),
     url("/fonts/roboto-slab-v12-latin-700.woff") format("woff");
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes detect-scroll {
+  from,
+  to {
+    --display-on-scroll: flex;
+    --margin-left-on-scroll: calc(var(--scroll-indicator-width) * -1);
+  }
+}
+
+.section__inner {
+  max-width: calc(100vw - 2.5rem);
+
+  @media (min-width: 640px) {
+    max-width: 540px;
+  }
+
+  @media (min-width: 768px) {
+    max-width: 720px;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 960px;
+  }
+
+  @media (min-width: 1280px) {
+    max-width: calc(72rem - 16px);
+  }
+}
+
+.header-nav {
+  --scroll-indicator-width: 50px;
+
+  scroll-timeline: --header-scroll inline;
+  animation: detect-scroll;
+  animation-timeline: --header-scroll !important;
+}
+
+.header-nav__list {
+  margin-left: var(--margin-left-on-scroll, 0);
+}
+
+.header-nav--indicator {
+  height: 21px;
+  width: var(--scroll-indicator-width);
+  animation: fade-in auto linear both;
+  animation-timeline: --header-scroll !important;
+  display: var(--display-on-scroll, none);
+}
+
+.header-nav--indicator__left {
+  animation-range: 0 10px;
+  animation-direction: reverse;
+  mask-image: linear-gradient(90deg, #171717, transparent);
+}
+
+.header-nav--indicator__right {
+  animation-range: calc(90% - 10px) 100%;
+  mask-image: linear-gradient(90deg, transparent, #171717);
 }
 
 @layer utilities {
@@ -156,9 +226,11 @@ html {
 
   /* Highlighter-marker effect, ported wholesale from wolstenhol.me.
    * https://max.hn/thoughts/how-to-create-a-highlighter-marker-effect-in-css */
+  section:target h2,
   mark,
   .highlight,
   .highlight-links a {
+    width: fit-content;
     margin: -0.1em -0.4em;
     padding: 0.1em 0.4em;
     border-radius: 0.8em 0.3em;

@@ -18,7 +18,7 @@ if (!data) return;
 const { artists, randomGenres } = data.data;
 ---
 
-<Section hasScroller heading="Music">
+<Section id="music" hasScroller heading="Music">
   <SpotifyGenresLede genres={randomGenres} />
   <div class="col-[full] group/player relative mt-12" data-spotify-player>
     <HorizontalScroller

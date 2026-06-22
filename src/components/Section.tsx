@@ -17,15 +17,17 @@ export const Section = ({
   heading,
   lede,
   hasScroller = false,
+  id,
   ...rest
 }: SectionProps) => {
   return (
     <section
       class={clsx(className, "group/section", hasScroller && "col-[full] constrain-content")}
+      id={id}
       {...rest}
     >
       {heading && (
-        <Heading as="h2" class="mt-3 scroll-mt-8">
+        <Heading as="h2" class="mt-3 scroll-mt-8" id={undefined} data-section={id}>
           {heading}
         </Heading>
       )}
