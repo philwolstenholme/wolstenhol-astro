@@ -22,19 +22,18 @@ const posts = sortBy(collection, [(entry) => entry.data.takenAt]).reverse();
 <Section id="photos" hasScroller heading="Photos">
   <Lede>Photos and videos from Instagram.</Lede>
 
-  <div class="col-[full] mt-12">
-    <HorizontalScroller
-      label="Instagram posts"
-      theme="instagram"
-      scrollFull={true}
-    >
-      {
-        posts.map((entry) => (
-          <li class="snap-start shrink-0 w-91.25 grow-0">
-            <InstagramCard post={entry.data} />
-          </li>
-        ))
-      }
-    </HorizontalScroller>
-  </div>
+  <HorizontalScroller
+    class="mt-12"
+    label="Instagram posts"
+    theme="instagram"
+    scrollFull={true}
+  >
+    {
+      posts.map((entry) => (
+        <li class="snap-center shrink-0 w-91.25 grow-0">
+          <InstagramCard post={entry.data} />
+        </li>
+      ))
+    }
+  </HorizontalScroller>
 </Section>
