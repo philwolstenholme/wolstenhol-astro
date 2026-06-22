@@ -35,8 +35,10 @@ Alpine.data("pwHeader", () => ({
 
   isActive(hash: string, path: string): boolean {
     if (path && this.activePath === path) return true;
-    if (hash && this.activeHash === hash) return true;
-    if (hash && this.activeSection && this.activeSection === hash.replace("#", "")) return true;
-    return false;
+    // Scroll spy takes priority: when a section is in view, ignore the URL hash
+    if (this.activeSection) {
+      return !!hash && this.activeSection === hash.replace("#", "");
+    }
+    return !!hash && this.activeHash === hash;
   },
 }));
