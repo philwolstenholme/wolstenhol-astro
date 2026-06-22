@@ -15,6 +15,14 @@ export default defineConfig({
     }),
   ],
   adapter: netlify({ edgeMiddleware: true }),
+  cache: {
+    provider: {
+      entrypoint: "@astrojs/netlify/cache/provider",
+    },
+  },
+  routeRules: {
+    "/**": { maxAge: 31536000 },
+  },
   env: {
     schema: {
       DEV_TO_API_KEY: envField.string({

@@ -15,7 +15,7 @@ html {
  * background colours) hang off this variant. */
 @custom-variant hocus (&:hover, &:focus);
 @custom-variant pointer-fine (@media (pointer: fine));
-@custom-variant slow-connection (@container style(0 < --live-net-type < 4));
+@custom-variant slow-connection (@container style(--live-net-type: 1) or style(--live-net-type: 2) or style(--live-net-type: 3));
 @plugin "./group-hocus-plugin.js";
 
 /* Make a custom fallback font based on the local Times New Roman */

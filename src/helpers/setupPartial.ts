@@ -6,7 +6,6 @@ export const setupPartial = (
   index: number,
 ): URL | undefined => {
   Astro.response.headers.set("Cache-Control", "public, max-age=300, stale-while-revalidate=3600");
-  Astro.response.headers.set("Netlify-CDN-Cache-Control", "s-maxage=31536000");
   Astro.response.headers.set("X-Robots-Tag", "noindex");
 
   const htmxCurrentUrl = Astro.request.headers.get("HX-Current-Url");
