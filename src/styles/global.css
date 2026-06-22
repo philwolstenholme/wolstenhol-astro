@@ -5,8 +5,9 @@
 }
 
 html {
-  /* Account for the sticky navigation header (~48px) plus breathing room */
-  scroll-padding-top: 3.5rem;
+  /* At least the header height; scales up with viewport so larger screens
+     get more breathing room when scrolling to an anchor. */
+  scroll-padding-top: clamp(3.5rem, 15vh, 10rem);
 }
 
 /* Hover *and* focus in one go, matching the original wolstenhol.me site. A lot
