@@ -32,7 +32,17 @@ const animationDuration = (((hash >> 8) % 100) / 100 + 0.1).toFixed(2);
 ---
 
 <li
-  class="expand-clickable-area shadow-hard border border-gray-300 rounded flex flex-col bg-gray-100 text-gray-900 transition-colors hover:bg-white focus-within:bg-white"
+  x-data="{
+    replay() {
+      if (!this.$refs.title || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const duration = getComputedStyle(this.$el).getPropertyValue('--typewriter-duration').trim();
+      this.$refs.title.style.animation = 'none';
+      void this.$refs.title.offsetWidth;
+      this.$refs.title.style.animation = `typewriter ${duration} steps(69) both`;
+    }
+  }"
+  x-on:mouseenter="replay()"
+  class="card--github expand-clickable-area shadow-hard border border-gray-300 rounded flex flex-col bg-gray-100 text-gray-900 transition-colors hover:bg-white focus-within:bg-white"
 >
   <a
     href={star.html_url}
@@ -45,6 +55,7 @@ const animationDuration = (((hash >> 8) % 100) / 100 + 0.1).toFixed(2);
     hasSensibleDescription && (
       <div class="p-4 border-t border-gray-300">
         <div
+          x-ref="title"
           class="github-star-card__title text-xs space-y-2 truncate"
           style={{
             "animation-delay": `${animationDelay}s`,
@@ -93,6 +104,10 @@ const animationDuration = (((hash >> 8) % 100) / 100 + 0.1).toFixed(2);
     [data-in-view="true"]:not([data-in-view-previously="true"])
       .github-star-card__title {
       animation: var(--animate-typewriter);
+    }
+
+    .card--github:hover {
+      --typewriter-duration: 0.75s;
     }
   }
 </style>
