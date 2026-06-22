@@ -2,6 +2,8 @@
 
 Tick items off as you complete them. When you are finishd, review your work critically and then submit a Github PR for the changes.
 
+If you create a new page then update the global site navigation to include a link to it.
+
 - [x] Create a shared header that all the pages will use. Copy the 11ty header, it should link to each of the homepage sections using anchor links but also link to the standalone pages.
 - [ ] Copy as much of the 11ty footer as possible, ignoring the links to the 'no-JS' and 'no-CSS' versions of the site. The footer should be a shared component that can be used on all pages, including the work and github stars pages.
 - [ ] Copy the tweets component but make it show Bluesky posts to start with. Copy the existing approach as much as possible. My Bluesky username is @wolstenhol.me. Copy the approach from `src/data/bluesky.js` on the 11ty site.
