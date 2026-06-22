@@ -32,15 +32,7 @@ const animationDuration = (((hash >> 8) % 100) / 100 + 0.1).toFixed(2);
 ---
 
 <li
-  x-data="{
-    replay() {
-      if (!this.$refs.title || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      const duration = getComputedStyle(this.$el).getPropertyValue('--typewriter-duration').trim();
-      this.$refs.title.style.animation = 'none';
-      void this.$refs.title.offsetWidth;
-      this.$refs.title.style.animation = `typewriter ${duration} steps(69) both`;
-    }
-  }"
+  x-data="githubCard"
   x-on:mouseenter="replay()"
   class="card--github expand-clickable-area shadow-hard border border-gray-300 rounded flex flex-col bg-gray-100 text-gray-900 transition-colors hover:bg-white focus-within:bg-white"
 >
