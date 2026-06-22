@@ -11,24 +11,24 @@ const navLinks: NavLink[] = [
   { label: "Reading", href: "/#reading", hash: "#reading" },
   { label: "Speaking", href: "/#speaking", hash: "#speaking" },
   { label: "Music", href: "/#music", hash: "#music" },
-  { label: "Photos", href: "/#photos", hash: "#photos" },
-  { label: "Posts", href: "/#posts", hash: "#posts" },
+  // { label: "Photos", href: "/#photos", hash: "#photos" },
+  // { label: "Posts", href: "/#posts", hash: "#posts" },
   { label: "Places", href: "/#places", hash: "#places" },
   { label: "Work", href: "/work", path: "/work" },
-  { label: "Contact", href: "/contact", path: "/contact" },
+  // { label: "Contact", href: "/contact", path: "/contact" },
   { label: "Starred", href: "/github-stars", path: "/github-stars" },
 ];
 ---
 
 <header
-  class="w-full h-12 sticky top-0 z-[1000] bg-binding-dark slow-connection:bg-none text-white py-2 px-5 sm:px-2"
+  class="w-full h-12 sticky top-0 z-1000 bg-binding-dark slow-connection:bg-none text-white py-2 px-5 sm:px-2"
   x-data="pwHeader"
 >
   <div class="section__inner mx-auto flex space-x-4">
     <a
       href="/#content"
       rel="home"
-      class="block flex-shrink-0 w-8 h-8"
+      class="block shrink-0 w-8 h-8"
       aria-label="Home"
     >
       <span class="sr-only">Home</span>
@@ -51,7 +51,7 @@ const navLinks: NavLink[] = [
     >
       <h2 class="sr-only">In-page navigation</h2>
       <div
-        class="header-nav--indicator pointer-events-none flex-shrink-0 bg-binding-dark header-nav--indicator__left sticky left-0 top-0 bottom-0"
+        class="header-nav--indicator pointer-events-none shrink-0 bg-binding-dark header-nav--indicator__left sticky left-0 top-0 bottom-0"
       >
       </div>
       <ul
@@ -61,7 +61,7 @@ const navLinks: NavLink[] = [
       >
         {
           navLinks.map((link) => (
-            <li class="flex-shrink-0">
+            <li class="shrink-0">
               <a
                 href={link.href}
                 data-hash={link.hash ?? ""}
@@ -76,7 +76,7 @@ const navLinks: NavLink[] = [
         }
       </ul>
       <div
-        class="header-nav--indicator pointer-events-none flex-shrink-0 bg-binding-dark header-nav--indicator__right sticky right-0 top-0 bottom-0"
+        class="header-nav--indicator pointer-events-none shrink-0 bg-binding-dark header-nav--indicator__right sticky right-0 top-0 bottom-0"
       >
       </div>
     </nav>

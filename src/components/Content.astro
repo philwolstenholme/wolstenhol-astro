@@ -49,6 +49,9 @@ const As = as;
   }
 </style>
 
-<As class={["constrain-content", extraClass].filter(Boolean).join(" ")}>
+<As
+  id="content"
+  class={["constrain-content", extraClass].filter(Boolean).join(" ")}
+>
   <slot />
 </As>
