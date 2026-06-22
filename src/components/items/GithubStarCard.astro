@@ -32,18 +32,18 @@ const animationDuration = (((hash >> 8) % 100) / 100 + 0.1).toFixed(2);
 ---
 
 <li
-  class="expand-clickable-area shadow-hard border border-gray-700 rounded flex flex-col bg-gray-900 text-white transition-colors hover:bg-black focus-within:bg-black"
+  class="expand-clickable-area shadow-hard border border-gray-300 rounded flex flex-col bg-gray-100 text-gray-900 transition-colors hover:bg-white focus-within:bg-white"
 >
   <a
     href={star.html_url}
-    class="text-white bg-graph-paper font-bold font-mono p-4 flex-1"
+    class="text-gray-900 bg-graph-paper font-bold font-mono p-4 flex-1"
     title={hasSensibleDescription ? star.description : undefined}
   >
     {star.full_name}
   </a>
   {
     hasSensibleDescription && (
-      <div class="p-4 border-t border-gray-700">
+      <div class="p-4 border-t border-gray-300">
         <div
           class="github-star-card__title text-xs space-y-2 truncate"
           style={{
