@@ -26,6 +26,7 @@ the Tailwind styling from Tailwind 3 to Tailwind 4.
 - Prefer using braces for all if statements, even if they are one line.
 - Avoid merge commits. If you need to merge, rebase instead or cherry-pick
 - Restart the dev server after making any changes to the data loader/collections
+- When starting the dev server, use background mode: `astro dev --background`
 
 ## Don't
 
