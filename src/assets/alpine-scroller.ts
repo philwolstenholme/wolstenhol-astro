@@ -7,11 +7,15 @@ Alpine.data("horizontalScroller", ({ scrollFull = false }: { scrollFull?: boolea
 
   init() {
     const list = this.$refs.scroller as HTMLElement;
-    if (!list) return;
+    if (!list) {
+      return;
+    }
 
     const firstItem = list.querySelector("li:first-child");
     const lastItem = list.querySelector("li:last-child");
-    if (!firstItem || !lastItem) return;
+    if (!firstItem || !lastItem) {
+      return;
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {

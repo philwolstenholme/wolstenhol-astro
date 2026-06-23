@@ -24,10 +24,11 @@ const isMuteToggle = (el: Element) => !!el.closest("#mute-toggle");
 document.addEventListener(
   "pointerdown",
   async () => {
-    if (!ready)
+    if (!ready) {
       await ensureReady().then(() => {
         ready = true;
       });
+    }
   },
   { capture: true },
 );
@@ -35,9 +36,13 @@ document.addEventListener(
 document.addEventListener(
   "click",
   (e) => {
-    if (!ready || isMuted()) return;
+    if (!ready || isMuted()) {
+      return;
+    }
     const target = e.target as Element;
-    if (isMuteToggle(target)) return;
+    if (isMuteToggle(target)) {
+      return;
+    }
 
     // Buttons always get the click sound, no navigation delay needed.
     if (target.closest("button")) {
@@ -46,7 +51,9 @@ document.addEventListener(
     }
 
     const anchor = target.closest("a");
-    if (!anchor) return;
+    if (!anchor) {
+      return;
+    }
 
     const isHtmx = !!anchor.closest("[hx-get]");
     const href = anchor.getAttribute("href");

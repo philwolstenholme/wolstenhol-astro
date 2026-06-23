@@ -32,12 +32,18 @@ export function mergeReadingLists(
   const seen = new Set<string>();
   return [...devToItems, ...airtableItems]
     .sort((a, b) => {
-      if (!a.date) return 1;
-      if (!b.date) return -1;
+      if (!a.date) {
+        return 1;
+      }
+      if (!b.date) {
+        return -1;
+      }
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     })
     .filter(({ url }) => {
-      if (seen.has(url)) return false;
+      if (seen.has(url)) {
+        return false;
+      }
       seen.add(url);
       return true;
     })

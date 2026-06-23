@@ -21,7 +21,9 @@ function signGoogleMapsUrl(url: string, secret: string): string {
 }
 
 function buildMapUrl(lat: number, lng: number): string | null {
-  if (!GOOGLE_MAPS_KEY) return null;
+  if (!GOOGLE_MAPS_KEY) {
+    return null;
+  }
   const base = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=13&size=365x182&maptype=roadmap&key=${GOOGLE_MAPS_KEY}&format=png&visual_refresh=true&map_id=db8ea46f9ea0d213&scale=2`;
   return GOOGLE_MAPS_SECRET ? signGoogleMapsUrl(base, GOOGLE_MAPS_SECRET) : base;
 }

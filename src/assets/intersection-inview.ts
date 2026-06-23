@@ -55,7 +55,9 @@ const observer = new IntersectionObserver(handleIntersections, {
 
 function init() {
   const sections = document.querySelectorAll("section");
-  if (!sections.length) return;
+  if (!sections.length) {
+    return;
+  }
   sections.forEach((section) => observer.observe(section));
 }
 

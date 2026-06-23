@@ -47,7 +47,9 @@ Alpine.data("pwHeader", () => ({
   isActive(el: HTMLAnchorElement): boolean {
     const { hash, pathname } = el;
     // Path-only links: active when the current pathname matches
-    if (!hash && pathname !== "/" && pathname === this.activePath) return true;
+    if (!hash && pathname !== "/" && pathname === this.activePath) {
+      return true;
+    }
     // Scroll spy takes priority over URL hash for anchor links
     if (this.activeSection) {
       return !!hash && this.activeSection === hash.slice(1);

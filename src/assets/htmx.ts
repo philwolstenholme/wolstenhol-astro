@@ -10,7 +10,9 @@ htmx.defineExtension("preload", {
     }
 
     const attr = (node: Element | undefined, property: string): string | undefined => {
-      if (!node) return undefined;
+      if (!node) {
+        return undefined;
+      }
       return (
         node.getAttribute(property) ||
         node.getAttribute("data-" + property) ||
@@ -21,14 +23,18 @@ htmx.defineExtension("preload", {
 
     const load = (node: Element & Record<string, unknown>) => {
       const done = (html: string) => {
-        if (!node.preloadAlways) node.preloadState = "DONE";
+        if (!node.preloadAlways) {
+          node.preloadState = "DONE";
+        }
         if (attr(node, "preload-images") === "true") {
           document.createElement("div").innerHTML = html;
         }
       };
 
       return () => {
-        if (node.preloadState !== "READY") return;
+        if (node.preloadState !== "READY") {
+          return;
+        }
         const hxGet = node.getAttribute("hx-get") || node.getAttribute("data-hx-get");
         if (hxGet) {
           htmx.ajax("get", hxGet, {
@@ -53,19 +59,27 @@ htmx.defineExtension("preload", {
           (node.getAttribute("hx-get") ?? "") +
           (node.getAttribute("data-hx-get") ?? "") ===
         ""
-      )
+      ) {
         return;
-      if (node.preloadState !== undefined) return;
+      }
+      if (node.preloadState !== undefined) {
+        return;
+      }
 
       let on: string = attr(node, "preload") ?? "mousedown";
       const always = on.includes("always");
-      if (always) on = on.replace("always", "").trim();
+      if (always) {
+        on = on.replace("always", "").trim();
+      }
 
       node.addEventListener(on, () => {
         if (node.preloadState === "PAUSE") {
           node.preloadState = "READY";
-          if (on === "mouseover") window.setTimeout(load(node), 100);
-          else load(node)();
+          if (on === "mouseover") {
+            window.setTimeout(load(node), 100);
+          } else {
+            load(node)();
+          }
         }
       });
 

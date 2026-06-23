@@ -13,7 +13,9 @@ interface Props {
 
 const { data } = Astro.props;
 
-if (!data) return;
+if (!data) {
+  return;
+}
 
 const { artists, randomGenres } = data.data;
 ---

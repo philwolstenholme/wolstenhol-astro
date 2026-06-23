@@ -56,7 +56,9 @@ export function SpotifyAudioController({ artists }: Props) {
   // Drive the <audio> element
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio) {
+      return;
+    }
     if (playingUrl) {
       audio.src = playingUrl;
       audio.play().catch(console.error);
@@ -125,11 +127,15 @@ export function SpotifyAudioController({ artists }: Props) {
   // Listen for spotify:play events dispatched by SpotifyMusicCard via Alpine
   useEffect(() => {
     const player = playerEl();
-    if (!player) return;
+    if (!player) {
+      return;
+    }
 
     const handlePlay = (e: Event) => {
       const { url } = (e as CustomEvent<{ url: string }>).detail;
-      if (!url) return;
+      if (!url) {
+        return;
+      }
       if (playingUrlRef.current === url) {
         stop();
       } else {
@@ -145,14 +151,22 @@ export function SpotifyAudioController({ artists }: Props) {
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        if (playingUrlRef.current) stop();
+        if (playingUrlRef.current) {
+          stop();
+        }
         return;
       }
-      if (!isKeyboardActiveRef.current) return;
+      if (!isKeyboardActiveRef.current) {
+        return;
+      }
       const digit = DIGIT_KEYS.indexOf(e.key);
-      if (digit === -1) return;
+      if (digit === -1) {
+        return;
+      }
       const url = artists[digit]?.top_track?.preview_url;
-      if (!url) return;
+      if (!url) {
+        return;
+      }
       if (playingUrlRef.current === url) {
         const audio = audioRef.current;
         if (audio) {
@@ -170,15 +184,21 @@ export function SpotifyAudioController({ artists }: Props) {
   // Mouse/focus tracking for keyboard shortcut mode
   useEffect(() => {
     const player = playerEl();
-    if (!player) return;
+    if (!player) {
+      return;
+    }
 
     const onEnter = () => setIsKeyboardActive(true);
     const onLeave = () => {
-      if (!player.contains(document.activeElement)) setIsKeyboardActive(false);
+      if (!player.contains(document.activeElement)) {
+        setIsKeyboardActive(false);
+      }
     };
     const onFocusIn = () => setIsKeyboardActive(true);
     const onFocusOut = (e: FocusEvent) => {
-      if (!player.contains(e.relatedTarget as Node)) setIsKeyboardActive(false);
+      if (!player.contains(e.relatedTarget as Node)) {
+        setIsKeyboardActive(false);
+      }
     };
 
     player.addEventListener("mouseenter", onEnter);
@@ -195,7 +215,9 @@ export function SpotifyAudioController({ artists }: Props) {
 
   const handleTimeUpdate = useCallback((e: Event) => {
     const audio = e.target as HTMLAudioElement;
-    if (!audio.duration || !playingProgressRef.current) return;
+    if (!audio.duration || !playingProgressRef.current) {
+      return;
+    }
     playingProgressRef.current.value = audio.currentTime / audio.duration;
   }, []);
 
