@@ -10,5 +10,5 @@
   ],
   "tabWidth": 2,
   "useTabs": false,
-  "htmlWhitespaceSensitivity": "css"
+  "trailingComma": "all"
 }

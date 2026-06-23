@@ -28,5 +28,6 @@
   [plugins.inputs]
     entryPoints = [
       "*.html",
-      "**/*.html"
     ]
+    recursive = true
+    fallbacks = true
