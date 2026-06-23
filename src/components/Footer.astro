@@ -1,0 +1,68 @@
+---
+import Angle from "./Angle.astro";
+import Content from "./Content.astro";
+import { StyledTextLink } from "./StyledTextLink";
+---
+
+<Angle
+  as="footer"
+  side="top"
+  class="bg-binding-dark hue-rotate-links slow-connection:bg-none py-32 pb-20 text-sm text-yellow-400"
+>
+  <Content>
+    <div class="grid gap-8 md:grid-cols-2">
+      <div class="space-y-4">
+        <p>
+          &copy; <span title="🎂">1989</span>-{new Date().getFullYear()} Phil Wolstenholme
+          unless otherwise stated (there might be the odd Creative Commons license
+          image within articles)
+        </p>
+        <p>
+          Built with Astro, HTMX, and Alpine - the{" "}
+          <StyledTextLink href="https://flaviocopes.com/the-aha-stack/"
+            >AHA Stack</StyledTextLink
+          >. Hosted on Netlify.
+        </p>
+        <div class="space-y-2">
+          <p>Pulls in API data from:</p>
+          <ul role="list" class="ml-6 list-disc space-y-1">
+            <li>DEV Community</li>
+            <li>GitHub</li>
+            <li>Spotify</li>
+            <li>Instagram</li>
+            <li>Foursquare</li>
+            <li>Airtable</li>
+            <li>Bluesky</li>
+          </ul>
+        </div>
+        <p>
+          <StyledTextLink
+            href="https://www.freepik.com/free-photo/white-grungy-wall-textured-background_15599830.htm"
+          >
+            [One of the grunge textures] Image by rawpixel.com
+          </StyledTextLink>{" "}
+          on Freepik.
+        </p>
+      </div>
+
+      <div class="space-y-4">
+        <p
+          hidden
+          x-data="{ time: null }"
+          x-init="
+            $root.removeAttribute('hidden');
+            const perfData = window.performance.timing;
+            time = ((perfData.loadEventEnd - perfData.navigationStart) / 1000).toFixed(2);
+            if (time < 0) {
+              $root.remove();
+            }
+          "
+        >
+          This page fully loaded in <span x-text="time" class="font-mono"
+            >?.??</span
+          > seconds.
+        </p>
+      </div>
+    </div>
+  </Content>
+</Angle>
