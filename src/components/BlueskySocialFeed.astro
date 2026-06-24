@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { sortBy } from "es-toolkit";
+import { Section } from "./Section";
+import Lede from "./Lede.astro";
+import BlueskyPostCard from "./items/BlueskyPostCard.astro";
+
+interface Props {
+  collection: CollectionEntry<"bluesky">[];
+}
+
+const { collection } = Astro.props;
+
+if (!collection || collection.length === 0) {
+  return;
+}
+
+const posts = sortBy(collection, [(entry) => entry.data.created_at])
+  .reverse()
+  .slice(0, 14)
+  .map((entry) => entry.data);
+---
+
+<Section id="posts" heading="Posts">
+  <Lede>Bluesky posts by me.</Lede>
+  <ul
+    class="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 items-start"
+  >
+    {posts.map((post) => <BlueskyPostCard item={post} />)}
+  </ul>
+</Section>

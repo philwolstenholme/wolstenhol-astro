@@ -1,4 +1,5 @@
 import { airtableReadingList } from "./content/airtableReadingList";
+import { bluesky } from "./content/bluesky";
 import { devToPosts } from "./content/devToPosts";
 import { devToReadingList } from "./content/devToReadingList";
 import { githubStars } from "./content/githubStars";
@@ -13,6 +14,7 @@ export const collections = {
   "dev-to-posts": devToPosts,
   "dev-to-reading-list": devToReadingList,
   "airtable-reading-list": airtableReadingList,
+  bluesky,
   speaking,
   places,
   portfolio,

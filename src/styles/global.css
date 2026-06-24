@@ -273,6 +273,8 @@ html {
   --color-spotify-dark: #1aa64b;
   --color-instagram: #e1306c;
   --color-instagram-dark: #c13584;
+  --color-bluesky: #0085ff;
+  --color-bluesky-dark: #0065c4;
 
   /* The offset, blur-less "hard" shadow used on every card on the original
    * site. It's what gives the cards their slightly cut-out, sticker-y feel. */
