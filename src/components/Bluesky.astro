@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import { sortBy } from "es-toolkit";
+import { Section } from "./Section";
+import Lede from "./Lede.astro";
+import BlueskyCard from "./items/BlueskyCard.astro";
+
+const collection = await getCollection("bluesky");
+
+if (!collection || collection.length === 0) {
+  return;
+}
+
+const MAX_POSTS = 14;
+const posts = sortBy(collection, [(entry) => entry.data.created_at])
+  .reverse()
+  .slice(0, MAX_POSTS);
+---
+
+<Section id="posts" heading="Posts">
+  <Lede>Bluesky posts by me.</Lede>
+  <ul
+    role="list"
+    class="mt-12 grid grid-cols-1 gap-5 items-start md:grid-cols-2 xl:grid-cols-3"
+  >
+    {
+      posts.map((entry) => (
+        <li>
+          <BlueskyCard post={{ id: entry.id, ...entry.data }} />
+        </li>
+      ))
+    }
+  </ul>
+</Section>

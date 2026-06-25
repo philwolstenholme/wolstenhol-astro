@@ -273,6 +273,8 @@ html {
   --color-spotify-dark: #1aa64b;
   --color-instagram: #e1306c;
   --color-instagram-dark: #c13584;
+  --color-bluesky: #1a73ca;
+  --color-bluesky-dark: #1869b9;
 
   /* The offset, blur-less "hard" shadow used on every card on the original
    * site. It's what gives the cards their slightly cut-out, sticker-y feel. */
@@ -298,6 +300,15 @@ button {
 .card-instagram__caption-text {
   display: -webkit-box;
   -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ─── Bluesky card ───────────────────────────────────────────────────────── */
+
+.card-bluesky__text {
+  display: -webkit-box;
+  -webkit-line-clamp: 15;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

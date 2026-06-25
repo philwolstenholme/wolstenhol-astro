@@ -14,6 +14,7 @@ import Speaking from "./Speaking.astro";
 import Places from "./Places.astro";
 import SpotifyMusic from "./SpotifyMusic.astro";
 import Instagram from "./Instagram.astro";
+import Bluesky from "./Bluesky.astro";
 import WorkPreview from "./WorkPreview.astro";
 
 interface Props {
@@ -117,6 +118,7 @@ const spotifyData = spotifyCollection[0];
       </Section>
 
       <DevToPosts collection={devToPostsCollection} />
+      <Bluesky />
       <DevToReadingList isMobile={isMobile} />
       <Speaking collection={speakingCollection} />
       <SpotifyMusic data={spotifyData} />
