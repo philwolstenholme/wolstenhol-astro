@@ -1,0 +1,134 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { longDateFormatter } from "../../helpers/longDateFormatter";
+
+const { item: tweet } = Astro.props as {
+  item: CollectionEntry<"twitter">["data"];
+};
+
+const CLOUDINARY_PREFIX = "https://wolstenhol.me/proxy/cloudinary/image/fetch";
+
+const cloudinaryImage = (url: string, width = 400) =>
+  `${CLOUDINARY_PREFIX}/w_auto:100:${width},f_auto,q_auto/${url}`;
+
+const formattedDate = longDateFormatter.format(new Date(tweet.created_at));
+---
+
+<article
+  class="card-twitter contain-content overflow-hidden rounded bg-[#1d9bf0] font-bold text-white shadow-hard flex flex-col"
+>
+  {
+    tweet.photos.length > 0 && (
+      <div
+        class:list={[
+          "grid overflow-hidden rounded-tl rounded-tr bg-black",
+          tweet.photos.length > 1 && "grid-cols-2",
+        ]}
+      >
+        {tweet.photos.map((photo) => (
+          <img
+            src={cloudinaryImage(photo.url)}
+            srcset={`${cloudinaryImage(photo.url, 800)} 2x`}
+            sizes="368px"
+            class="h-full w-full object-cover"
+            loading="lazy"
+            crossorigin="anonymous"
+            alt={photo.alt}
+          />
+        ))}
+      </div>
+    )
+  }
+
+  <div class="flex flex-col flex-1">
+    <a
+      href={`https://twitter.com/${tweet.username}`}
+      class="m-4 mb-2 flex items-center space-x-3 text-sm hocus:underline"
+    >
+      <div class="min-w-0">
+        <p class="truncate">{tweet.name}</p>
+        <p class="truncate text-xs opacity-80">@{tweet.username}</p>
+      </div>
+    </a>
+
+    <div
+      class="card-twitter__text links-underline mx-4 mb-4 mt-0 flex-1 overflow-hidden font-serif leading-snug"
+      set:html={tweet.content}
+    />
+  </div>
+
+  <div class="flex items-center justify-between bg-[#1a8cd8] px-4 py-3 text-sm">
+    <div class="flex items-center gap-3">
+      {
+        tweet.retweetCount > 0 && (
+          <span class="flex items-center gap-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path d="M17 1l4 4-4 4" />
+              <path d="M3 11V9a4 4 0 014-4h14" />
+              <path d="M7 23l-4-4 4-4" />
+              <path d="M21 13v2a4 4 0 01-4 4H3" />
+            </svg>
+            <span class="sr-only">Retweets</span>
+            {tweet.retweetCount.toLocaleString()}
+          </span>
+        )
+      }
+      {
+        tweet.likeCount > 0 && (
+          <span class="flex items-center gap-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+            </svg>
+            <span class="sr-only">Likes</span>
+            {tweet.likeCount.toLocaleString()}
+          </span>
+        )
+      }
+    </div>
+    <a
+      href={tweet.url}
+      class="flex items-center gap-1 hocus:underline"
+      aria-label={`View tweet on X, posted ${formattedDate}`}
+    >
+      <!-- X (Twitter) logo -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+        ></path>
+      </svg>
+      <time datetime={tweet.created_at} class="text-xs">{formattedDate}</time>
+    </a>
+  </div>
+</article>
+
+<style is:global>
+  .card-twitter__text {
+    display: -webkit-box;
+    -webkit-line-clamp: 15;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

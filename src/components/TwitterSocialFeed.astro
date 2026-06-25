@@ -1,0 +1,51 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { sortBy } from "es-toolkit";
+import { Section } from "./Section";
+import Lede from "./Lede.astro";
+import TwitterPostCard from "./items/TwitterPostCard.astro";
+
+interface Props {
+  collection: CollectionEntry<"twitter">[];
+}
+
+const { collection } = Astro.props;
+
+if (!collection || collection.length === 0) {
+  return;
+}
+
+const tweets = sortBy(collection, [(entry) => entry.data.created_at])
+  .reverse()
+  .slice(0, 14)
+  .map((entry) => entry.data);
+---
+
+<Section id="tweets" heading="Tweets">
+  <Lede>X/Twitter posts by me.</Lede>
+  <ul
+    class="tweets-grid mt-8 grid grid-cols-1 gap-5 items-start md:grid-cols-2 xl:grid-cols-3"
+    x-data="twitterFeed"
+    x-init="initMasonry()"
+    x-on:resize.window.debounce="initMasonry()"
+  >
+    {
+      tweets.map((tweet) => (
+        <li class="tweets-grid__item">
+          <TwitterPostCard item={tweet} />
+        </li>
+      ))
+    }
+    <li class="tweets-grid__col flex flex-col gap-5" aria-hidden="true"></li>
+    <li
+      class="tweets-grid__col hidden flex-col gap-5 md:flex"
+      aria-hidden="true"
+    >
+    </li>
+    <li
+      class="tweets-grid__col hidden flex-col gap-5 xl:flex"
+      aria-hidden="true"
+    >
+    </li>
+  </ul>
+</Section>
