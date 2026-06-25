@@ -1,0 +1,186 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { longDateFormatter } from "../../helpers/longDateFormatter";
+
+const { item: post } = Astro.props as {
+  item: CollectionEntry<"bluesky">["data"];
+};
+
+const CLOUDINARY_PREFIX = "https://wolstenhol.me/proxy/cloudinary/image/fetch";
+
+const cloudinaryAvatar = (url: string, size = 32) =>
+  `${CLOUDINARY_PREFIX}/w_${size},h_${size},c_fill,f_auto,q_auto:low/${url}`;
+
+const cloudinaryImage = (url: string, width = 400) =>
+  `${CLOUDINARY_PREFIX}/w_auto:100:${width},f_auto,q_auto/${url}`;
+
+const hasMedia = post.media_attachments.length > 0;
+const hasCard = post.card && !hasMedia;
+
+const formattedDate = longDateFormatter.format(new Date(post.created_at));
+---
+
+<article
+  class="card-bluesky contain-content overflow-hidden rounded bg-bluesky font-bold text-white shadow-hard flex flex-col"
+>
+  {
+    hasMedia && (
+      <div
+        class:list={[
+          "grid overflow-hidden rounded-tl rounded-tr bg-black",
+          post.media_attachments.length > 1 && "grid-cols-2",
+        ]}
+      >
+        {post.media_attachments.map((media) => (
+          <a
+            href={media.url}
+            class="group relative block w-full focus:outline-none"
+          >
+            <span class="sr-only">Open post media</span>
+            <img
+              src={cloudinaryImage(media.url)}
+              srcset={`${cloudinaryImage(media.url, 800)} 2x, ${cloudinaryImage(media.url, 1200)} 3x`}
+              sizes="368px"
+              class="h-full w-full object-cover"
+              loading="lazy"
+              crossorigin="anonymous"
+              alt={media.alt ?? ""}
+            />
+          </a>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    hasCard && post.card && (
+      <a href={post.card.url} class="block hover:bg-bluesky-dark">
+        {post.card.image && (
+          <img
+            src={cloudinaryImage(post.card.image)}
+            class="w-full object-cover"
+            loading="lazy"
+            crossorigin="anonymous"
+            alt=""
+          />
+        )}
+      </a>
+    )
+  }
+
+  <div class="flex flex-col flex-1">
+    <a
+      href={`https://bsky.app/profile/${post.account.acct}`}
+      class="m-4 mb-2 flex items-center space-x-3 text-sm hocus:underline"
+    >
+      {
+        post.account.avatar && (
+          <img
+            src={cloudinaryAvatar(post.account.avatar)}
+            srcset={`${cloudinaryAvatar(post.account.avatar, 64)} 2x`}
+            class="h-8 w-8 rounded shrink-0"
+            width="32"
+            height="32"
+            alt=""
+            loading="lazy"
+            crossorigin="anonymous"
+          />
+        )
+      }
+      <div class="min-w-0">
+        <p class="truncate">{post.account.display_name}</p>
+        <p class="truncate text-xs opacity-80">@{post.account.acct}</p>
+      </div>
+    </a>
+
+    {
+      post.reblog && (
+        <p class="mx-4 mb-2 text-xs opacity-80">
+          ↻ Reposted by @{post.reblog.account.acct}
+        </p>
+      )
+    }
+
+    <div
+      class="card-bluesky__text links-underline mx-4 mb-4 mt-0 flex-1 overflow-hidden font-serif leading-snug"
+      set:html={post.content}
+    />
+  </div>
+
+  <div
+    class="flex items-center justify-between bg-bluesky-dark px-4 py-3 text-sm"
+  >
+    <div class="flex items-center gap-3">
+      {
+        post.repostCount > 0 && (
+          <span class="flex items-center gap-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path d="M17 1l4 4-4 4" />
+              <path d="M3 11V9a4 4 0 014-4h14" />
+              <path d="M7 23l-4-4 4-4" />
+              <path d="M21 13v2a4 4 0 01-4 4H3" />
+            </svg>
+            <span class="sr-only">Reposts</span>
+            {post.repostCount.toLocaleString()}
+          </span>
+        )
+      }
+      {
+        post.likeCount > 0 && (
+          <span class="flex items-center gap-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+            </svg>
+            <span class="sr-only">Likes</span>
+            {post.likeCount.toLocaleString()}
+          </span>
+        )
+      }
+    </div>
+    <a
+      href={post.url}
+      class="flex items-center gap-1 hocus:underline"
+      aria-label={`View post on Bluesky, posted ${formattedDate}`}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <!-- Bluesky butterfly icon -->
+        <path
+          d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.099 1.001.74 1.06 .344 1.109 0 1.375 0 2.289V17.484c0 .694 .456 1.518 1.515 1.518h.742c2.977 0 5.273-1.621 9.743-8.202zm0 2.4c1.087 2.114 4.046 6.053 6.798 7.995 2.636 1.861 4.103 1.804 4.462 1.745 .396-.049 .74-.315 .74-1.229V2.516c0-.694-.456-1.518-1.515-1.518h-.742C19.506 1 17.21 2.621 12.742 9.202z"
+        ></path>
+      </svg>
+      <time datetime={post.created_at} class="text-xs">{formattedDate}</time>
+    </a>
+  </div>
+</article>
+
+<style is:global>
+  .card-bluesky__text {
+    display: -webkit-box;
+    -webkit-line-clamp: 15;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

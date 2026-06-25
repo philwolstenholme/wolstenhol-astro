@@ -15,6 +15,7 @@ import Places from "./Places.astro";
 import SpotifyMusic from "./SpotifyMusic.astro";
 import Instagram from "./Instagram.astro";
 import WorkPreview from "./WorkPreview.astro";
+import BlueskySocialFeed from "./BlueskySocialFeed.astro";
 
 interface Props {
   isMobile?: boolean;
@@ -31,6 +32,7 @@ const [
   spotifyCollection,
   instagramCollection,
   portfolioCollection,
+  blueskyCollection,
 ] = await Promise.all([
   getCollection("dev-to-posts"),
   getCollection("github-stars"),
@@ -39,6 +41,7 @@ const [
   getCollection("spotify"),
   getCollection("instagram"),
   getCollection("portfolio"),
+  getCollection("bluesky"),
 ]);
 
 const spotifyData = spotifyCollection[0];
@@ -121,6 +124,7 @@ const spotifyData = spotifyCollection[0];
       <Speaking collection={speakingCollection} />
       <SpotifyMusic data={spotifyData} />
       <Instagram collection={instagramCollection} />
+      <BlueskySocialFeed collection={blueskyCollection} />
       <Places />
       <WorkPreview collection={portfolioCollection} />
       <GithubStars collection={githubStarsCollection} isMobile={isMobile} />

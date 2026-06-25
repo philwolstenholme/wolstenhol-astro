@@ -1,0 +1,59 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { sortBy } from "es-toolkit";
+import { Section } from "./Section";
+import Lede from "./Lede.astro";
+import BlueskyPostCard from "./items/BlueskyPostCard.astro";
+
+interface Props {
+  collection: CollectionEntry<"bluesky">[];
+}
+
+const { collection } = Astro.props;
+
+if (!collection || collection.length === 0) {
+  return;
+}
+
+const posts = sortBy(collection, [(entry) => entry.data.created_at])
+  .reverse()
+  .slice(0, 14)
+  .map((entry) => entry.data);
+---
+
+<Section id="posts" heading="Posts">
+  <Lede>Bluesky posts by me.</Lede>
+  <!--
+    Three-tier masonry layout:
+    1. @supports (display: grid-lanes) → native CSS masonry, column placeholders hidden
+    2. viewport > 767px, no grid-lanes → colcade JS masonry (lazy-loaded)
+    3. mobile / no JS → regular responsive CSS grid (items-start avoids stretching)
+  -->
+  <ul
+    class="posts-grid mt-8 grid grid-cols-1 gap-5 items-start md:grid-cols-2 xl:grid-cols-3"
+    x-data="blueskyFeed"
+    x-init="initMasonry()"
+    x-on:resize.window.debounce="initMasonry()"
+  >
+    {
+      posts.map((post) => (
+        <li class="posts-grid__item">
+          <BlueskyPostCard item={post} />
+        </li>
+      ))
+    }
+    <!-- colcade column placeholders: colcade distributes items into these divs.
+         colcade filters out display:none columns, so responsive hiding works. -->
+    <li class="posts-grid__col flex flex-col gap-5" aria-hidden="true"></li>
+    <li
+      class="posts-grid__col hidden flex-col gap-5 md:flex"
+      aria-hidden="true"
+    >
+    </li>
+    <li
+      class="posts-grid__col hidden flex-col gap-5 xl:flex"
+      aria-hidden="true"
+    >
+    </li>
+  </ul>
+</Section>

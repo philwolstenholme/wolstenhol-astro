@@ -273,6 +273,8 @@ html {
   --color-spotify-dark: #1aa64b;
   --color-instagram: #e1306c;
   --color-instagram-dark: #c13584;
+  --color-bluesky: #0085ff;
+  --color-bluesky-dark: #0065c4;
 
   /* The offset, blur-less "hard" shadow used on every card on the original
    * site. It's what gives the cards their slightly cut-out, sticker-y feel. */
@@ -291,6 +293,34 @@ html {
 button {
   user-select: none;
   cursor: pointer;
+}
+
+/* ─── Bluesky posts masonry grid ─────────────────────────────────────────── */
+
+/* Native CSS masonry when the browser supports grid-lanes. Column placeholder
+   <li>s are hidden — colcade is not loaded in this case. */
+@supports (display: grid-lanes) {
+  .posts-grid {
+    display: grid-lanes;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .posts-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .posts-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .posts-grid__col {
+    display: none !important;
+  }
 }
 
 /* ─── Instagram card ─────────────────────────────────────────────────────── */
