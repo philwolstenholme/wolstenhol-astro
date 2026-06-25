@@ -8,11 +8,29 @@ const MAX_TWEETS = 50;
 export const twitter = defineCollection({
   loader: async () => {
     try {
+      console.log(`Twitter: creating scraper for @${TWITTER_USERNAME}`);
       const scraper = new Scraper();
+
+      console.log(`Twitter: checking if logged in (guest mode)`);
+      const isLoggedIn = await scraper.isLoggedIn();
+      console.log(`Twitter: isLoggedIn=${isLoggedIn}`);
+
+      console.log(`Twitter: starting getTweets() generator`);
       const tweets = [];
+      let rawCount = 0;
+      let skippedCount = 0;
 
       for await (const tweet of scraper.getTweets(TWITTER_USERNAME, MAX_TWEETS)) {
-        if (!tweet.id || tweet.isRetweet) continue;
+        rawCount++;
+        console.log(
+          `Twitter: raw tweet #${rawCount} id=${tweet.id} isRetweet=${tweet.isRetweet} text=${(tweet.text ?? "").slice(0, 60)}`,
+        );
+
+        if (!tweet.id || tweet.isRetweet) {
+          skippedCount++;
+          console.log(`Twitter: skipping tweet #${rawCount} (no id or retweet)`);
+          continue;
+        }
 
         const photos = (tweet.photos ?? []).map((p) => ({
           url: p.url,
@@ -33,7 +51,9 @@ export const twitter = defineCollection({
         });
       }
 
-      console.log(`Twitter: ${tweets.length} tweets fetched`);
+      console.log(
+        `Twitter: done — ${tweets.length} kept, ${skippedCount} skipped out of ${rawCount} raw`,
+      );
       return tweets;
     } catch (error) {
       console.error("Twitter: fetch failed", error);
