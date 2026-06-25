@@ -54,8 +54,18 @@ const spotifyData = spotifyCollection[0];
   <Angle
     as="header"
     data-props-for="pointer-local"
-    class="bg-binding-dark slow-connection:bg-none text-white py-16 self-start"
+    class="relative bg-binding-dark slow-connection:bg-none text-white py-16 self-start"
   >
+    <figure
+      class="absolute inset-0 z-10 pointer-events-none filter-[url('#noise-bg-fx')_grayscale(100%)] opacity-10 mix-blend-screen slow-connection:hidden"
+      aria-hidden="true"
+    >
+      <svg width="0" height="0" aria-hidden="true">
+        <filter id="noise-bg-fx">
+          <feTurbulence baseFrequency="0.8"></feTurbulence>
+        </filter>
+      </svg>
+    </figure>
     <Content>
       <div class="md:grid grid-cols-[fit-content(300px)_auto] gap-4">
         <img
