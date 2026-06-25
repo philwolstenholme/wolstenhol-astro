@@ -295,6 +295,34 @@ button {
   cursor: pointer;
 }
 
+/* ─── Bluesky posts masonry grid ─────────────────────────────────────────── */
+
+/* Native CSS masonry when the browser supports grid-lanes. Column placeholder
+   <li>s are hidden — colcade is not loaded in this case. */
+@supports (display: grid-lanes) {
+  .posts-grid {
+    display: grid-lanes;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .posts-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .posts-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .posts-grid__col {
+    display: none !important;
+  }
+}
+
 /* ─── Instagram card ─────────────────────────────────────────────────────── */
 
 .card-instagram__caption-text {

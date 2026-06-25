@@ -20,7 +20,7 @@ const hasCard = post.card && !hasMedia;
 const formattedDate = longDateFormatter.format(new Date(post.created_at));
 ---
 
-<li
+<article
   class="card-bluesky contain-content overflow-hidden rounded bg-bluesky font-bold text-white shadow-hard flex flex-col"
 >
   {
@@ -174,7 +174,7 @@ const formattedDate = longDateFormatter.format(new Date(post.created_at));
       <time datetime={post.created_at} class="text-xs">{formattedDate}</time>
     </a>
   </div>
-</li>
+</article>
 
 <style is:global>
   .card-bluesky__text {
