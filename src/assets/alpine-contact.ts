@@ -1,0 +1,73 @@
+import Alpine from "alpinejs";
+
+type FormFields = "name" | "email" | "subject" | "message" | "agreement";
+
+const FIELDS: FormFields[] = ["name", "email", "subject", "message", "agreement"];
+
+const RULES: Record<FormFields, (val: string) => string | null> = {
+  name: (v) => (v.trim().length < 2 ? "Please enter your name (at least 2 characters)." : null),
+  email: (v) => {
+    if (!v.trim()) {
+      return "Please enter your email address.";
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())) {
+      return "Please enter a valid email address.";
+    }
+    return null;
+  },
+  subject: (v) => (v.trim().length < 8 ? "Please enter a subject (at least 8 characters)." : null),
+  message: (v) =>
+    v.trim().length < 8 ? "Please enter your message (at least 8 characters)." : null,
+  agreement: (v) => (v !== "true" ? "Please confirm you have read the note above." : null),
+};
+
+Alpine.data("pwContact", () => ({
+  submitted: false,
+  submitError: false,
+  values: Object.fromEntries(FIELDS.map((f) => [f, ""])) as Record<FormFields, string>,
+  errors: Object.fromEntries(FIELDS.map((f) => [f, null])) as Record<FormFields, string | null>,
+  touched: Object.fromEntries(FIELDS.map((f) => [f, false])) as Record<FormFields, boolean>,
+
+  init() {
+    // HTMX fires htmx:afterRequest on the form element after submission.
+    // We listen here to avoid double-colon attribute syntax that breaks Astro's JSX parser.
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail as { successful: boolean };
+      if (detail.successful) {
+        this.submitted = true;
+      } else {
+        this.submitError = true;
+      }
+    };
+    this.$el.addEventListener("htmx:afterRequest", handler);
+    this.$cleanup(() => this.$el.removeEventListener("htmx:afterRequest", handler));
+  },
+
+  touch(field: FormFields) {
+    this.touched[field] = true;
+    this.errors[field] = RULES[field](this.values[field]);
+  },
+
+  validateAll(): boolean {
+    let valid = true;
+    for (const field of FIELDS) {
+      this.touched[field] = true;
+      const error = RULES[field](this.values[field]);
+      this.errors[field] = error;
+      if (error) {
+        valid = false;
+      }
+    }
+    return valid;
+  },
+
+  submit(formEl: HTMLFormElement) {
+    if (!this.validateAll()) {
+      const firstError = formEl.querySelector("[aria-invalid='true']") as HTMLElement | null;
+      firstError?.focus();
+      return;
+    }
+    // Dispatch a custom event that HTMX picks up via hx-trigger="pwContactSubmit"
+    formEl.dispatchEvent(new CustomEvent("pwContactSubmit", { bubbles: true }));
+  },
+}));
