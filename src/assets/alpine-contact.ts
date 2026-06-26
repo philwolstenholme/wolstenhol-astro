@@ -1,4 +1,4 @@
-import Alpine from "alpinejs";
+import { defineComponent } from "./alpine-define";
 
 type FormFields = "name" | "email" | "subject" | "message" | "agreement";
 
@@ -30,7 +30,7 @@ const RULES: Record<FormFields, (val: string) => string | null> = {
     v !== "true" ? "Please tick the box to confirm you have read the above." : null,
 };
 
-Alpine.data("pwContact", () => ({
+export default defineComponent(() => ({
   submitted: false,
   submitError: false,
   showSummary: false,

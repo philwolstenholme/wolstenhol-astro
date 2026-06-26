@@ -1,6 +1,6 @@
-import Alpine from "alpinejs";
+import { defineComponent } from "./alpine-define";
 
-Alpine.data("pwHeader", () => ({
+export default defineComponent(() => ({
   activeHash: "",
   activePath: "",
   activeSection: "",

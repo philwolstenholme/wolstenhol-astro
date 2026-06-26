@@ -33,6 +33,7 @@ const animationDuration = (((hash >> 8) % 100) / 100 + 0.1).toFixed(2);
 
 <li
   x-data="githubCard"
+  x-load="idle"
   x-on:mouseenter="replay()"
   class="card--github expand-clickable-area shadow-hard border border-gray-300 rounded flex flex-col bg-gray-100 text-gray-900 transition-colors hover:bg-white focus-within:bg-white"
 >

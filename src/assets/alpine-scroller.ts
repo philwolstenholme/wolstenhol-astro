@@ -1,6 +1,6 @@
-import Alpine from "alpinejs";
+import { defineComponent } from "./alpine-define";
 
-Alpine.data("horizontalScroller", ({ scrollFull = false }: { scrollFull?: boolean } = {}) => ({
+export default defineComponent(({ scrollFull = false }: { scrollFull?: boolean } = {}) => ({
   overflowing: { left: false, right: true } as { left: boolean; right: boolean },
   scrollAmount: 0 as number,
   _cleanup: null as (() => void) | null,

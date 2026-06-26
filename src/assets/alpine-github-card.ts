@@ -1,6 +1,6 @@
-import Alpine from "alpinejs";
+import { defineComponent } from "./alpine-define";
 
-Alpine.data("githubCard", () => ({
+export default defineComponent(() => ({
   replay() {
     const title = this.$refs.title as HTMLElement | undefined;
     if (!title || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

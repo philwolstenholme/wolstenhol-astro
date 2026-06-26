@@ -20,8 +20,9 @@ const onMouseleave = post.isVideo ? "$refs.video && $refs.video.play()" : null;
 <figure
   tabindex="0"
   x-data="instagramCard"
+  x-load="idle"
   class={clsx(
-    "group relative flex aspect-square select-none overflow-hidden rounded bg-linear-to-t from-black to-gray-900 shadow-(--shadow-hard) contain-content",
+    "group relative flex aspect-square select-none overflow-hidden rounded bg-linear-to-t from-black to-gray-900 shadow-hard contain-content",
     isParty && "card-instagram--party",
   )}
   x-on:mouseenter={onMouseenter}

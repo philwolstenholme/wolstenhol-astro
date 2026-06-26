@@ -1,4 +1,4 @@
-import Alpine from "alpinejs";
+import { defineComponent } from "./alpine-define";
 
 declare global {
   interface Window {
@@ -6,7 +6,7 @@ declare global {
   }
 }
 
-Alpine.data("blueskyFeed", () => ({
+export default defineComponent(() => ({
   colcadeInstance: null as object | null,
   colcadeLoading: false,
 
