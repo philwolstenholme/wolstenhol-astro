@@ -35,17 +35,17 @@ import Content from "../components/Content.astro";
         <div
           x-data="pwContact"
           id="contact-form-component"
-          class="contain-content mt-12 space-y-8"
+          class="mt-12 space-y-8"
         >
           <!-- Validation error summary -->
           <div
             x-ref="summary"
             role="alert"
             aria-labelledby="contact-form-validation-problems"
-            class="space-y-3 rounded border-l-4 border-red-800 pl-4"
             tabindex="-1"
             x-show="showSummary"
             x-cloak
+            class="max-w-3xl border-2 border-black bg-binding-dark p-6 text-white shadow-[4px_4px_0_#000]"
           >
             <h3
               class="font-serif text-2xl font-bold"
@@ -54,13 +54,13 @@ import Content from "../components/Content.astro";
               <span aria-hidden="true">😔&nbsp;</span>There were some problems
               with the form:
             </h3>
-            <ul role="list" class="list-disc pl-5">
+            <ul role="list" class="mt-4 list-disc pl-5 space-y-1">
               <template x-for="item in errorList" :key="item.id">
                 <li>
                   <a
                     x-bind:href="`#${item.id}`"
                     x-text="item.label"
-                    class="underline"></a>
+                    class="text-yellow-300 underline hocus:text-yellow-200"></a>
                   (<span x-text="item.message"></span>)
                 </li>
               </template>
@@ -73,26 +73,31 @@ import Content from "../components/Content.astro";
             x-show="submitted"
             x-cloak
             tabindex="-1"
-            class="max-w-3xl space-y-4 text-xl"
+            class="max-w-3xl -rotate-1 border-2 border-black bg-yellow-300 bg-graph-paper p-8 shadow-[6px_6px_0_#000]"
           >
-            <p class="font-serif text-3xl font-bold text-green-700">
-              <span aria-hidden="true">✅&nbsp;</span>Thanks!
+            <p
+              class="text-fill-transparent bg-binding-dark slow-connection:bg-none bg-clip-text font-serif text-6xl font-bold leading-none"
+            >
+              Thanks!
             </p>
-            <p class="text-base">Your message has been sent.</p>
+            <p class="mt-4 font-bold text-black">
+              Your message has been sent. I'll get back to you as soon as I can.
+            </p>
           </div>
 
           <!-- Server error message -->
           <div
             x-show="submitError"
             x-cloak
-            class="space-y-2 font-bold text-red-800 lg:ml-32"
             role="alert"
+            class="max-w-3xl border-2 border-black bg-white shadow-hard [border-left-width:6px] [border-left-color:theme(--color-red-700)]"
           >
-            <p>
+            <p class="p-6 font-bold">
               Oops, something went wrong sending your message. Please try again
               or contact me directly on{" "}
-              <a class="underline" href="https://bsky.app/profile/wolstenhol.me"
-                >Bluesky</a
+              <a
+                class="underline hocus:text-yellow-600"
+                href="https://bsky.app/profile/wolstenhol.me">Bluesky</a
               >.
             </p>
           </div>
