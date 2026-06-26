@@ -17,46 +17,82 @@ import Content from "../components/Content.astro";
         <div
           class="mt-5 mb-10 space-y-5 font-serif text-xl leading-normal xl:mt-10 xl:mb-12 xl:text-2xl"
         >
-          <p>
-            You can send me a direct message on{" "}
+          <p class="mt-3">
+            You can send me a{" "}
+            <a
+              class="underline hocus:text-yellow-600"
+              href="https://twitter.com/messages/compose?recipient_id=38276082"
+              >direct message on Twitter</a
+            > or{" "}
             <a
               class="underline hocus:text-yellow-600"
               href="https://bsky.app/profile/wolstenhol.me">Bluesky</a
-            > or drop me an email via this contact form (all fields are required).
-          </p>
-          <p class="text-base xl:text-lg">
-            <strong>Note:</strong> this form is for genuine personal enquiries only
-            — not for sales pitches, SEO offers, or requests for commercial estimates.
+            >, or drop me an email via this contact form (all fields are
+            required).
           </p>
         </div>
 
-        <div x-data="pwContact">
+        <div
+          x-data="pwContact"
+          id="contact-form-component"
+          class="contain-content mt-12 space-y-8"
+        >
+          <!-- Validation error summary -->
+          <div
+            x-ref="summary"
+            role="alert"
+            aria-labelledby="contact-form-validation-problems"
+            class="space-y-3 rounded border-l-4 border-red-800 pl-4"
+            tabindex="-1"
+            x-show="showSummary"
+            x-cloak
+          >
+            <h3
+              class="font-serif text-2xl font-bold"
+              id="contact-form-validation-problems"
+            >
+              <span aria-hidden="true">😔&nbsp;</span>There were some problems
+              with the form:
+            </h3>
+            <ul role="list" class="list-disc pl-5">
+              <template x-for="item in errorList" :key="item.id">
+                <li>
+                  <a
+                    x-bind:href="`#${item.id}`"
+                    x-text="item.label"
+                    class="underline"></a>
+                  (<span x-text="item.message"></span>)
+                </li>
+              </template>
+            </ul>
+          </div>
+
           <!-- Success message -->
           <div
+            x-ref="successMessage"
             x-show="submitted"
             x-cloak
-            class="rounded-lg border-2 border-green-600 bg-green-50 p-6 text-green-900"
-            role="alert"
+            tabindex="-1"
+            class="max-w-3xl space-y-4 text-xl"
           >
-            <h2 class="mb-2 font-serif text-2xl font-bold">Message sent!</h2>
-            <p>
-              Thanks for getting in touch. I'll get back to you as soon as I
-              can.
+            <p class="font-serif text-3xl font-bold text-green-700">
+              <span aria-hidden="true">✅&nbsp;</span>Thanks!
             </p>
+            <p class="text-base">Your message has been sent.</p>
           </div>
 
           <!-- Server error message -->
           <div
             x-show="submitError"
             x-cloak
-            class="mb-6 rounded-lg border-2 border-red-600 bg-red-50 p-4 text-red-900"
+            class="space-y-2 font-bold text-red-800 lg:ml-32"
             role="alert"
           >
             <p>
-              Something went wrong sending your message. Please try again or
-              contact me directly on <a
-                class="underline"
-                href="https://bsky.app/profile/wolstenhol.me">Bluesky</a
+              Oops, something went wrong sending your message. Please try again
+              or contact me directly on{" "}
+              <a class="underline" href="https://bsky.app/profile/wolstenhol.me"
+                >Bluesky</a
               >.
             </p>
           </div>
@@ -70,193 +106,198 @@ import Content from "../components/Content.astro";
             hx-post="/contact"
             hx-trigger="pwContactSubmit"
             hx-swap="none"
-            class="space-y-6"
+            class="max-w-3xl space-y-4 text-xl"
             novalidate
           >
             <input type="hidden" name="form-name" value="contact" />
 
             <!-- Honeypot -->
-            <p class="hidden" aria-hidden="true">
+            <div hidden aria-hidden="true">
               <label>
-                Don't fill this out if you're human:
-                <input name="bot-field" tabindex="-1" autocomplete="off" />
+                Please leave this empty:
+                <input
+                  aria-hidden="true"
+                  name="bot-field"
+                  tabindex="-1"
+                  autocomplete="off"
+                />
               </label>
-            </p>
+            </div>
 
             <!-- Name -->
-            <div class="space-y-1">
-              <label for="contact-name" class="block font-bold">
-                Name <span aria-hidden="true" class="text-red-600">*</span>
+            <p class="space-y-2 lg:flex lg:space-y-0 lg:space-x-5">
+              <label
+                for="contact-name"
+                class="font-bold lg:w-28 lg:pt-4 lg:text-right"
+                x-bind:class="{ 'text-red-800': touched.name && errors.name }"
+              >
+                Name:<sup class="text-red-800"
+                  ><span aria-hidden="true">*</span><span class="sr-only"
+                    >(this field is required)</span
+                  ></sup
+                >
               </label>
+              <br class="hidden" />
               <input
                 type="text"
                 id="contact-name"
                 name="name"
                 required
+                aria-required="true"
                 minlength="2"
                 autocomplete="name"
+                placeholder="What should I call you?"
                 x-model="values.name"
                 x-on:blur="touch('name')"
                 x-bind:aria-invalid="touched.name && !!errors.name ? 'true' : 'false'"
-                x-bind:aria-describedby="touched.name && errors.name ? 'contact-name-error' : null"
-                class="w-full rounded border-2 border-gray-300 px-3 py-2 shadow-sm focus:border-gray-900 focus:outline-none"
-                x-bind:class="{ 'border-red-500 bg-red-50': touched.name && errors.name }"
+                class="w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard lg:flex-1"
+                x-bind:class="{ 'border-red-800': touched.name && errors.name }"
               />
-              <p
-                id="contact-name-error"
-                role="alert"
-                class="text-sm text-red-700"
-                x-show="touched.name && errors.name"
-                x-text="errors.name"
-                x-cloak
-              >
-              </p>
-            </div>
+            </p>
 
             <!-- Email -->
-            <div class="space-y-1">
-              <label for="contact-email" class="block font-bold">
-                Email <span aria-hidden="true" class="text-red-600">*</span>
+            <p class="space-y-2 lg:flex lg:space-y-0 lg:space-x-5">
+              <label
+                for="contact-email"
+                class="font-bold lg:w-28 lg:pt-4 lg:text-right"
+                x-bind:class="{ 'text-red-800': touched.email && errors.email }"
+              >
+                Email:<sup class="text-red-800"
+                  ><span aria-hidden="true">*</span><span class="sr-only"
+                    >(this field is required)</span
+                  ></sup
+                >
               </label>
+              <br class="hidden" />
               <input
                 type="email"
                 id="contact-email"
                 name="email"
                 required
+                aria-required="true"
                 autocomplete="email"
+                placeholder="How can I get back to you?"
                 x-model="values.email"
                 x-on:blur="touch('email')"
                 x-bind:aria-invalid="touched.email && !!errors.email ? 'true' : 'false'"
-                x-bind:aria-describedby="touched.email && errors.email ? 'contact-email-error' : null"
-                class="w-full rounded border-2 border-gray-300 px-3 py-2 shadow-sm focus:border-gray-900 focus:outline-none"
-                x-bind:class="{ 'border-red-500 bg-red-50': touched.email && errors.email }"
+                class="w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard lg:flex-1"
+                x-bind:class="{ 'border-red-800': touched.email && errors.email }"
               />
-              <p
-                id="contact-email-error"
-                role="alert"
-                class="text-sm text-red-700"
-                x-show="touched.email && errors.email"
-                x-text="errors.email"
-                x-cloak
-              >
-              </p>
-            </div>
+            </p>
 
             <!-- Subject -->
-            <div class="space-y-1">
-              <label for="contact-subject" class="block font-bold">
-                Subject <span aria-hidden="true" class="text-red-600">*</span>
+            <p class="space-y-2 lg:flex lg:space-y-0 lg:space-x-5">
+              <label
+                for="contact-subject"
+                class="font-bold lg:w-28 lg:pt-4 lg:text-right"
+                x-bind:class="{ 'text-red-800': touched.subject && errors.subject }"
+              >
+                Subject:<sup class="text-red-800"
+                  ><span aria-hidden="true">*</span><span class="sr-only"
+                    >(this field is required)</span
+                  ></sup
+                >
               </label>
+              <br class="hidden" />
               <input
                 type="text"
                 id="contact-subject"
                 name="subject"
                 required
+                aria-required="true"
                 minlength="8"
+                placeholder="What's this all about then?"
                 x-model="values.subject"
                 x-on:blur="touch('subject')"
                 x-bind:aria-invalid="touched.subject && !!errors.subject ? 'true' : 'false'"
-                x-bind:aria-describedby="touched.subject && errors.subject ? 'contact-subject-error' : null"
-                class="w-full rounded border-2 border-gray-300 px-3 py-2 shadow-sm focus:border-gray-900 focus:outline-none"
-                x-bind:class="{ 'border-red-500 bg-red-50': touched.subject && errors.subject }"
+                class="w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard lg:flex-1"
+                x-bind:class="{ 'border-red-800': touched.subject && errors.subject }"
               />
-              <p
-                id="contact-subject-error"
-                role="alert"
-                class="text-sm text-red-700"
-                x-show="touched.subject && errors.subject"
-                x-text="errors.subject"
-                x-cloak
-              >
-              </p>
-            </div>
+            </p>
 
             <!-- Message -->
-            <div class="space-y-1">
-              <label for="contact-message" class="block font-bold">
-                Message <span aria-hidden="true" class="text-red-600">*</span>
+            <p class="space-y-2 lg:flex lg:space-y-0 lg:space-x-5">
+              <label
+                for="contact-message"
+                class="font-bold lg:w-28 lg:pt-4 lg:text-right"
+                x-bind:class="{ 'text-red-800': touched.message && errors.message }"
+              >
+                Message:<sup class="text-red-800"
+                  ><span aria-hidden="true">*</span><span class="sr-only"
+                    >(this field is required)</span
+                  ></sup
+                >
               </label>
+              <br class="hidden" />
               <textarea
                 id="contact-message"
                 name="message"
                 required
+                aria-required="true"
                 minlength="8"
                 rows="6"
+                placeholder="Your unconditional offer of that six-figure, four-days-a-week job, perhaps a typo correction, or some other message."
                 x-model="values.message"
                 x-on:blur="touch('message')"
                 x-bind:aria-invalid="touched.message && !!errors.message ? 'true' : 'false'"
-                x-bind:aria-describedby="touched.message && errors.message ? 'contact-message-error' : null"
-                class="w-full rounded border-2 border-gray-300 px-3 py-2 shadow-sm focus:border-gray-900 focus:outline-none"
-                x-bind:class="{ 'border-red-500 bg-red-50': touched.message && errors.message }"
+                class="min-h-24 w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard lg:flex-1"
+                x-bind:class="{ 'border-red-800': touched.message && errors.message }"
               ></textarea>
-              <p
-                id="contact-message-error"
-                role="alert"
-                class="text-sm text-red-700"
-                x-show="touched.message && errors.message"
-                x-text="errors.message"
-                x-cloak
-              >
-              </p>
-            </div>
+            </p>
 
             <!-- Agreement checkbox -->
-            <div class="space-y-1">
-              <div class="flex items-start gap-3">
+            <p>
+              <span class="flex space-x-2 text-base font-bold lg:ml-32">
                 <input
                   type="checkbox"
                   id="contact-agreement"
                   name="agreement"
                   required
-                  class="mt-1 size-4 shrink-0 cursor-pointer rounded border-2 border-gray-300 accent-yellow-400"
+                  aria-required="true"
+                  class="mt-1.5 shrink-0 cursor-pointer"
                   x-on:change="values.agreement = $el.checked ? 'true' : ''; touch('agreement')"
                   x-bind:aria-invalid="touched.agreement && !!errors.agreement ? 'true' : 'false'"
-                  x-bind:aria-describedby="touched.agreement && errors.agreement ? 'contact-agreement-error' : null"
                 />
                 <label
                   for="contact-agreement"
-                  class="cursor-pointer text-sm leading-snug"
+                  class="cursor-pointer"
+                  x-bind:class="{ 'text-red-800': touched.agreement && errors.agreement }"
                 >
-                  I understand this form is for personal enquiries only, not for
-                  sales pitches or commercial work requests. <span
-                    aria-hidden="true"
-                    class="text-red-600">*</span
+                  I work making websites full-time on a salaried basis so don't
+                  do any freelance or contracting work (sorry). Please tick the
+                  box to confirm you are not asking me to produce a website for
+                  a small business or offering a contract gig. Thanks!<sup
+                    class="text-red-800"
+                    ><span aria-hidden="true">*</span><span class="sr-only"
+                      >(this field is required)</span
+                    ></sup
                   >
                 </label>
-              </div>
-              <p
-                id="contact-agreement-error"
-                role="alert"
-                class="text-sm text-red-700"
-                x-show="touched.agreement && errors.agreement"
-                x-text="errors.agreement"
-                x-cloak
-              >
-              </p>
-            </div>
+              </span>
+            </p>
 
             <!-- Submit button -->
-            <div>
+            <p class="lg:flex lg:space-x-5">
+              <span class="lg:block lg:w-28"></span>
               <button
                 type="button"
                 x-on:click="submit($el.closest('form'))"
-                class="inline-flex cursor-pointer items-center gap-2 rounded border-2 border-black bg-yellow-300 px-5 py-3 font-bold shadow-hard transition-transform active:scale-95 hocus:bg-yellow-400"
+                class="mb-0.5 flex select-none items-center space-x-2 rounded border-2 border-black bg-yellow-300 px-4 py-2 font-bold shadow-hard hocus:bg-yellow-400"
               >
-                Send message
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 256 256"
-                  fill="currentColor"
-                  width="20"
-                  height="20"
+                  role="presentation"
                   aria-hidden="true"
+                  class="m-2 block w-20"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 515.9 107.5"
                 >
                   <path
-                    d="M231.4,44.34a12,12,0,0,0-12.06-3L24.12,106.31a12,12,0,0,0-1.76,22.1l86.9,49.88,49.88,86.9A12,12,0,0,0,170,272a12.2,12.2,0,0,0,1.23-.07,12,12,0,0,0,9.54-7.29L234.4,56.44a12,12,0,0,0-3-12.1ZM178.64,220.31l-42.26-73.63,24.42-24.42a12,12,0,0,0-17-17L119.4,129.64,45.77,87.36,207.26,48.74Z"
+                    d="M56 0c-6 0-13 1-18 5-10 5-21 10-28 19-2 6 2 12 5 17 6 10 15 19 25 25l15 7c4 2 9 5 10 10-1 5-7 8-12 9l-28 5-20 1c-7 2-5 11 1 9h19l28-2c11-1 21-6 25-16 2-5 3-10 1-15-2-4-6-6-10-8-8-5-18-8-27-14L28 37c-2-3-4-8 0-11 4-4 10-7 16-10l12-5c6 0 10 7 15 7 7-2 1-10-3-12-3-2-7-6-12-6Zm265 1c-13 2-22 12-27 24 0 5-1 12-7 14-3 4-1 10-1 15l12 30c2 4 3 9 7 10l13-4c16-4 28-18 33-33 2-10 2-20-3-29-3-11-10-23-22-26l-5-1Zm144 1c-6 0-13 5-11 12 2 6 10 3 15 5 4 3 12 3 14 9-4 3-9 3-13 4l-19 2c-18 2-37 0-55 2-4 1-9 4-7 8 2 5 8 6 13 6 19 0 38 0 57-2 6-1 13 0 19-2 4-2 11-1 8 5l-6 14c-4 10-11 19-16 29-2 5 2 12 7 10 5-1 9-5 9-9 4-8 10-15 13-24l8-12c3-5 5-12 10-17 3-4 7-9 4-15-2-5-7-6-12-9a460 460 0 0 0-38-16ZM256 5c-7 3-4 11-5 16-2 6-1 11-2 16-3 10-3 21-8 30-6 1-7-7-11-10l-7-15c-3-8-7-15-14-20-3-2-7-6-12-4-5 3-6 10-8 15 1 4-2 12-5 5-3-5-11 0-9 5 0 5 3 9 4 14l9 31c2 4 2 10 8 10 5-1 7-7 7-12l-2-28 1-18c3-6 7 4 8 7l8 17c3 5 6 11 11 15 4 4 8 8 13 9 8 0 13-7 15-14 2-5 2-12 3-18l4-32c-1-5 2-12-2-16l-6-3zM138 5c-6 0-10 3-15 4-7 3-15 8-16 17 0 5-4 9-4 14 0 6-2 10-4 15 1 5 3 10 2 15-1 7-2 16 3 22 5 4 12 5 18 5 11-1 23-2 33-6 6-1 11-6 15-10 5-4-1-12-6-8-6 3-11 5-17 6l-16 3c-6 0-12 1-16-3-4-5-1-14 4-16l17-2 18-2c4-1 11-8 4-10s-14 0-20 0h-18c-3-5 2-11-1-15 1-5 6-8 9-12 5-3 11-4 17-4 4 0 8 2 12 4 6 0 6-8 3-11-4-3-8-5-14-6h-8Zm182 11c6-1 11 6 13 11 5 9 7 20 3 30-3 8-10 13-17 18-4 3-10 0-10-5-3-11-3-22-2-32 1-8 3-16 10-21l3-1z"
                   ></path>
                 </svg>
+                <span class="sr-only">Send</span>
               </button>
-            </div>
+            </p>
           </form>
         </div>
       </article>

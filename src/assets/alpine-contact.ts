@@ -4,6 +4,14 @@ type FormFields = "name" | "email" | "subject" | "message" | "agreement";
 
 const FIELDS: FormFields[] = ["name", "email", "subject", "message", "agreement"];
 
+const FIELD_LABELS: Record<FormFields, string> = {
+  name: "Name",
+  email: "Email",
+  subject: "Subject",
+  message: "Message",
+  agreement: "Agreement",
+};
+
 const RULES: Record<FormFields, (val: string) => string | null> = {
   name: (v) => (v.trim().length < 2 ? "Please enter your name (at least 2 characters)." : null),
   email: (v) => {
@@ -18,23 +26,27 @@ const RULES: Record<FormFields, (val: string) => string | null> = {
   subject: (v) => (v.trim().length < 8 ? "Please enter a subject (at least 8 characters)." : null),
   message: (v) =>
     v.trim().length < 8 ? "Please enter your message (at least 8 characters)." : null,
-  agreement: (v) => (v !== "true" ? "Please confirm you have read the note above." : null),
+  agreement: (v) =>
+    v !== "true" ? "Please tick the box to confirm you have read the above." : null,
 };
 
 Alpine.data("pwContact", () => ({
   submitted: false,
   submitError: false,
+  showSummary: false,
   values: Object.fromEntries(FIELDS.map((f) => [f, ""])) as Record<FormFields, string>,
   errors: Object.fromEntries(FIELDS.map((f) => [f, null])) as Record<FormFields, string | null>,
   touched: Object.fromEntries(FIELDS.map((f) => [f, false])) as Record<FormFields, boolean>,
 
   init() {
-    // HTMX fires htmx:afterRequest on the form element after submission.
-    // We listen here to avoid double-colon attribute syntax that breaks Astro's JSX parser.
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail as { successful: boolean };
       if (detail.successful) {
         this.submitted = true;
+        this.showSummary = false;
+        this.$nextTick(() => {
+          (this.$refs["successMessage"] as HTMLElement)?.focus();
+        });
       } else {
         this.submitError = true;
       }
@@ -46,6 +58,9 @@ Alpine.data("pwContact", () => ({
   touch(field: FormFields) {
     this.touched[field] = true;
     this.errors[field] = RULES[field](this.values[field]);
+    if (this.showSummary) {
+      this.showSummary = FIELDS.some((f) => this.errors[f] !== null);
+    }
   },
 
   validateAll(): boolean {
@@ -61,13 +76,23 @@ Alpine.data("pwContact", () => ({
     return valid;
   },
 
+  get errorList() {
+    return FIELDS.filter((f) => this.errors[f] !== null).map((f) => ({
+      id: `contact-${f}`,
+      label: FIELD_LABELS[f],
+      message: this.errors[f],
+    }));
+  },
+
   submit(formEl: HTMLFormElement) {
-    if (!this.validateAll()) {
-      const firstError = formEl.querySelector("[aria-invalid='true']") as HTMLElement | null;
-      firstError?.focus();
+    const isValid = this.validateAll();
+    this.showSummary = !isValid;
+    if (!isValid) {
+      this.$nextTick(() => {
+        (this.$refs["summary"] as HTMLElement)?.focus();
+      });
       return;
     }
-    // Dispatch a custom event that HTMX picks up via hx-trigger="pwContactSubmit"
     formEl.dispatchEvent(new CustomEvent("pwContactSubmit", { bubbles: true }));
   },
 }));
