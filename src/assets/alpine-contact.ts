@@ -45,7 +45,7 @@ Alpine.data("pwContact", () => ({
         this.submitted = true;
         this.showSummary = false;
         document.dispatchEvent(new CustomEvent("play-sound", { detail: "success" }));
-        this.$nextTick(() => {
+        void this.$nextTick(() => {
           (this.$refs["successMessage"] as HTMLElement)?.focus();
         });
       } else {
@@ -53,6 +53,7 @@ Alpine.data("pwContact", () => ({
       }
     };
     this.$el.addEventListener("htmx:afterRequest", handler);
+    // @ts-expect-error -- Alpine's $cleanup magic is absent from the generated types
     this.$cleanup(() => this.$el.removeEventListener("htmx:afterRequest", handler));
   },
 
@@ -90,7 +91,7 @@ Alpine.data("pwContact", () => ({
     this.showSummary = !isValid;
     if (!isValid) {
       document.dispatchEvent(new CustomEvent("play-sound", { detail: "error" }));
-      this.$nextTick(() => {
+      void this.$nextTick(() => {
         (this.$refs["summary"] as HTMLElement)?.focus();
       });
       return;

@@ -37,6 +37,7 @@ Alpine.data("pwHeader", () => ({
     );
     document.querySelectorAll("h2[data-section]").forEach((h) => observer.observe(h));
 
+    // @ts-expect-error -- Alpine's $cleanup magic is absent from the generated types
     this.$cleanup(() => {
       window.removeEventListener("hashchange", onHashChange);
       window.removeEventListener("popstate", onPopState);
