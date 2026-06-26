@@ -12,7 +12,8 @@
     "lint": "oxlint src/",
     "lint:fix": "oxlint --fix src/",
     "format": "oxfmt . && prettier --write \"src/**/*.astro\"",
-    "format:check": "oxfmt --check . && prettier --check \"src/**/*.astro\""
+    "format:check": "oxfmt --check . && prettier --check \"src/**/*.astro\"",
+    "scrape:instagram": "node scripts/scrape-instagram.mjs"
   },
   "dependencies": {
     "@aduptive/instagram-scraper": "^1.0.3",
