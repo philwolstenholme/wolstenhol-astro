@@ -93,7 +93,7 @@ export const spotify = defineCollection({
         }),
       );
 
-      const randomGenres = sampleSize(artistGenres, 6);
+      const randomGenres = sampleSize(artistGenres, Math.min(6, artistGenres.length));
 
       console.log(`Spotify: ${artists.length} artists, ${randomGenres.length} genres`);
 
