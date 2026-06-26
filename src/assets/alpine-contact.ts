@@ -44,6 +44,7 @@ Alpine.data("pwContact", () => ({
       if (detail.successful) {
         this.submitted = true;
         this.showSummary = false;
+        document.dispatchEvent(new CustomEvent("play-sound", { detail: "success" }));
         this.$nextTick(() => {
           (this.$refs["successMessage"] as HTMLElement)?.focus();
         });
@@ -88,6 +89,7 @@ Alpine.data("pwContact", () => ({
     const isValid = this.validateAll();
     this.showSummary = !isValid;
     if (!isValid) {
+      document.dispatchEvent(new CustomEvent("play-sound", { detail: "error" }));
       this.$nextTick(() => {
         (this.$refs["summary"] as HTMLElement)?.focus();
       });
