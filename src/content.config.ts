@@ -8,6 +8,7 @@ import { places } from "./content/places";
 import { portfolio } from "./content/portfolio";
 import { speaking } from "./content/speaking";
 import { spotify } from "./content/spotify";
+import { twitter } from "./content/twitter";
 
 export const collections = {
   "github-stars": githubStars,
@@ -15,6 +16,7 @@ export const collections = {
   "dev-to-reading-list": devToReadingList,
   "airtable-reading-list": airtableReadingList,
   bluesky,
+  twitter,
   speaking,
   places,
   portfolio,

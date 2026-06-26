@@ -1,0 +1,81 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { sortBy } from "es-toolkit";
+import { Section } from "./Section";
+import Lede from "./Lede.astro";
+import BlueskyPostCard from "./items/BlueskyPostCard.astro";
+import TwitterPostCard from "./items/TwitterPostCard.astro";
+
+interface Props {
+  bluesky: CollectionEntry<"bluesky">[];
+  twitter: CollectionEntry<"twitter">[];
+}
+
+const { bluesky, twitter } = Astro.props;
+
+type PostItem =
+  | {
+      source: "bluesky";
+      created_at: string;
+      data: CollectionEntry<"bluesky">["data"];
+    }
+  | {
+      source: "twitter";
+      created_at: string;
+      data: CollectionEntry<"twitter">["data"];
+    };
+
+const combined: PostItem[] = [
+  ...bluesky.map((e) => ({
+    source: "bluesky" as const,
+    created_at: e.data.created_at,
+    data: e.data,
+  })),
+  ...twitter.map((e) => ({
+    source: "twitter" as const,
+    created_at: e.data.created_at,
+    data: e.data,
+  })),
+];
+
+const posts = sortBy(combined, [(item) => item.created_at])
+  .reverse()
+  .slice(0, 20);
+
+if (posts.length === 0) {
+  return;
+}
+---
+
+<Section id="posts" heading="Posts">
+  <Lede>Recent posts from Bluesky and X/Twitter.</Lede>
+  <ul
+    class="posts-grid mt-8 grid grid-cols-1 gap-5 items-start md:grid-cols-2 xl:grid-cols-3"
+    x-data="blueskyFeed"
+    x-init="initMasonry()"
+    x-on:resize.window.debounce="initMasonry()"
+  >
+    {
+      posts.map((post) => (
+        <li class="posts-grid__item">
+          {post.source === "bluesky" ? (
+            <BlueskyPostCard item={post.data} />
+          ) : (
+            <TwitterPostCard item={post.data} />
+          )}
+        </li>
+      ))
+    }
+    <li class="posts-grid__col flex flex-col gap-5" aria-hidden="true"></li>
+    <li
+      class="posts-grid__col hidden flex-col gap-5 md:flex"
+      aria-hidden="true"
+    >
+    </li>
+    <li
+      class="posts-grid__col hidden flex-col gap-5 xl:flex"
+      aria-hidden="true"
+    >
+    </li>
+  </ul>
+</Section>
