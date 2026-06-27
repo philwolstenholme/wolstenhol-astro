@@ -1,11 +1,11 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { Section } from "./Section";
-import { SpotifyGenresLede } from "./SpotifyGenresLede";
+import Section from "./Section.astro";
+import SpotifyGenresLede from "./SpotifyGenresLede.astro";
 import HorizontalScroller from "./HorizontalScroller.astro";
 import SpotifyMusicCard from "./items/SpotifyMusicCard.astro";
-import { SpotifyAudioController } from "./SpotifyAudioController";
-import type { SpotifyArtist } from "./SpotifyAudioController";
+import SpotifyAudioController from "./SpotifyAudioController.astro";
+import type { SpotifyArtist } from "./SpotifyAudioController.astro";
 
 interface Props {
   data: CollectionEntry<"spotify"> | undefined;
@@ -36,7 +36,7 @@ const { artists, randomGenres } = data.data;
         ))
       }
     </HorizontalScroller>
-    <SpotifyAudioController client:load artists={artists as SpotifyArtist[]} />
+    <SpotifyAudioController artists={artists as SpotifyArtist[]} />
   </div>
   <p class="mt-4 max-w-prose text-xs font-bold opacity-90">
     You can click the cards above to play a little preview of the artist,

@@ -1,5 +1,4 @@
 import netlify from "@astrojs/netlify";
-import preact from "@astrojs/preact";
 import tailwindcss from "@tailwindcss/vite";
 // @ts-check
 import { defineConfig, envField } from "astro/config";
@@ -9,11 +8,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [
-    preact({
-      devtools: true,
-    }),
-  ],
+  integrations: [],
   adapter: netlify({ edgeMiddleware: true }),
   cache: {
     provider: {

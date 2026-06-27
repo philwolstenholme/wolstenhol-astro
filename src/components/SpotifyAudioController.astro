@@ -1,0 +1,37 @@
+---
+export interface SpotifyArtist {
+  id: string;
+  name: string;
+  images: { url: string; width: number; height: number }[];
+  external_urls: { spotify: string };
+  top_track: {
+    id: string;
+    name: string;
+    preview_url: string | null;
+    album: {
+      name: string;
+      images: { url: string; width: number; height: number }[];
+    };
+    features?: { tempo: number };
+  } | null;
+}
+
+interface Props {
+  artists: SpotifyArtist[];
+}
+
+const { artists } = Astro.props;
+---
+
+<div
+  class="contents"
+  x-data="spotifyAudioController"
+  data-artists={JSON.stringify(artists)}
+>
+  <audio class="sr-only" x-ref="audio"></audio>
+  <iframe
+    class="absolute right-0 bottom-0 h-20 w-36"
+    name="spotify-preview"
+    title="Spotify preview"
+    aria-hidden="true"></iframe>
+</div>
