@@ -26,6 +26,7 @@ const { artists } = Astro.props;
 <div
   class="contents"
   x-data="spotifyAudioController"
+  x-load="idle"
   data-artists={JSON.stringify(artists)}
 >
   <audio class="sr-only" x-ref="audio"></audio>
