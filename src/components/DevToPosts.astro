@@ -3,13 +3,13 @@ import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import { sortBy } from "es-toolkit";
 
-import { Section } from "./Section";
+import Section from "./Section.astro";
 
 interface Props {
   collection?: CollectionEntry<"dev-to-posts">[];
 }
 import Lede from "./Lede.astro";
-import { StyledTextLink } from "./StyledTextLink";
+import StyledTextLink from "./StyledTextLink.astro";
 import PaginatedGrid from "./PaginatedGrid.astro";
 import DevToPostCard from "./items/DevToPostCard.astro";
 

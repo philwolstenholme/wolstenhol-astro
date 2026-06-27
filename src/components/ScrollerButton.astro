@@ -1,0 +1,35 @@
+---
+interface Props {
+  href?: string;
+  class?: string;
+  color?: "green" | "instagram";
+  [key: string]: unknown;
+}
+
+const { href, class: className = "", color = "green", ...rest } = Astro.props;
+
+const colorClasses: Record<string, string> = {
+  green: "bg-green-700 hocus:bg-green-600",
+  instagram: "bg-instagram hocus:bg-instagram-dark",
+};
+
+const classes = [
+  "rounded px-2 py-1 font-bold text-white shadow-(--shadow-hard) transition-colors",
+  colorClasses[color],
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+{
+  href ? (
+    <a href={href} class={classes} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button type="button" class={classes} {...rest}>
+      <slot />
+    </button>
+  )
+}

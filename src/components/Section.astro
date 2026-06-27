@@ -1,0 +1,41 @@
+---
+import clsx from "clsx";
+
+interface Props {
+  class?: string;
+  heading?: string;
+  hasScroller?: boolean;
+  id?: string;
+  [key: string]: unknown;
+}
+
+const {
+  class: className = "",
+  heading,
+  hasScroller = false,
+  id,
+  ...rest
+} = Astro.props;
+---
+
+<section
+  class={clsx(
+    className,
+    "group/section",
+    hasScroller && "col-[full] constrain-content",
+  )}
+  id={id}
+  {...rest}
+>
+  {
+    heading && (
+      <h2
+        class="text-4xl font-bold font-serif mt-3 scroll-mt-8"
+        data-section={id}
+      >
+        {heading}
+      </h2>
+    )
+  }
+  <slot />
+</section>

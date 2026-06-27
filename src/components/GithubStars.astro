@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
-import { Section } from "./Section";
+import Section from "./Section.astro";
 
 interface Props {
   collection?: CollectionEntry<"github-stars">[];
@@ -10,7 +10,7 @@ interface Props {
 }
 import { getItemsPerPage } from "../helpers/getItemsPerPage";
 import { byStarredAtDesc } from "../helpers/getStarsSorted";
-import { StyledTextLink } from "./StyledTextLink";
+import StyledTextLink from "./StyledTextLink.astro";
 import PaginatedGrid from "./PaginatedGrid.astro";
 import Lede from "./Lede.astro";
 import GithubStarCard from "./items/GithubStarCard.astro";
