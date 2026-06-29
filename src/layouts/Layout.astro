@@ -119,6 +119,14 @@ if (Astro.response) {
       href="https://dev.to/feed/philw_"
     />
     <meta name="theme-color" content="#161616" />
+    <noscript>
+      <style>
+        main section + section {
+          contain-intrinsic-size: unset;
+          content-visibility: unset;
+        }
+      </style>
+    </noscript>
   </head>
   <body class="bg-subtle-grunge slow-connection:bg-none">
     <div
@@ -199,6 +207,9 @@ if (Astro.response) {
     </script>
     <script>
       import "../assets/prop-for-that.ts";
+    </script>
+    <script>
+      import "../assets/content-visibility.ts";
     </script>
     <script is:inline type="speculationrules">
       {

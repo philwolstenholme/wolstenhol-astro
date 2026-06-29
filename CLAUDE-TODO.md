@@ -8,7 +8,7 @@ If you create a new page then update the global site navigation to include a lin
 - [x] Copy as much of the 11ty footer as possible, ignoring the links to the 'no-JS' and 'no-CSS' versions of the site. The footer should be a shared component that can be used on all pages, including the work and github stars pages.
 - [x] Copy the tweets component but make it show Bluesky posts to start with. Copy the existing approach as much as possible. My Bluesky username is @wolstenhol.me. Copy the approach from `src/data/bluesky.js` on the 11ty site.
 - [x] Copy the contact form page from the 11ty repo. I have already enabled Netlify form detection. Use Alpine for any JS validation. Use HTMX for any interaction with the sever side.
-- [ ] Copy the 11ty site's approach to using `content-visibility` to improve rendering performance.
+- [x] Copy the 11ty site's approach to using `content-visibility` to improve rendering performance.
 - [ ] Look for ways to improve the loading and rendering performance of the site. Pick three of the highest impact changes and implement them.
 - [ ] Look for chances to simplify or shorten the codebase by using es-toolkit helpers. Look for sorting and filtering code and focus on these places first.
 - [ ] Write a README summarising the approach taken to implement the site, including any performance improvements made, and any other interesting things about the site.
