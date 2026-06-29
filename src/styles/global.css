@@ -295,6 +295,16 @@ button {
   cursor: pointer;
 }
 
+/* ─── content-visibility deferred rendering ──────────────────────────────── */
+
+/* Skip rendering off-screen sections. The intrinsic size is a rough estimate
+   to avoid layout shift while the section is off-screen; the JS in
+   content-visibility.ts updates it dynamically to the actual dimensions. */
+main section + section {
+  content-visibility: auto;
+  contain-intrinsic-size: 10px 667px;
+}
+
 /* ─── Bluesky posts masonry grid ─────────────────────────────────────────── */
 
 /* Native CSS masonry when the browser supports grid-lanes. Column placeholder
