@@ -6,7 +6,7 @@ const { item: post } = Astro.props as {
   item: CollectionEntry<"bluesky">["data"];
 };
 
-const CLOUDINARY_PREFIX = "https://wolstenhol.me/proxy/cloudinary/image/fetch";
+const CLOUDINARY_PREFIX = "/proxy/cloudinary/image/fetch";
 
 const cloudinaryAvatar = (url: string, size = 32) =>
   `${CLOUDINARY_PREFIX}/w_${size},h_${size},c_fill,f_auto,q_auto:low/${url}`;

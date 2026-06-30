@@ -7,7 +7,7 @@ interface Props {
 }
 
 const DIGIT_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
-const CLOUDINARY_PREFIX = "https://wolstenhol.me/proxy/cloudinary/image/upload";
+const CLOUDINARY_PREFIX = "/proxy/cloudinary/image/upload";
 
 const cloudinaryUrl = (spotifyUrl: string, size = 145) =>
   spotifyUrl.replace(
@@ -118,7 +118,7 @@ const tempoAnimationDuration = bpm > 0 ? `${1 / (bpm / 60) / 2}s` : undefined;
           preload="none"
         >
           <source
-            src="https://wolstenhol.me/proxy/cloudinary/video/upload/v1650231745/11ty/static.mp4"
+            src="/proxy/cloudinary/video/upload/v1650231745/11ty/static.mp4"
             type="video/mp4"
           />
         </video>

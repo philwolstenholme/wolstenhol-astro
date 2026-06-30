@@ -5,7 +5,7 @@ import { InstagramScraper } from "@aduptive/instagram-scraper";
 import { z } from "astro/zod";
 import { defineCollection } from "astro:content";
 
-const CLOUDINARY_PROXY = "https://wolstenhol.me/proxy/cloudinary";
+const CLOUDINARY_PROXY = "/proxy/cloudinary";
 const CARD_WIDTH = 365;
 
 function cloudinaryImageUrl(id: string, width: number): string {

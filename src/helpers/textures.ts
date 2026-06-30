@@ -4,7 +4,7 @@
 // no two cards end up looking quite the same.
 
 const grungeWallBase =
-  "https://wolstenhol.me/proxy/cloudinary/image/upload/c_fill,g_north,w_{w},h_{h},f_auto,q_70,fl_progressive/v1661284312/one-offs/white-grungy-wall-textured-background.jpg";
+  "/proxy/cloudinary/image/upload/c_fill,g_north,w_{w},h_{h},f_auto,q_70,fl_progressive/v1661284312/one-offs/white-grungy-wall-textured-background.jpg";
 
 export const grungeWallSrc = grungeWallBase.replace("{w}", "365").replace("{h}", "199");
 
