@@ -4,6 +4,7 @@ export default defineComponent(() => ({
   activeHash: "",
   activePath: "",
   activeSection: "",
+  _cleanup: null as (() => void) | null,
 
   init() {
     this.activePath = window.location.pathname;
@@ -37,12 +38,15 @@ export default defineComponent(() => ({
     );
     document.querySelectorAll("h2[data-section]").forEach((h) => observer.observe(h));
 
-    // @ts-expect-error -- Alpine's $cleanup magic is absent from the generated types
-    this.$cleanup(() => {
+    this._cleanup = () => {
       window.removeEventListener("hashchange", onHashChange);
       window.removeEventListener("popstate", onPopState);
       observer.disconnect();
-    });
+    };
+  },
+
+  destroy() {
+    this._cleanup?.();
   },
 
   isActive(el: HTMLAnchorElement): boolean {

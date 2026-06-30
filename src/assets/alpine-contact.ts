@@ -37,6 +37,7 @@ export default defineComponent(() => ({
   values: Object.fromEntries(FIELDS.map((f) => [f, ""])) as Record<FormFields, string>,
   errors: Object.fromEntries(FIELDS.map((f) => [f, null])) as Record<FormFields, string | null>,
   touched: Object.fromEntries(FIELDS.map((f) => [f, false])) as Record<FormFields, boolean>,
+  _cleanup: null as (() => void) | null,
 
   init() {
     const handler = (e: Event) => {
@@ -53,8 +54,11 @@ export default defineComponent(() => ({
       }
     };
     this.$el.addEventListener("htmx:afterRequest", handler);
-    // @ts-expect-error -- Alpine's $cleanup magic is absent from the generated types
-    this.$cleanup(() => this.$el.removeEventListener("htmx:afterRequest", handler));
+    this._cleanup = () => this.$el.removeEventListener("htmx:afterRequest", handler);
+  },
+
+  destroy() {
+    this._cleanup?.();
   },
 
   touch(field: FormFields) {
