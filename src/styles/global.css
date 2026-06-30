@@ -305,6 +305,13 @@ main section + section {
   contain-intrinsic-size: 10px 667px;
 }
 
+/* The /work page renders every portfolio entry in one unpaginated list, so
+   apply the same deferred-rendering treatment to its cards. */
+main .card--portfolio + .card--portfolio {
+  content-visibility: auto;
+  contain-intrinsic-size: 10px 800px;
+}
+
 /* ─── Bluesky posts masonry grid ─────────────────────────────────────────── */
 
 /* Native CSS masonry when the browser supports grid-lanes. Column placeholder

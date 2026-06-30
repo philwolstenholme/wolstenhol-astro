@@ -31,7 +31,7 @@ const rObs = new ResizeObserver((entries) => {
   });
 });
 
-const sections = document.querySelectorAll("main section");
+const sections = document.querySelectorAll("main section, main .card--portfolio");
 
 if (sections.length) {
   sections.forEach((el) => {

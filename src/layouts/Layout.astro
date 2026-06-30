@@ -50,6 +50,22 @@ if (Astro.response) {
       })();
     </script>
     <meta name="viewport" content="width=device-width" />
+    <link rel="preconnect" href="https://res.cloudinary.com" />
+    <link rel="preconnect" href="https://wolstenhol.me" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/roboto-slab-v12-latin-regular.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/roboto-slab-v12-latin-700.woff2"
+      crossorigin
+    />
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -121,7 +137,8 @@ if (Astro.response) {
     <meta name="theme-color" content="#161616" />
     <noscript>
       <style>
-        main section + section {
+        main section + section,
+        main .card--portfolio + .card--portfolio {
           contain-intrinsic-size: unset;
           content-visibility: unset;
         }
