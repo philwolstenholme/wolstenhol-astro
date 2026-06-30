@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import Angle from "./Angle.astro";
 import Content from "./Content.astro";
 import Layout from "../layouts/Layout.astro";
-import StyledTextLink from "./StyledTextLink.astro";
 import SocialLinks from "./SocialLinks.astro";
 import Section from "./Section.astro";
 import GithubStars from "./GithubStars.astro";
@@ -27,7 +26,6 @@ const { isMobile } = Astro.props;
 const [
   devToPostsCollection,
   githubStarsCollection,
-  readingListCollection,
   speakingCollection,
   spotifyCollection,
   instagramCollection,
@@ -36,7 +34,6 @@ const [
 ] = await Promise.all([
   getCollection("dev-to-posts"),
   getCollection("github-stars"),
-  getCollection("dev-to-reading-list"),
   getCollection("speaking"),
   getCollection("spotify"),
   getCollection("instagram"),
