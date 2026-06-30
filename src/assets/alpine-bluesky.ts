@@ -20,7 +20,7 @@ export default defineComponent(() => ({
 
   loadColcade() {
     const script = document.createElement("script");
-    script.src = "https://wolstenhol.me/proxy/jsdelivr/npm/colcade@0.2.0/colcade.js";
+    script.src = "/proxy/jsdelivr/npm/colcade@0.2.0/colcade.js";
     script.integrity = "sha256-ZxEJSCFR4d0OThzWuZ8CYCzw+pDoV/E0/+4EWoLO6Eg=";
     script.crossOrigin = "anonymous";
     script.onload = () => {
