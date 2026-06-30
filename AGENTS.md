@@ -27,6 +27,7 @@ the Tailwind styling from Tailwind 3 to Tailwind 4.
 - Avoid merge commits. If you need to merge, rebase instead or cherry-pick
 - Restart the dev server after making any changes to the data loader/collections
 - When starting the dev server, use background mode: `astro dev --background`
+- Wrap every Alpine component factory (`src/assets/alpine-*.ts`) with the `defineComponent()` helper from `./alpine-define` so Alpine magics (`$el`, `$refs`, `$watch`, etc.) are properly typed
 
 ## Don't
 
