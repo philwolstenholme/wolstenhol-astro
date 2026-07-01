@@ -20,11 +20,19 @@ if (!data) {
 const { artists, randomGenres } = data.data;
 ---
 
-<svg aria-hidden="true" focusable="false" class="absolute size-0 overflow-hidden">
+<svg
+  aria-hidden="true"
+  focusable="false"
+  class="absolute size-0 overflow-hidden"
+>
   <defs>
     <filter id="spotify-grain">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
-      <feColorMatrix type="saturate" values="0" />
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.65"
+        numOctaves="3"
+        stitchTiles="stitch"></feTurbulence>
+      <feColorMatrix type="saturate" values="0"></feColorMatrix>
     </filter>
   </defs>
 </svg>
