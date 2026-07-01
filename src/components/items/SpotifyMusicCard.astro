@@ -40,6 +40,12 @@ const tempoAnimationDuration = bpm > 0 ? `${1 / (bpm / 60) / 2}s` : undefined;
 >
   <h3 class="sr-only">{artist.name}</h3>
 
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 mix-blend-soft-light opacity-[0.35]"
+    style="filter: url(#spotify-grain);"
+  />
+
   {
     keyHint && (
       <div
