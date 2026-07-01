@@ -11,8 +11,7 @@ If you create a new page then update the global site navigation to include a lin
 - [x] Copy the 11ty site's approach to using `content-visibility` to improve rendering performance.
 - [x] Look for ways to improve the loading and rendering performance of the site. Pick three of the highest impact changes and implement them.
 - [x] Look for chances to simplify or shorten the codebase by using es-toolkit helpers. Look for sorting and filtering code and focus on these places first.
-- [ ] Write a README summarising the approach taken to implement the site, including any performance improvements made, and any other interesting things about the site.
 - [ ] Look through the whole codebase for duplication, over-complicated code, or redundant comments and remove them.
 - [ ] Look for chances to use more modern CSS features. To get ideas, check 'CSS wrapped' blog posts like <https://developer.chrome.com/blog/css-wrapped-2025> and <https://developer.chrome.com/blog/css-wrapped-2024> and <https://developer.chrome.com/blog/css-wrapped-2023>
-- [ ] Look for ways to replace our use of Preact with Alpine, implement the best option.
-- [ ] Add a bit of randomised grunge to the work card screenshots, like the maps images have.
+- [ ] Add a bit of randomised grunge to the work card screenshots, like the maps images have. Keep it subtle.
+- [ ] Write a README summarising the approach taken to implement the site, including any performance improvements made, and any other interesting things about the site.
