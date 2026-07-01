@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import slugify from "@sindresorhus/slugify";
+import { sortPortfolio } from "../helpers/getPortfolioSorted";
 import Section from "./Section.astro";
 import ScrollerButton from "./ScrollerButton.astro";
 import Lede from "./Lede.astro";
@@ -13,10 +14,7 @@ interface Props {
 const { collection: collectionProp } = Astro.props;
 
 const collection = collectionProp ?? (await getCollection("portfolio"));
-const sorted = [...collection].sort((a, b) => {
-  const weightDiff = (a.data.weight ?? 0) - (b.data.weight ?? 0);
-  return weightDiff !== 0 ? weightDiff : a.data.name.localeCompare(b.data.name);
-});
+const sorted = sortPortfolio(collection);
 const items = sorted.slice(0, 3);
 ---
 

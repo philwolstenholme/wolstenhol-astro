@@ -1,19 +1,13 @@
 ---
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
 import slugify from "@sindresorhus/slugify";
+import { getSortedPortfolio } from "../helpers/getPortfolioSorted";
 import Layout from "../layouts/Layout.astro";
 import Content from "../components/Content.astro";
 
 export const prerender = true;
 
-const entries = await getCollection("portfolio");
-const sortedEntries = [...entries].sort((a, b) => {
-  const weightDiff = (a.data.weight ?? 0) - (b.data.weight ?? 0);
-  if (weightDiff !== 0) {
-    return weightDiff;
-  }
-  return a.data.name.localeCompare(b.data.name);
-});
+const sortedEntries = await getSortedPortfolio();
 
 const items = await Promise.all(
   sortedEntries.map(async (entry) => {

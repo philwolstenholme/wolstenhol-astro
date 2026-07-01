@@ -3,7 +3,7 @@ import { createHmac } from "crypto";
 import { z } from "astro/zod";
 import { defineCollection } from "astro:content";
 import { GOOGLE_MAPS_KEY, GOOGLE_MAPS_SECRET, FOURSQUARE_OAUTH_TOKEN } from "astro:env/server";
-import { sampleSize } from "es-toolkit";
+import { sampleSize, sortBy } from "es-toolkit";
 
 const PLACES_COUNT = 9;
 
@@ -51,7 +51,7 @@ export const places = defineCollection({
 
     const venues: any[] = data.response?.venues?.items ?? [];
 
-    const sortedVenues = [...venues].sort((a, b) => (b.ratedAt ?? 0) - (a.ratedAt ?? 0));
+    const sortedVenues = sortBy(venues, [(v) => v.ratedAt ?? 0]).reverse();
 
     return sampleSize(sortedVenues, PLACES_COUNT).map((v) => ({
       id: v.id,
