@@ -1,5 +1,6 @@
 import { z } from "astro/zod";
 import { defineCollection } from "astro:content";
+import { sortBy } from "es-toolkit";
 
 const escapeMap: Record<string, string> = {
   "&": "&amp;",
@@ -71,9 +72,7 @@ function renderPostContent(post: BskyPost): string {
   let html = "";
   let lastIndex = 0;
 
-  const facets = [...(post.record?.facets ?? [])].sort(
-    (a, b) => a.index.byteStart - b.index.byteStart,
-  );
+  const facets = sortBy(post.record?.facets ?? [], [(facet) => facet.index.byteStart]);
 
   for (const facet of facets) {
     const start = facet.index.byteStart;

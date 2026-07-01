@@ -1,4 +1,5 @@
 import type { CollectionEntry } from "astro:content";
+import { sortBy, uniqBy } from "es-toolkit";
 
 export interface ReadingListCardItem {
   url: string;
@@ -29,23 +30,6 @@ export function mergeReadingLists(
     date: entry.data.date,
   }));
 
-  const seen = new Set<string>();
-  return [...devToItems, ...airtableItems]
-    .sort((a, b) => {
-      if (!a.date) {
-        return 1;
-      }
-      if (!b.date) {
-        return -1;
-      }
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    })
-    .filter(({ url }) => {
-      if (seen.has(url)) {
-        return false;
-      }
-      seen.add(url);
-      return true;
-    })
-    .map(({ date: _date, ...item }) => item);
+  const sorted = sortBy([...devToItems, ...airtableItems], [(item) => item.date ?? ""]).reverse();
+  return uniqBy(sorted, ({ url }) => url).map(({ date: _date, ...item }) => item);
 }
