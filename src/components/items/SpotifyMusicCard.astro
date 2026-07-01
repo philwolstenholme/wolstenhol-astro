@@ -25,6 +25,7 @@ const imageUrl2x = artist.images[0]
   : "";
 const bpm = artist.top_track?.features?.tempo ?? 0;
 const tempoAnimationDuration = bpm > 0 ? `${1 / (bpm / 60) / 2}s` : undefined;
+const grainOpacity = Math.round((0.3 + Math.random() * 0.2) * 100) / 100;
 ---
 
 <article
@@ -42,8 +43,8 @@ const tempoAnimationDuration = bpm > 0 ? `${1 / (bpm / 60) / 2}s` : undefined;
 
   <div
     aria-hidden="true"
-    class="pointer-events-none absolute inset-0 mix-blend-soft-light opacity-[0.35]"
-    style="filter: url(#spotify-grain);"
+    class="opacity-grunge pointer-events-none absolute inset-0 mix-blend-soft-light"
+    style={`--opacity: ${grainOpacity}; filter: url(#spotify-grain);`}
   />
 
   {
