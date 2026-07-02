@@ -20,9 +20,10 @@ const As = as;
 // jittered polyline, so the dark panels look like strips of binding paper
 // torn by hand and stuck onto the page. The tear follows the same diagonal
 // as the straight version (y interpolates across --clip-padding * 2), with
-// unevenly spaced points nudged a few px either side. Regenerated per
+// long, unevenly spaced segments nudged a couple of px either side — enough
+// to lose the machine-cut look without reading as jagged. Regenerated per
 // build/render, so no two tears are quite the same.
-const jitter = () => (Math.random() * 8 - 3.5).toFixed(1);
+const jitter = () => (Math.random() * 4 - 2).toFixed(1);
 
 const jitteredPoints = (
   fromX: number,
@@ -31,10 +32,10 @@ const jitteredPoints = (
 ) => {
   const points: string[] = [];
   const direction = fromX < toX ? 1 : -1;
-  let x = fromX + direction * (1.5 + Math.random() * 3.5);
+  let x = fromX + direction * (3 + Math.random() * 4);
   while (direction === 1 ? x < toX : x > toX) {
     points.push(`${x.toFixed(1)}% ${yAt(x)}`);
-    x += direction * (1.5 + Math.random() * 3.5);
+    x += direction * (3 + Math.random() * 4);
   }
   return points;
 };
