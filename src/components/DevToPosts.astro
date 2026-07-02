@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import { sortBy } from "es-toolkit";
 
 import Section from "./Section.astro";
 
@@ -12,6 +11,7 @@ import Lede from "./Lede.astro";
 import StyledTextLink from "./StyledTextLink.astro";
 import PaginatedGrid from "./PaginatedGrid.astro";
 import DevToPostCard from "./items/DevToPostCard.astro";
+import { sortDevToPosts } from "../helpers/getDevToPostsSorted";
 
 const { collection: collectionProp } = Astro.props;
 
@@ -20,9 +20,7 @@ const anchor = "posts";
 const itemsPerPage = 3;
 const collection = collectionProp || (await getCollection("dev-to-posts"));
 
-const items = sortBy(collection, [(entry) => entry.data.published_at ?? ""])
-  .reverse()
-  .map((entry) => entry.data);
+const items = sortDevToPosts(collection);
 ---
 
 <Section id="words" heading="Words">

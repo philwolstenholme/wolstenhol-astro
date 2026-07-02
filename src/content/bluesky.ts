@@ -99,41 +99,48 @@ function renderPostContent(post: BskyPost): string {
   return html;
 }
 
-function transformEntry(entry: BskyFeedEntry) {
+const schema = z.object({
+  created_at: z.string(),
+  content: z.string(),
+  url: z.string(),
+  account: z.object({
+    acct: z.string(),
+    display_name: z.string(),
+    avatar: z.string(),
+  }),
+  media_attachments: z.array(
+    z.object({
+      type: z.string(),
+      url: z.string(),
+      preview_url: z.string(),
+      alt: z.string().optional(),
+    }),
+  ),
+  card: z
+    .object({
+      url: z.string(),
+      title: z.string(),
+      description: z.string(),
+      image: z.string(),
+    })
+    .nullable(),
+  repostCount: z.number(),
+  likeCount: z.number(),
+  reblog: z
+    .object({
+      account: z.object({
+        acct: z.string(),
+        display_name: z.string(),
+        avatar: z.string(),
+      }),
+    })
+    .nullable(),
+});
+
+function transformEntry(entry: BskyFeedEntry): z.infer<typeof schema> & { id: string } {
   const { post } = entry;
 
-  const transformed: {
-    id: string;
-    created_at: string;
-    content: string;
-    url: string;
-    account: {
-      acct: string;
-      display_name: string;
-      avatar: string;
-    };
-    media_attachments: Array<{
-      type: string;
-      url: string;
-      preview_url: string;
-      alt?: string;
-    }>;
-    card: {
-      url: string;
-      title: string;
-      description: string;
-      image: string;
-    } | null;
-    repostCount: number;
-    likeCount: number;
-    reblog: {
-      account: {
-        acct: string;
-        display_name: string;
-        avatar: string;
-      };
-    } | null;
-  } = {
+  const transformed: z.infer<typeof schema> & { id: string } = {
     id: post.uri,
     created_at: post.indexedAt ?? post.createdAt ?? new Date().toISOString(),
     content: renderPostContent(post),
@@ -206,41 +213,5 @@ export const bluesky = defineCollection({
       return [];
     }
   },
-  schema: z.object({
-    created_at: z.string(),
-    content: z.string(),
-    url: z.string(),
-    account: z.object({
-      acct: z.string(),
-      display_name: z.string(),
-      avatar: z.string(),
-    }),
-    media_attachments: z.array(
-      z.object({
-        type: z.string(),
-        url: z.string(),
-        preview_url: z.string(),
-        alt: z.string().optional(),
-      }),
-    ),
-    card: z
-      .object({
-        url: z.string(),
-        title: z.string(),
-        description: z.string(),
-        image: z.string(),
-      })
-      .nullable(),
-    repostCount: z.number(),
-    likeCount: z.number(),
-    reblog: z
-      .object({
-        account: z.object({
-          acct: z.string(),
-          display_name: z.string(),
-          avatar: z.string(),
-        }),
-      })
-      .nullable(),
-  }),
+  schema,
 });

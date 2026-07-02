@@ -1,4 +1,5 @@
 ---
+import clsx from "clsx";
 export interface ContentProps {
   as?: string;
   class?: string;
@@ -49,9 +50,6 @@ const As = as;
   }
 </style>
 
-<As
-  id="content"
-  class={["constrain-content", extraClass].filter(Boolean).join(" ")}
->
+<As id="content" class={clsx("constrain-content", extraClass)}>
   <slot />
 </As>

@@ -1,12 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import { sortBy } from "es-toolkit";
 
 import Section from "./Section.astro";
 import Lede from "./Lede.astro";
 import SpeakingCard from "./items/SpeakingCard.astro";
 import HorizontalScroller from "./HorizontalScroller.astro";
+import { sortSpeaking } from "../helpers/getSpeakingSorted";
 
 interface Props {
   collection?: CollectionEntry<"speaking">[];
@@ -14,9 +14,7 @@ interface Props {
 
 const { collection: collectionProp } = Astro.props;
 const collection = collectionProp || (await getCollection("speaking"));
-const items = sortBy(collection, [(entry) => parseInt(entry.id, 10)]).map(
-  (entry) => entry.data,
-);
+const items = sortSpeaking(collection);
 ---
 
 <Section id="speaking" hasScroller heading="Speaking">

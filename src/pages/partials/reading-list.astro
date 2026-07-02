@@ -2,18 +2,13 @@
 export const prerender = false;
 
 import { getCollection } from "astro:content";
-import { paginate } from "../../helpers/paginate";
-import { setupPartial } from "../../helpers/setupPartial";
-import { getItemsPerPage } from "../../helpers/getItemsPerPage";
+import { preparePartialPage } from "../../helpers/preparePartialPage";
 import PaginatedGrid from "../../components/PaginatedGrid.astro";
 import ReadingListCard from "../../components/items/ReadingListCard.astro";
 import { mergeReadingLists } from "../../helpers/mergeReadingLists";
 
 const searchParam = "readingList";
 const htmxPartialPath = "/partials/reading-list";
-const itemsPerPage =
-  Number(Astro.url.searchParams.get("perPage")) ||
-  getItemsPerPage({ isMobile: Astro.locals.isMobile });
 
 const [devToCollection, airtableCollection] = await Promise.all([
   getCollection("dev-to-reading-list"),
@@ -22,15 +17,10 @@ const [devToCollection, airtableCollection] = await Promise.all([
 
 const items = mergeReadingLists(devToCollection, airtableCollection);
 
-const { index } = paginate({
+const { itemsPerPage, pageUrl } = preparePartialPage(Astro, {
   items,
-  itemsPerPage,
-  url: new URL(Astro.request.url),
   searchParam,
-  onlyFullPages: true,
 });
-
-const pageUrl = setupPartial(Astro, searchParam, index);
 ---
 
 <PaginatedGrid

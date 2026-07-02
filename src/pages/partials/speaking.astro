@@ -1,34 +1,20 @@
 ---
 export const prerender = false;
 
-import { getCollection } from "astro:content";
-import { sortBy } from "es-toolkit";
-import { paginate } from "../../helpers/paginate";
-import { setupPartial } from "../../helpers/setupPartial";
-import { getItemsPerPage } from "../../helpers/getItemsPerPage";
+import { preparePartialPage } from "../../helpers/preparePartialPage";
+import { getSortedSpeaking } from "../../helpers/getSpeakingSorted";
 import PaginatedGrid from "../../components/PaginatedGrid.astro";
 import SpeakingCard from "../../components/items/SpeakingCard.astro";
 
 const searchParam = "speaking";
 const htmxPartialPath = "/partials/speaking";
-const itemsPerPage =
-  Number(Astro.url.searchParams.get("perPage")) ||
-  getItemsPerPage({ isMobile: Astro.locals.isMobile });
 
-const collection = await getCollection("speaking");
-const items = sortBy(collection, [(entry) => parseInt(entry.id, 10)]).map(
-  (entry) => entry.data,
-);
+const items = await getSortedSpeaking();
 
-const { index } = paginate({
+const { itemsPerPage, pageUrl } = preparePartialPage(Astro, {
   items,
-  itemsPerPage,
-  url: new URL(Astro.request.url),
   searchParam,
-  onlyFullPages: true,
 });
-
-const pageUrl = setupPartial(Astro, searchParam, index);
 ---
 
 <PaginatedGrid
