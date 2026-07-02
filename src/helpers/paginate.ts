@@ -1,5 +1,9 @@
 import { chunk, clamp, take } from "es-toolkit";
 
+// Placeholder origin so relative paths work with the URL constructor; only the
+// path + search + hash of the result is ever used.
+const PLACEHOLDER_ORIGIN = "http://x";
+
 type PageHrefOptions = {
   currentUrl?: URL;
   base?: string;
@@ -15,7 +19,7 @@ export const buildPageHref = ({
   anchor,
   index,
 }: PageHrefOptions): string => {
-  const url = currentUrl ? new URL(currentUrl.toString()) : new URL(base, "");
+  const url = currentUrl ? new URL(currentUrl.toString()) : new URL(base, PLACEHOLDER_ORIGIN);
 
   const searchParams = url.searchParams;
 
@@ -40,10 +44,9 @@ export const buildPageHref = ({
 };
 
 /**
- * Build a URL for an HTMX partial endpoint. Uses a placeholder origin so that
- * relative paths work with the URL constructor, then returns only the path + search.
- * Page 0 omits the param entirely (matching the server-side convention).
- * perPage is included so the partial doesn't need to re-detect the device type.
+ * Build a URL for an HTMX partial endpoint. Page 0 omits the param entirely
+ * (matching the server-side convention). perPage is included so the partial
+ * doesn't need to re-detect the device type.
  */
 export const buildPartialHref = (
   partialPath: string,
@@ -51,15 +54,14 @@ export const buildPartialHref = (
   index: number | null,
   perPage?: number,
 ): string => {
-  const url = new URL(partialPath, "http://x");
-  if (index === null || index === 0) {
-    url.searchParams.delete(param);
-  } else {
-    url.searchParams.set(param, index.toString());
+  const href = buildPageHref({ base: partialPath, param, index });
+
+  if (perPage === undefined) {
+    return href;
   }
-  if (perPage !== undefined) {
-    url.searchParams.set("perPage", perPage.toString());
-  }
+
+  const url = new URL(href, PLACEHOLDER_ORIGIN);
+  url.searchParams.set("perPage", perPage.toString());
   const qs = url.searchParams.toString();
   return url.pathname + (qs ? `?${qs}` : "");
 };

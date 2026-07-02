@@ -1,30 +1,20 @@
 ---
 export const prerender = false;
 
-import { paginate } from "../../helpers/paginate";
-import { setupPartial } from "../../helpers/setupPartial";
-import { getItemsPerPage } from "../../helpers/getItemsPerPage";
+import { preparePartialPage } from "../../helpers/preparePartialPage";
 import { getSortedStars } from "../../helpers/getStarsSorted";
 import PaginatedGrid from "../../components/PaginatedGrid.astro";
 import GithubStarCard from "../../components/items/GithubStarCard.astro";
 
 const searchParam = "githubStars";
 const htmxPartialPath = "/partials/stars";
-const itemsPerPage =
-  Number(Astro.url.searchParams.get("perPage")) ||
-  getItemsPerPage({ isMobile: Astro.locals.isMobile });
 
 const items = await getSortedStars();
 
-const { index } = paginate({
+const { itemsPerPage, pageUrl } = preparePartialPage(Astro, {
   items,
-  itemsPerPage,
-  url: new URL(Astro.request.url),
   searchParam,
-  onlyFullPages: true,
 });
-
-const pageUrl = setupPartial(Astro, searchParam, index);
 ---
 
 <PaginatedGrid

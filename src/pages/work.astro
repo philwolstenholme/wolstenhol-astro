@@ -2,6 +2,7 @@
 import { render } from "astro:content";
 import slugify from "@sindresorhus/slugify";
 import { getSortedPortfolio } from "../helpers/getPortfolioSorted";
+import { buildPortfolioImageUrl } from "../helpers/buildPortfolioImageUrl";
 import Layout from "../layouts/Layout.astro";
 import Content from "../components/Content.astro";
 
@@ -80,8 +81,11 @@ const urlToHostname = (url: string) => new URL(url).hostname;
                             href={data.url}
                           >
                             <img
-                              src={`https://res.cloudinary.com/wolstenh/image/upload/c_scale,w_560,f_auto,q_auto/${data.cloudinarySuffix}`}
-                              srcset={`https://res.cloudinary.com/wolstenh/image/upload/c_scale,w_560,f_auto,q_auto/${data.cloudinarySuffix} 1x, https://res.cloudinary.com/wolstenh/image/upload/c_scale,w_1120,f_auto,q_auto/${data.cloudinarySuffix} 2x`}
+                              src={buildPortfolioImageUrl(
+                                data.cloudinarySuffix,
+                                560,
+                              )}
+                              srcset={`${buildPortfolioImageUrl(data.cloudinarySuffix, 560)} 1x, ${buildPortfolioImageUrl(data.cloudinarySuffix, 1120)} 2x`}
                               width="548"
                               height="344"
                               loading={index > 0 ? "lazy" : "eager"}
@@ -92,8 +96,11 @@ const urlToHostname = (url: string) => new URL(url).hostname;
                           </a>
                         ) : (
                           <img
-                            src={`https://res.cloudinary.com/wolstenh/image/upload/c_scale,w_560,f_auto,q_auto/${data.cloudinarySuffix}`}
-                            srcset={`https://res.cloudinary.com/wolstenh/image/upload/c_scale,w_1120,f_auto,q_auto/${data.cloudinarySuffix} 2x`}
+                            src={buildPortfolioImageUrl(
+                              data.cloudinarySuffix,
+                              560,
+                            )}
+                            srcset={`${buildPortfolioImageUrl(data.cloudinarySuffix, 1120)} 2x`}
                             width="548"
                             height="344"
                             loading={index > 0 ? "lazy" : "eager"}

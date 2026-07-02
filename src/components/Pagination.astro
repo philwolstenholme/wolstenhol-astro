@@ -1,5 +1,5 @@
 ---
-import { buildPageHref, buildPartialHref } from "../helpers/paginate";
+import PaginationButton from "./PaginationButton.astro";
 
 const {
   hasPrev,
@@ -29,90 +29,33 @@ const {
 // endpoint URL. pageUrl carries the real page URL (from HX-Current-Url) so
 // that href values point to the main page rather than the partial endpoint.
 const currentUrl = pageUrl ?? new URL(Astro.request.url);
-
-// When htmxPartialPath is set, wire up HTMX attributes for client-side pagination.
-// hx-select picks just the grid div from the full HTML response returned by the
-// partial page, hx-swap replaces the whole div (including new pagination buttons),
-// and hx-select pairs with hx-target so the right element is swapped.
-// The partial endpoint sets HX-Replace-Url so the browser URL stays in the same
-// ?param=N format that server-side navigation uses.
-const htmxTarget = htmxPartialPath
-  ? `#paginated-grid-${searchParam}`
-  : undefined;
 ---
 
 <div class="flex justify-center mt-4 gap-4">
   {
     hasPrev && (
-      <a
-        class={`pagination__button text-white group active:scale-95 hover:-rotate-1 focus-visible:-rotate-1 transition-transform w-28 text-center underline bg-contain bg-no-repeat bg-center leading-20 font-semibold px-4 py-2 hover:underline focus-visible:underline focus-visible:outline-2 outline-black outline-offset-2${htmxPartialPath ? " no-prerender" : ""}`}
-        style={{
-          backgroundImage:
-            "url(https://res.cloudinary.com/wolstenh/image/upload/w_300/q_auto:good/f_auto/v1758225433/astro-site/black-masking-tape-1.png)",
-        }}
-        href={
-          prevUrl ??
-          buildPageHref({
-            currentUrl,
-            index: prevIndex,
-            param: searchParam,
-          })
-        }
-        hx-get={
-          htmxPartialPath
-            ? buildPartialHref(
-                htmxPartialPath,
-                searchParam,
-                prevIndex,
-                itemsPerPage,
-              )
-            : undefined
-        }
-        hx-target={htmxTarget}
-        hx-swap={htmxPartialPath ? "outerHTML" : undefined}
-        hx-select={htmxTarget}
-      >
-        <span class="-rotate-3 inline-block group-active:scale-95 group-hover:underline transition-transform">
-          Previous
-        </span>
-      </a>
+      <PaginationButton
+        direction="prev"
+        index={prevIndex}
+        url={prevUrl}
+        currentUrl={currentUrl}
+        searchParam={searchParam}
+        htmxPartialPath={htmxPartialPath}
+        itemsPerPage={itemsPerPage}
+      />
     )
   }
   {
     hasNext && (
-      <a
-        class={`pagination__button text-white group w-28 active:scale-95 hover:rotate-[1deg] focus-visible:rotate-[1deg] transition-transform text-center underline bg-contain bg-no-repeat bg-center leading-20 font-semibold px-4 py-2 hover:underline focus-visible:underline focus-visible:outline-2 outline-black outline-offset-2${htmxPartialPath ? " no-prerender" : ""}`}
-        style={{
-          backgroundImage:
-            "url(https://res.cloudinary.com/wolstenh/image/upload/w_300/q_auto:good/f_auto/v1758225433/astro-site/black-masking-tape-2.png)",
-        }}
-        href={
-          nextUrl ??
-          buildPageHref({
-            currentUrl,
-            index: nextIndex,
-            param: searchParam,
-          })
-        }
-        hx-get={
-          htmxPartialPath
-            ? buildPartialHref(
-                htmxPartialPath,
-                searchParam,
-                nextIndex,
-                itemsPerPage,
-              )
-            : undefined
-        }
-        hx-target={htmxTarget}
-        hx-swap={htmxPartialPath ? "outerHTML" : undefined}
-        hx-select={htmxTarget}
-        preload={htmxPartialPath ? "" : undefined}
-      >
-        <span class="rotate-3 inline-block group-active:scale-95 group-hover:underline transition-transform">
-          Next
-        </span>
-      </a>
+      <PaginationButton
+        direction="next"
+        index={nextIndex}
+        url={nextUrl}
+        currentUrl={currentUrl}
+        searchParam={searchParam}
+        htmxPartialPath={htmxPartialPath}
+        itemsPerPage={itemsPerPage}
+      />
     )
   }
 </div>

@@ -1,0 +1,66 @@
+---
+import clsx from "clsx";
+import { buildPageHref, buildPartialHref } from "../helpers/paginate";
+
+interface Props {
+  direction: "prev" | "next";
+  index: number | null;
+  url?: string | null;
+  currentUrl: URL;
+  searchParam: string;
+  htmxPartialPath?: string;
+  itemsPerPage?: number;
+}
+
+const {
+  direction,
+  index,
+  url,
+  currentUrl,
+  searchParam,
+  htmxPartialPath,
+  itemsPerPage,
+} = Astro.props;
+
+const isPrev = direction === "prev";
+
+// When htmxPartialPath is set, wire up HTMX attributes for client-side pagination.
+// hx-select picks just the grid div from the full HTML response returned by the
+// partial page, hx-swap replaces the whole div (including new pagination buttons),
+// and hx-select pairs with hx-target so the right element is swapped.
+// The partial endpoint sets HX-Replace-Url so the browser URL stays in the same
+// ?param=N format that server-side navigation uses.
+const htmxTarget = htmxPartialPath
+  ? `#paginated-grid-${searchParam}`
+  : undefined;
+---
+
+<a
+  class={clsx(
+    "pagination__button text-white group active:scale-95 transition-transform w-28 text-center underline bg-contain bg-no-repeat bg-center leading-20 font-semibold px-4 py-2 hover:underline focus-visible:underline focus-visible:outline-2 outline-black outline-offset-2",
+    isPrev
+      ? "hover:-rotate-1 focus-visible:-rotate-1"
+      : "hover:rotate-[1deg] focus-visible:rotate-[1deg]",
+    htmxPartialPath && "no-prerender",
+  )}
+  style={{
+    backgroundImage: `url(https://res.cloudinary.com/wolstenh/image/upload/w_300/q_auto:good/f_auto/v1758225433/astro-site/black-masking-tape-${isPrev ? 1 : 2}.png)`,
+  }}
+  href={url ?? buildPageHref({ currentUrl, index, param: searchParam })}
+  hx-get={htmxPartialPath
+    ? buildPartialHref(htmxPartialPath, searchParam, index, itemsPerPage)
+    : undefined}
+  hx-target={htmxTarget}
+  hx-swap={htmxPartialPath ? "outerHTML" : undefined}
+  hx-select={htmxTarget}
+  preload={!isPrev && htmxPartialPath ? "" : undefined}
+>
+  <span
+    class={clsx(
+      "inline-block group-active:scale-95 group-hover:underline transition-transform",
+      isPrev ? "-rotate-3" : "rotate-3",
+    )}
+  >
+    {isPrev ? "Previous" : "Next"}
+  </span>
+</a>

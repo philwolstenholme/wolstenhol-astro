@@ -1,4 +1,6 @@
 ---
+import clsx from "clsx";
+
 interface Props {
   href?: string;
   class?: string;
@@ -13,13 +15,11 @@ const colorClasses: Record<string, string> = {
   instagram: "bg-instagram hocus:bg-instagram-dark",
 };
 
-const classes = [
+const classes = clsx(
   "rounded px-2 py-1 font-bold text-white shadow-(--shadow-hard) transition-colors",
   colorClasses[color],
   className,
-]
-  .filter(Boolean)
-  .join(" ");
+);
 ---
 
 {
