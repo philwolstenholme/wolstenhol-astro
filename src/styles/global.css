@@ -191,6 +191,18 @@ html {
     opacity: var(--opacity, 0.3);
   }
 
+  /* Hand-drawn underline that tiles seamlessly along the x-axis, so it can
+   * underline text of any width. The tile starts and ends at the same point
+   * and slope so the repeat join is invisible. Sized via height utilities —
+   * background-size keeps the tile's aspect ratio from the viewBox. */
+  .squiggle {
+    display: block;
+    height: 0.5rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 10'%3E%3Cpath d='M0 5 C 5 1.5, 9 1, 13 4 S 20 9, 26 6 S 33 1.5, 39 4.5 S 47 8.5, 53 5.5 S 60 2, 66 4 S 74 8, 80 5' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+  }
+
   /* A strip of translucent washi tape "sticking" a card to the page. The
    * jagged clip-path gives it torn ends, and --tape-rotate lets each card
    * stick its tape down at a slightly different angle. */

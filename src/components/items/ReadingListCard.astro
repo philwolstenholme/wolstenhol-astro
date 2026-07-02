@@ -6,9 +6,6 @@ const { item: article } = Astro.props as { item: ReadingListCardItem };
 
 const rotation = getRandomRotation();
 
-// The tape leans a touch further than the card so it looks hand-stuck.
-const tapeRotation = `${(Math.random() * 8 - 4).toFixed(1)}deg`;
-
 let faviconUrl: string | null = null;
 let favicon2xUrl: string | null = null;
 try {
@@ -49,8 +46,4 @@ try {
       <p class="mt-2 truncate text-xs">{article.description}</p>
     </div>
   </a>
-  <span
-    class="tape slow-connection:hidden"
-    aria-hidden="true"
-    style={`--tape-rotate: ${tapeRotation}`}></span>
 </li>
