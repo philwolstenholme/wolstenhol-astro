@@ -2,12 +2,13 @@
 import type { CollectionEntry } from "astro:content";
 import { format as timeAgo } from "timeago.js";
 import { longDateFormatter } from "../../helpers/longDateFormatter";
+import { randomSubtleGrungeOpacity } from "../../helpers/textures";
 
 type Place = CollectionEntry<"places">["data"] & { id: string };
 const { item: place } = Astro.props as { item: Place };
 
 const formattedAddress = [place.address, place.city].filter(Boolean).join(", ");
-const grungeOpacity = Math.round((Math.random() / 3) * 100) / 100;
+const grungeOpacity = randomSubtleGrungeOpacity();
 const asteriskRotation = Math.floor(Math.random() * 360) + 1;
 ---
 

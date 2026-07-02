@@ -1,0 +1,27 @@
+---
+// A hand-drawn underline squiggle, used beneath headings to give them the
+// same marker-pen feel as the highlighter effect and the handwritten SVGs.
+// preserveAspectRatio="none" lets width/height utilities stretch it freely.
+export interface SquiggleProps {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg
+  role="presentation"
+  aria-hidden="true"
+  focusable="false"
+  class={className}
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 120 10"
+  preserveAspectRatio="none"
+  fill="none"
+>
+  <path
+    d="M2 5.8 C 12 1.5, 20 8.4, 30 5.5 S 46 1.6, 56 5.2 S 74 8.6, 84 4.6 S 104 1.8, 118 5.4"
+    stroke="currentColor"
+    stroke-width="3"
+    stroke-linecap="round"></path>
+</svg>

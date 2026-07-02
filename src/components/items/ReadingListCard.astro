@@ -6,6 +6,9 @@ const { item: article } = Astro.props as { item: ReadingListCardItem };
 
 const rotation = getRandomRotation();
 
+// The tape leans a touch further than the card so it looks hand-stuck.
+const tapeRotation = `${(Math.random() * 8 - 4).toFixed(1)}deg`;
+
 let faviconUrl: string | null = null;
 let favicon2xUrl: string | null = null;
 try {
@@ -18,7 +21,7 @@ try {
 ---
 
 <li
-  class="expand-clickable-area reading-list-link font-serif bg-oc-yellow-2 bg-paper-grunge shadow-hard border border-gray-300 rounded transition-all duration-75 hover:scale-105 hover:bg-oc-yellow-3 hover:shadow-lg focus-within:scale-105 focus-within:bg-oc-yellow-3 focus-within:shadow-lg slow-connection:bg-none"
+  class="expand-clickable-area reading-list-link font-serif bg-oc-yellow-2 bg-paper-grunge shadow-hard border border-gray-300 rounded transition-all duration-75 hover:scale-105 hover:bg-oc-yellow-3 hover:shadow-hard-lg focus-within:scale-105 focus-within:bg-oc-yellow-3 focus-within:shadow-hard-lg slow-connection:bg-none"
   style={rotation ? `rotate: ${rotation}` : undefined}
 >
   <a
@@ -46,4 +49,8 @@ try {
       <p class="mt-2 truncate text-xs">{article.description}</p>
     </div>
   </a>
+  <span
+    class="tape slow-connection:hidden"
+    aria-hidden="true"
+    style={`--tape-rotate: ${tapeRotation}`}></span>
 </li>

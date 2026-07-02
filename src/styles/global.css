@@ -191,6 +191,39 @@ html {
     opacity: var(--opacity, 0.3);
   }
 
+  /* A strip of translucent washi tape "sticking" a card to the page. The
+   * jagged clip-path gives it torn ends, and --tape-rotate lets each card
+   * stick its tape down at a slightly different angle. */
+  .tape {
+    position: absolute;
+    top: -0.5rem;
+    left: 50%;
+    width: 5.5rem;
+    height: 1.375rem;
+    translate: -50% 0;
+    rotate: var(--tape-rotate, -2deg);
+    background-color: rgb(255 255 255 / 35%);
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgb(255 255 255 / 0%) 0 6px,
+      rgb(255 224 102 / 25%) 6px 12px
+    );
+    box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
+    clip-path: polygon(
+      2% 0%,
+      98% 4%,
+      100% 30%,
+      97% 55%,
+      100% 82%,
+      98% 100%,
+      2% 96%,
+      0% 70%,
+      3% 45%,
+      0% 18%
+    );
+    pointer-events: none;
+  }
+
   .text-fill-transparent {
     -webkit-text-fill-color: transparent;
     -moz-text-fill-color: transparent;
@@ -224,6 +257,14 @@ html {
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
   }
+}
+
+/* Underlined links get a wavy line on hover/focus — a quick pen squiggle to
+ * match the site's hand-drawn feel. :where() keeps specificity at zero so any
+ * utility class can still override it. Links that only underline on hover
+ * pick the wavy style up at the same moment. */
+a:where(:hover, :focus-visible) {
+  text-decoration-style: wavy;
 }
 
 /* Hotpink focus outline — matches wolstenhol.me. Elements with
@@ -277,8 +318,14 @@ html {
   --color-bluesky-dark: #0065c4;
 
   /* The offset, blur-less "hard" shadow used on every card on the original
-   * site. It's what gives the cards their slightly cut-out, sticker-y feel. */
+   * site. It's what gives the cards their slightly cut-out, sticker-y feel.
+   * -lg is the "lifted" version for hover/focus states, and the ink variants
+   * are the bolder solid-black shadows used on the chunky bordered panels
+   * (contact form messages, 404 note, etc.). */
   --shadow-hard: 2px 2px 0 rgba(0, 0, 0, 0.15);
+  --shadow-hard-lg: 4px 4px 0 rgba(0, 0, 0, 0.15);
+  --shadow-ink: 4px 4px 0 #000;
+  --shadow-ink-lg: 6px 6px 0 #000;
 
   @keyframes typewriter {
     from {

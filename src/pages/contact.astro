@@ -3,6 +3,7 @@ export const prerender = true;
 
 import Layout from "../layouts/Layout.astro";
 import Content from "../components/Content.astro";
+import Squiggle from "../components/icons/Squiggle.astro";
 ---
 
 <Layout title="Contact me">
@@ -14,6 +15,9 @@ import Content from "../components/Content.astro";
         >
           Contact me
         </h1>
+        <Squiggle
+          class="mt-2 block h-2.5 w-36 -rotate-1 text-yellow-400 xl:mt-3 xl:h-3 xl:w-56"
+        />
         <div
           class="mt-5 mb-10 space-y-5 font-serif text-xl leading-normal xl:mt-10 xl:mb-12 xl:text-2xl"
         >
@@ -46,7 +50,7 @@ import Content from "../components/Content.astro";
             tabindex="-1"
             x-show="showSummary"
             x-cloak
-            class="max-w-3xl border-2 border-black bg-binding-dark p-6 text-white shadow-[4px_4px_0_#000]"
+            class="max-w-3xl border-2 border-black bg-binding-dark p-6 text-white shadow-ink"
           >
             <h3
               class="font-serif text-2xl font-bold"
@@ -74,7 +78,7 @@ import Content from "../components/Content.astro";
             x-show="submitted"
             x-cloak
             tabindex="-1"
-            class="max-w-3xl -rotate-1 border-2 border-black bg-yellow-300 bg-graph-paper p-8 shadow-[6px_6px_0_#000]"
+            class="max-w-3xl -rotate-1 border-2 border-black bg-yellow-300 bg-graph-paper p-8 shadow-ink-lg"
           >
             <p
               class="text-fill-transparent bg-binding-dark slow-connection:bg-none bg-clip-text font-serif text-6xl font-bold leading-none"

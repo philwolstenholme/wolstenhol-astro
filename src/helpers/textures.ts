@@ -11,3 +11,7 @@ export const grungeWallSrc = grungeWallBase.replace("{w}", "365").replace("{h}",
 export const grungeWallSrcSet = `${grungeWallBase.replace("{w}", "730").replace("{h}", "398")} 2x`;
 
 export const randomGrungeOpacity = () => Math.round((Math.random() / 1.5) * 100) / 100;
+
+// A quieter version for imagery that should stay legible underneath the
+// texture — map tiles, portfolio screenshots and the like.
+export const randomSubtleGrungeOpacity = () => Math.round((Math.random() / 3) * 100) / 100;

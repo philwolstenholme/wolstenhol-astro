@@ -4,6 +4,11 @@ import type { CollectionEntry } from "astro:content";
 import slugify from "@sindresorhus/slugify";
 import { sortPortfolio } from "../helpers/getPortfolioSorted";
 import { buildPortfolioImageUrl } from "../helpers/buildPortfolioImageUrl";
+import {
+  grungeWallSrc,
+  grungeWallSrcSet,
+  randomSubtleGrungeOpacity,
+} from "../helpers/textures";
 import Section from "./Section.astro";
 import ScrollerButton from "./ScrollerButton.astro";
 import Lede from "./Lede.astro";
@@ -53,6 +58,17 @@ const items = sorted.slice(0, 3);
                     class="screenshot rounded-2xl border-2 border-white bg-white object-cover object-top shadow-hard w-full aspect-[137/86]"
                   />
                 </a>
+                <img
+                  src={grungeWallSrc}
+                  srcset={grungeWallSrcSet}
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                  decoding="async"
+                  crossorigin="anonymous"
+                  class="opacity-grunge pointer-events-none relative col-start-1 row-start-1 h-full w-full rounded-2xl object-cover mix-blend-multiply slow-connection:hidden"
+                  style={`--opacity: ${randomSubtleGrungeOpacity()}`}
+                />
               </div>
             )}
             <p class="mt-3 font-serif font-bold text-lg">

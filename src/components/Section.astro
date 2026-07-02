@@ -1,5 +1,6 @@
 ---
 import clsx from "clsx";
+import Squiggle from "./icons/Squiggle.astro";
 
 interface Props {
   class?: string;
@@ -30,10 +31,11 @@ const {
   {
     heading && (
       <h2
-        class="text-4xl font-bold font-serif mt-3 scroll-mt-8"
+        class="text-4xl font-bold font-serif mt-3 scroll-mt-8 w-fit"
         data-section={id}
       >
         {heading}
+        <Squiggle class="mt-1 block h-2 w-24 -rotate-1 text-yellow-400" />
       </h2>
     )
   }

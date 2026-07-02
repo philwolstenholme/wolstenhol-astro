@@ -1,7 +1,19 @@
 ---
+import { sample } from "es-toolkit";
 import Angle from "./Angle.astro";
 import Content from "./Content.astro";
+import CurvyArrow from "./icons/CurvyArrow.astro";
 import StyledTextLink from "./StyledTextLink.astro";
+
+// A different sign-off each build/render — a small reward for anyone who
+// scrolls all the way down here.
+const signOff = sample([
+  "Handmade with tea, semicolons, and too many browser tabs.",
+  "Thanks for scrolling all the way down here — the footer appreciates the company.",
+  "Powered by yellow highlighters and hotpink focus rings.",
+  "This page smells faintly of coffee stains. Sorry about that.",
+  "You've reached the bottom of the page. There is no secret level. (Or is there?)",
+]);
 ---
 
 <Angle
@@ -46,6 +58,18 @@ import StyledTextLink from "./StyledTextLink.astro";
       </div>
 
       <div class="space-y-4">
+        <p class="hue-rotate w-fit">
+          <span aria-hidden="true">✏️&nbsp;</span>{signOff}
+        </p>
+        <p>
+          <a
+            href="#top"
+            class="inline-flex items-center gap-2 font-bold underline hocus:text-yellow-300"
+          >
+            <CurvyArrow class="inline-block h-3 rotate-90" />
+            Back to the top
+          </a>
+        </p>
         <p
           hidden
           x-data="{ time: null }"
