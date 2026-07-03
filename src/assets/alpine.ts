@@ -16,6 +16,7 @@ A.asyncData("pwContact", () => import("./alpine-contact"));
 A.asyncData("githubCard", () => import("./alpine-github-card"));
 A.asyncData("pwHeader", () => import("./alpine-header"));
 A.asyncData("instagramCard", () => import("./alpine-instagram"));
+A.asyncData("partyPopper", () => import("./alpine-party"));
 A.asyncData("horizontalScroller", () => import("./alpine-scroller"));
 A.asyncData("spotifyAudioController", () => import("./alpine-spotify"));
 

@@ -226,6 +226,14 @@ html {
   }
 }
 
+/* Underlined links get a wavy line on hover/focus — a quick pen squiggle to
+ * match the site's hand-drawn feel. :where() keeps specificity at zero so any
+ * utility class can still override it. Links that only underline on hover
+ * pick the wavy style up at the same moment. */
+a:where(:hover, :focus-visible) {
+  text-decoration-style: wavy;
+}
+
 /* Hotpink focus outline — matches wolstenhol.me. Elements with
  * .outline-offset-invert get a negative offset so the ring draws inset. */
 :focus,
@@ -277,8 +285,14 @@ html {
   --color-bluesky-dark: #0065c4;
 
   /* The offset, blur-less "hard" shadow used on every card on the original
-   * site. It's what gives the cards their slightly cut-out, sticker-y feel. */
+   * site. It's what gives the cards their slightly cut-out, sticker-y feel.
+   * -lg is the "lifted" version for hover/focus states, and the ink variants
+   * are the bolder solid-black shadows used on the chunky bordered panels
+   * (contact form messages, 404 note, etc.). */
   --shadow-hard: 2px 2px 0 rgba(0, 0, 0, 0.15);
+  --shadow-hard-lg: 4px 4px 0 rgba(0, 0, 0, 0.15);
+  --shadow-ink: 4px 4px 0 #000;
+  --shadow-ink-lg: 6px 6px 0 #000;
 
   @keyframes typewriter {
     from {

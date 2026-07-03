@@ -3,8 +3,14 @@ import { render } from "astro:content";
 import slugify from "@sindresorhus/slugify";
 import { getSortedPortfolio } from "../helpers/getPortfolioSorted";
 import { buildPortfolioImageUrl } from "../helpers/buildPortfolioImageUrl";
+import {
+  grungeWallSrc,
+  grungeWallSrcSet,
+  randomSubtleGrungeOpacity,
+} from "../helpers/textures";
 import Layout from "../layouts/Layout.astro";
 import Content from "../components/Content.astro";
+import Squiggle from "../components/icons/Squiggle.astro";
 
 export const prerender = true;
 
@@ -25,9 +31,12 @@ const urlToHostname = (url: string) => new URL(url).hostname;
     <Content>
       <article>
         <h1
-          class="text-fill-transparent bg-binding-dark slow-connection:bg-none bg-clip-text font-serif text-5xl font-bold tracking-tight xl:text-8xl"
+          class="w-fit text-fill-transparent bg-binding-dark slow-connection:bg-none bg-clip-text font-serif text-5xl font-bold tracking-tight xl:text-8xl"
         >
           Work
+          <Squiggle
+            class="mt-2 block h-2.5 w-36 -rotate-1 text-yellow-400 xl:mt-3 xl:h-3 xl:w-56"
+          />
         </h1>
         <div
           class="mt-5 mb-10 space-y-5 font-serif text-xl leading-normal xl:mt-10 xl:mb-12 xl:text-2xl"
@@ -112,6 +121,17 @@ const urlToHostname = (url: string) => new URL(url).hostname;
                             class="screenshot relative col-start-1 row-start-1 rounded-2xl border-2 border-white bg-white object-cover object-top shadow-hard"
                           />
                         )}
+                        <img
+                          src={grungeWallSrc}
+                          srcset={grungeWallSrcSet}
+                          alt=""
+                          aria-hidden="true"
+                          loading="lazy"
+                          decoding="async"
+                          crossorigin="anonymous"
+                          class="opacity-grunge pointer-events-none relative col-start-1 row-start-1 h-full w-full rounded-2xl object-cover mix-blend-multiply slow-connection:hidden"
+                          style={`--opacity: ${randomSubtleGrungeOpacity()}`}
+                        />
                       </div>
                     </div>
                   )}

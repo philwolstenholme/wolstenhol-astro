@@ -1,12 +1,14 @@
 ---
 import Angle from "./Angle.astro";
 import Content from "./Content.astro";
+import CurvyArrow from "./icons/CurvyArrow.astro";
 import StyledTextLink from "./StyledTextLink.astro";
 ---
 
 <Angle
   as="footer"
   side="top"
+  torn
   class="bg-binding-dark hue-rotate-links slow-connection:bg-none py-32 pb-20 text-sm text-yellow-400"
 >
   <Content>
@@ -46,6 +48,15 @@ import StyledTextLink from "./StyledTextLink.astro";
       </div>
 
       <div class="space-y-4">
+        <p>
+          <a
+            href="#top"
+            class="inline-flex items-center gap-2 font-bold underline hocus:text-yellow-300"
+          >
+            <CurvyArrow class="inline-block h-3 rotate-90" />
+            Back to the top
+          </a>
+        </p>
         <p
           hidden
           x-data="{ time: null }"

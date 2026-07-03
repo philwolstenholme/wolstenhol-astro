@@ -4,15 +4,64 @@ export interface AngleProps {
   as?: string;
   class?: string;
   side?: "top" | "bottom";
+  torn?: boolean;
   "data-props-for"?: string;
 }
 const {
   as = "header",
   class: extraClass = "",
   side = "bottom",
+  torn = false,
   ...rest
 } = Astro.props;
 const As = as;
+
+// Torn-paper edge: replaces the razor-straight diagonal with a randomly
+// jittered polyline, so the dark panels look like strips of binding paper
+// torn by hand and stuck onto the page. The tear follows the same diagonal
+// as the straight version (y interpolates across --clip-padding * 2), with
+// long, unevenly spaced segments nudged a couple of px either side — enough
+// to lose the machine-cut look without reading as jagged. Regenerated per
+// build/render, so no two tears are quite the same.
+const jitter = () => (Math.random() * 4 - 2).toFixed(1);
+
+const jitteredPoints = (
+  fromX: number,
+  toX: number,
+  yAt: (x: number) => string,
+) => {
+  const points: string[] = [];
+  const direction = fromX < toX ? 1 : -1;
+  let x = fromX + direction * (3 + Math.random() * 4);
+  while (direction === 1 ? x < toX : x > toX) {
+    points.push(`${x.toFixed(1)}% ${yAt(x)}`);
+    x += direction * (3 + Math.random() * 4);
+  }
+  return points;
+};
+
+let tornStyle: string | undefined;
+if (torn) {
+  if (side === "bottom") {
+    // Diagonal runs from (100%, 100% - 2*padding) down-left to (0%, 100%).
+    const points = jitteredPoints(
+      100,
+      0,
+      (x) =>
+        `calc(100% - var(--clip-padding) * 2 * ${(x / 100).toFixed(3)} + ${jitter()}px)`,
+    );
+    tornStyle = `clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% - var(--clip-padding) * 2), ${points.join(", ")}, 0% 100%);`;
+  } else {
+    // Diagonal runs from (0%, 2*padding) up-right to (100%, 0%).
+    const points = jitteredPoints(
+      0,
+      100,
+      (x) =>
+        `calc(var(--clip-padding) * 2 * ${(1 - x / 100).toFixed(3)} + ${jitter()}px)`,
+    );
+    tornStyle = `clip-path: polygon(0% calc(var(--clip-padding) * 2), ${points.join(", ")}, 100% 0%, 100% 100%, 0% 100%);`;
+  }
+}
 ---
 
 <style is:global>
@@ -48,9 +97,10 @@ const As = as;
 
 <As
   {...rest}
+  style={tornStyle}
   class={clsx("angle", extraClass, {
-    "angle--top": side === "top",
-    "angle--bottom": side !== "top",
+    "angle--top": side === "top" && !torn,
+    "angle--bottom": side !== "top" && !torn,
   })}
 >
   <slot />
