@@ -10,6 +10,22 @@ html {
   scroll-padding-top: clamp(3.5rem, 15vh, 10rem);
 }
 
+@layer base {
+  /* Balance headline line lengths so wrapped titles don't leave a single
+     short "orphan" word on the last line; let paragraph copy use the
+     hyphenation/line-break heuristics browsers use for body text. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
 /* Hover *and* focus in one go, matching the original wolstenhol.me site. A lot
  * of the card interactions (lifting captions, fading talk thumbnails, swapping
  * background colours) hang off this variant. */
@@ -381,14 +397,18 @@ button {
    content-visibility.ts updates it dynamically to the actual dimensions. */
 main section + section {
   content-visibility: auto;
-  contain-intrinsic-size: 10px 667px;
+  /* The `auto` keyword tells the browser to remember the element's actual
+     rendered size once it has been laid out, so the estimate below is only
+     needed the first time round; content-visibility.ts still keeps it
+     accurate for that first pass. */
+  contain-intrinsic-size: auto 10px auto 667px;
 }
 
 /* The /work page renders every portfolio entry in one unpaginated list, so
    apply the same deferred-rendering treatment to its cards. */
 main .card--portfolio + .card--portfolio {
   content-visibility: auto;
-  contain-intrinsic-size: 10px 800px;
+  contain-intrinsic-size: auto 10px auto 800px;
 }
 
 /* ─── Bluesky posts masonry grid ─────────────────────────────────────────── */
@@ -425,6 +445,7 @@ main .card--portfolio + .card--portfolio {
   display: -webkit-box;
   -webkit-line-clamp: 10;
   -webkit-box-orient: vertical;
+  line-clamp: 10;
   overflow: hidden;
 }
 
