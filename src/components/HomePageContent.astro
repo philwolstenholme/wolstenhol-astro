@@ -59,9 +59,17 @@ const spotifyData = spotifyCollection[0];
           type="button"
           x-data="partyPopper"
           x-load="idle"
-          x-on:click="fireConfetti()"
-          class="block h-fit w-fit self-start rounded-full"
-          title="Go on, click me 🎉"
+          x-on:pointerdown="$event.button === 0 && startHold()"
+          x-on:pointerup="stopHold()"
+          x-on:pointerleave="stopHold()"
+          x-on:pointercancel="stopHold()"
+          x-on:keydown.enter.prevent="$event.repeat || startHold()"
+          x-on:keydown.space.prevent="$event.repeat || startHold()"
+          x-on:keyup.enter="stopHold()"
+          x-on:keyup.space="stopHold()"
+          x-on:blur="stopHold()"
+          class="block h-fit w-fit touch-none select-none self-start rounded-full [-webkit-touch-callout:none]"
+          title="Go on, click me (or press and hold) 🎉"
           aria-label="Pop some confetti"
         >
           <img
@@ -72,6 +80,7 @@ const spotifyData = spotifyCollection[0];
             width="96"
             height="96"
             fetchpriority="high"
+            draggable="false"
           />
         </button>
         <div class="space-y-4 ml-4 mt-4">
