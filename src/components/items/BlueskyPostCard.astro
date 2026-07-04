@@ -21,7 +21,7 @@ const formattedDate = longDateFormatter.format(new Date(post.created_at));
 ---
 
 <article
-  class="card-bluesky contain-content overflow-hidden rounded bg-bluesky font-bold text-white shadow-hard flex flex-col"
+  class="card-bluesky contain-content overflow-hidden rounded bg-bluesky font-bold text-white shadow-hard flex flex-col dark:bg-bluesky-dark"
 >
   {
     hasMedia && (
@@ -54,7 +54,10 @@ const formattedDate = longDateFormatter.format(new Date(post.created_at));
 
   {
     hasCard && post.card && (
-      <a href={post.card.url} class="block hover:bg-bluesky-dark">
+      <a
+        href={post.card.url}
+        class="block hover:bg-bluesky-dark dark:hover:bg-bluesky-deep"
+      >
         {post.card.image && (
           <img
             src={cloudinaryImage(post.card.image)}
@@ -108,7 +111,7 @@ const formattedDate = longDateFormatter.format(new Date(post.created_at));
   </div>
 
   <div
-    class="flex items-center justify-between bg-bluesky-dark px-4 py-3 text-sm"
+    class="flex items-center justify-between bg-bluesky-dark px-4 py-3 text-sm dark:bg-bluesky-deep"
   >
     <div class="flex items-center gap-3">
       {

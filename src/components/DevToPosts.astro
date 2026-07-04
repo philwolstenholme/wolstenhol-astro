@@ -42,7 +42,10 @@ const items = sortDevToPosts(collection);
       itemComponent={DevToPostCard}
       htmxPartialPath="/partials/posts"
     >
-      <div slot="empty" class="text-center text-gray-500 py-8">
+      <div
+        slot="empty"
+        class="text-center text-gray-500 py-8 dark:text-stone-400"
+      >
         No posts found.
       </div>
     </PaginatedGrid>

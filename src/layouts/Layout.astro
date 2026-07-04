@@ -1,6 +1,7 @@
 ---
 import StyledTextLink from "../components/StyledTextLink.astro";
 import MuteToggle from "../components/MuteToggle.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
@@ -24,6 +25,34 @@ if (Astro.response) {
 <html lang="en" data-props-for="network">
   <head>
     <meta charset="UTF-8" />
+    <script is:inline>
+      // Decide the theme before first paint to avoid a flash of the wrong
+      // theme. System preference is primary; an explicit user choice in
+      // localStorage overrides it. Runs again on pageshow/prerenderingchange
+      // so speculation-rules prerendered pages pick up a toggle made after
+      // they were rendered, and on storage so other tabs stay in sync.
+      (() => {
+        const mq = window.matchMedia("(prefers-color-scheme: dark)");
+        const apply = () => {
+          const stored = localStorage.getItem("theme");
+          document.documentElement.dataset.theme =
+            stored === "dark" || stored === "light"
+              ? stored
+              : mq.matches
+                ? "dark"
+                : "light";
+        };
+        apply();
+        mq.addEventListener("change", apply);
+        window.addEventListener("pageshow", apply);
+        document.addEventListener("prerenderingchange", apply);
+        window.addEventListener("storage", (event) => {
+          if (event.key === "theme") {
+            apply();
+          }
+        });
+      })();
+    </script>
     <script is:inline>
       /* oxlint-disable no-unused-expressions -- vendored minified snippet */
       (function () {
@@ -145,13 +174,13 @@ if (Astro.response) {
       </style>
     </noscript>
   </head>
-  <body class="bg-subtle-grunge slow-connection:bg-none">
+  <body class="bg-subtle-grunge slow-connection:bg-none dark:text-stone-200">
     <div
       class="pointer-events-none absolute inset-0 overflow-hidden"
       aria-hidden="true"
     >
       <img
-        class="absolute opacity-40 mix-blend-multiply slow-connection:hidden"
+        class="absolute opacity-40 mix-blend-multiply slow-connection:hidden dark:opacity-15 dark:mix-blend-screen dark:invert"
         loading="eager"
         fetchpriority="high"
         alt=""
@@ -164,7 +193,7 @@ if (Astro.response) {
         style="left: -230px; top: 600px"
       />
       <img
-        class="absolute object-cover object-left opacity-40 mix-blend-multiply slow-connection:hidden"
+        class="absolute object-cover object-left opacity-40 mix-blend-multiply slow-connection:hidden dark:opacity-15 dark:mix-blend-screen dark:invert"
         loading="lazy"
         decoding="async"
         alt=""
@@ -177,7 +206,7 @@ if (Astro.response) {
         style="right: 0; top: 1900px; height: 405px; width: 9%"
       />
       <img
-        class="absolute -rotate-45 opacity-40 mix-blend-multiply slow-connection:hidden"
+        class="absolute -rotate-45 opacity-40 mix-blend-multiply slow-connection:hidden dark:opacity-15 dark:mix-blend-screen dark:invert"
         loading="lazy"
         decoding="async"
         alt=""
@@ -214,6 +243,7 @@ if (Astro.response) {
     }
     <slot />
     <Footer />
+    <ThemeToggle />
     <MuteToggle />
     <script src="../assets/audio-interactions.ts"></script>
     <script>
