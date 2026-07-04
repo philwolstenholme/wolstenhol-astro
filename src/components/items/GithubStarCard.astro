@@ -35,18 +35,18 @@ const animationDuration = (((hash >> 8) % 100) / 100 + 0.1).toFixed(2);
   x-data="githubCard"
   x-load="idle"
   x-on:mouseenter="replay()"
-  class="card--github expand-clickable-area shadow-hard border border-gray-300 rounded flex flex-col bg-gray-100 text-gray-900 transition-colors hover:bg-white focus-within:bg-white"
+  class="card--github expand-clickable-area shadow-hard border border-gray-300 rounded flex flex-col bg-gray-100 text-gray-900 transition-colors hover:bg-white focus-within:bg-white dark:border-stone-600 dark:bg-stone-800 dark:text-stone-200 dark:hover:bg-stone-700 dark:focus-within:bg-stone-700"
 >
   <a
     href={star.html_url}
-    class="text-gray-900 bg-graph-paper font-bold font-mono p-4 flex-1"
+    class="text-gray-900 bg-graph-paper font-bold font-mono p-4 flex-1 dark:text-stone-100"
     title={hasSensibleDescription ? star.description : undefined}
   >
     {star.full_name}
   </a>
   {
     hasSensibleDescription && (
-      <div class="p-4 border-t border-gray-300">
+      <div class="p-4 border-t border-gray-300 dark:border-stone-600">
         <div
           x-ref="title"
           class="github-star-card__title text-xs space-y-2 truncate"

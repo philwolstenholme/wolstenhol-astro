@@ -43,7 +43,7 @@ const noteRotation = `${(Math.random() * 2 - 1).toFixed(1)}deg`;
         </div>
 
         <div
-          class="max-w-xl border-2 border-black bg-yellow-300 bg-graph-paper p-8 shadow-ink-lg"
+          class="max-w-xl border-2 border-black bg-yellow-300 bg-graph-paper p-8 shadow-ink-lg text-stone-900"
           style={`rotate: ${noteRotation}`}
         >
           <h2 class="font-serif text-2xl font-bold">
@@ -66,7 +66,8 @@ const noteRotation = `${(Math.random() * 2 - 1).toFixed(1)}deg`;
         <p class="mt-10 text-sm">
           Convinced this page should exist? <a
             href="/contact"
-            class="underline hocus:text-yellow-600">Let me know</a
+            class="underline hocus:text-yellow-600 dark:hocus:text-yellow-300"
+            >Let me know</a
           > and I'll go looking for it properly.
         </p>
       </article>

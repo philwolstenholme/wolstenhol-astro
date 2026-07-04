@@ -24,12 +24,12 @@ import Squiggle from "../components/icons/Squiggle.astro";
           <p class="mt-3">
             You can send me a{" "}
             <a
-              class="underline hocus:text-yellow-600"
+              class="underline hocus:text-yellow-600 dark:hocus:text-yellow-300"
               href="https://twitter.com/messages/compose?recipient_id=38276082"
               >direct message on Twitter</a
             > or{" "}
             <a
-              class="underline hocus:text-yellow-600"
+              class="underline hocus:text-yellow-600 dark:hocus:text-yellow-300"
               href="https://bsky.app/profile/wolstenhol.me">Bluesky</a
             >, or drop me an email via this contact form (all fields are
             required).
@@ -50,7 +50,7 @@ import Squiggle from "../components/icons/Squiggle.astro";
             tabindex="-1"
             x-show="showSummary"
             x-cloak
-            class="max-w-3xl border-2 border-black bg-binding-dark p-6 text-white shadow-ink"
+            class="max-w-3xl border-2 border-black bg-binding-dark p-6 text-white shadow-ink dark:border-stone-500"
           >
             <h3
               class="font-serif text-2xl font-bold"
@@ -95,13 +95,13 @@ import Squiggle from "../components/icons/Squiggle.astro";
             x-show="submitError"
             x-cloak
             role="alert"
-            class="max-w-3xl border-2 border-black bg-white shadow-hard [border-left-width:6px] [border-left-color:theme(--color-red-700)]"
+            class="max-w-3xl border-2 border-black bg-white shadow-hard dark:border-stone-500 dark:bg-stone-800 [border-left-width:6px] [border-left-color:theme(--color-red-700)]"
           >
             <p class="p-6 font-bold">
               Oops, something went wrong sending your message. Please try again
               or contact me directly on{" "}
               <a
-                class="underline hocus:text-yellow-600"
+                class="underline hocus:text-yellow-600 dark:hocus:text-yellow-300"
                 href="https://bsky.app/profile/wolstenhol.me">Bluesky</a
               >.
             </p>
@@ -138,9 +138,9 @@ import Squiggle from "../components/icons/Squiggle.astro";
               <label
                 for="contact-name"
                 class="font-bold lg:w-28 lg:pt-4 lg:text-right"
-                x-bind:class="{ 'text-red-800': touched.name && errors.name }"
+                x-bind:class="{ 'text-red-800 dark:text-red-400': touched.name && errors.name }"
               >
-                Name:<sup class="text-red-800"
+                Name:<sup class="text-red-800 dark:text-red-400"
                   ><span aria-hidden="true">*</span><span class="sr-only"
                     >(this field is required)</span
                   ></sup
@@ -159,8 +159,8 @@ import Squiggle from "../components/icons/Squiggle.astro";
                 x-model="values.name"
                 x-on:blur="touch('name')"
                 x-bind:aria-invalid="touched.name && !!errors.name ? 'true' : 'false'"
-                class="w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard lg:flex-1"
-                x-bind:class="{ 'border-red-800': touched.name && errors.name }"
+                class="w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard dark:border-stone-500 dark:bg-stone-800 dark:text-stone-100 lg:flex-1"
+                x-bind:class="{ 'border-red-800 dark:border-red-400': touched.name && errors.name }"
               />
             </p>
 
@@ -168,9 +168,9 @@ import Squiggle from "../components/icons/Squiggle.astro";
               <label
                 for="contact-email"
                 class="font-bold lg:w-28 lg:pt-4 lg:text-right"
-                x-bind:class="{ 'text-red-800': touched.email && errors.email }"
+                x-bind:class="{ 'text-red-800 dark:text-red-400': touched.email && errors.email }"
               >
-                Email:<sup class="text-red-800"
+                Email:<sup class="text-red-800 dark:text-red-400"
                   ><span aria-hidden="true">*</span><span class="sr-only"
                     >(this field is required)</span
                   ></sup
@@ -188,8 +188,8 @@ import Squiggle from "../components/icons/Squiggle.astro";
                 x-model="values.email"
                 x-on:blur="touch('email')"
                 x-bind:aria-invalid="touched.email && !!errors.email ? 'true' : 'false'"
-                class="w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard lg:flex-1"
-                x-bind:class="{ 'border-red-800': touched.email && errors.email }"
+                class="w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard dark:border-stone-500 dark:bg-stone-800 dark:text-stone-100 lg:flex-1"
+                x-bind:class="{ 'border-red-800 dark:border-red-400': touched.email && errors.email }"
               />
             </p>
 
@@ -197,9 +197,9 @@ import Squiggle from "../components/icons/Squiggle.astro";
               <label
                 for="contact-subject"
                 class="font-bold lg:w-28 lg:pt-4 lg:text-right"
-                x-bind:class="{ 'text-red-800': touched.subject && errors.subject }"
+                x-bind:class="{ 'text-red-800 dark:text-red-400': touched.subject && errors.subject }"
               >
-                Subject:<sup class="text-red-800"
+                Subject:<sup class="text-red-800 dark:text-red-400"
                   ><span aria-hidden="true">*</span><span class="sr-only"
                     >(this field is required)</span
                   ></sup
@@ -217,8 +217,8 @@ import Squiggle from "../components/icons/Squiggle.astro";
                 x-model="values.subject"
                 x-on:blur="touch('subject')"
                 x-bind:aria-invalid="touched.subject && !!errors.subject ? 'true' : 'false'"
-                class="w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard lg:flex-1"
-                x-bind:class="{ 'border-red-800': touched.subject && errors.subject }"
+                class="w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard dark:border-stone-500 dark:bg-stone-800 dark:text-stone-100 lg:flex-1"
+                x-bind:class="{ 'border-red-800 dark:border-red-400': touched.subject && errors.subject }"
               />
             </p>
 
@@ -226,9 +226,9 @@ import Squiggle from "../components/icons/Squiggle.astro";
               <label
                 for="contact-message"
                 class="font-bold lg:w-28 lg:pt-4 lg:text-right"
-                x-bind:class="{ 'text-red-800': touched.message && errors.message }"
+                x-bind:class="{ 'text-red-800 dark:text-red-400': touched.message && errors.message }"
               >
-                Message:<sup class="text-red-800"
+                Message:<sup class="text-red-800 dark:text-red-400"
                   ><span aria-hidden="true">*</span><span class="sr-only"
                     >(this field is required)</span
                   ></sup
@@ -246,8 +246,8 @@ import Squiggle from "../components/icons/Squiggle.astro";
                 x-model="values.message"
                 x-on:blur="touch('message')"
                 x-bind:aria-invalid="touched.message && !!errors.message ? 'true' : 'false'"
-                class="min-h-24 w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard lg:flex-1"
-                x-bind:class="{ 'border-red-800': touched.message && errors.message }"
+                class="min-h-24 w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard dark:border-stone-500 dark:bg-stone-800 dark:text-stone-100 lg:flex-1"
+                x-bind:class="{ 'border-red-800 dark:border-red-400': touched.message && errors.message }"
               ></textarea>
             </p>
 
@@ -266,13 +266,13 @@ import Squiggle from "../components/icons/Squiggle.astro";
                 <label
                   for="contact-agreement"
                   class="cursor-pointer"
-                  x-bind:class="{ 'text-red-800': touched.agreement && errors.agreement }"
+                  x-bind:class="{ 'text-red-800 dark:text-red-400': touched.agreement && errors.agreement }"
                 >
                   I work making websites full-time on a salaried basis so don't
                   do any freelance or contracting work (sorry). Please tick the
                   box to confirm you are not asking me to produce a website for
                   a small business or offering a contract gig. Thanks!<sup
-                    class="text-red-800"
+                    class="text-red-800 dark:text-red-400"
                     ><span aria-hidden="true">*</span><span class="sr-only"
                       >(this field is required)</span
                     ></sup

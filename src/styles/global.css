@@ -16,7 +16,19 @@ html {
 @custom-variant hocus (&:hover, &:focus);
 @custom-variant pointer-fine (@media (pointer: fine));
 @custom-variant slow-connection (@container style(--live-net-type: 1) or style(--live-net-type: 2) or style(--live-net-type: 3));
+/* Dark mode is driven by a data attribute on <html>, set by an inline script
+ * in the <head> before first paint (system preference, with a localStorage
+ * override) — so no flash of the wrong theme, and static pages stay static. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 @plugin "./group-hocus-plugin.js";
+
+:root {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
 
 /* Make a custom fallback font based on the local Times New Roman */
 @font-face {
@@ -234,6 +246,57 @@ a:where(:hover, :focus-visible) {
   text-decoration-style: wavy;
 }
 
+/* ─── Dark theme colour overrides ────────────────────────────────────────────
+ * The grunge/hand-drawn textures are kept in dark mode but re-blended:
+ * multiplying the light paper textures into a warm near-black base keeps the
+ * tooth of the paper without the glare. Utility classes defined in
+ * @layer utilities can't take the dark: variant, so they're overridden here. */
+
+[data-theme="dark"] .bg-subtle-grunge,
+[data-theme="dark"] .bg-subtle-grunge:after,
+[data-theme="dark"] .bg-subtle-grunge:before {
+  /* Warm charcoal paper; the light grunge texture is multiplied in so only
+     its speckle survives, slightly darker than the base. */
+  background-color: #23201d;
+  background-blend-mode: multiply;
+}
+
+/* The white grungy wall texture normally blends with luminosity (bright).
+ * In dark mode multiply it instead, so surfaces that pair it with a colour
+ * (post-it cards, the corner buttons) keep their colour, textured downwards. */
+[data-theme="dark"] .bg-paper-grunge {
+  background-blend-mode: multiply;
+}
+
+/* Display headings are texture-filled via bg-clip-text. The dark binding
+ * texture disappears against a dark page, so flip them to the light paper
+ * texture — letters cut from paper and stuck on the dark page. */
+[data-theme="dark"] h1.text-fill-transparent {
+  background-color: #ece8e0;
+  background-image: url(https://wolstenhol.me/proxy/cloudinary/image/upload/c_crop,f_auto,h_200,w_200,q_auto:eco/v1473712910/subtle_grunge_ux3r0f.png);
+}
+
+/* Highlighter marks: keep the pen yellow but lay it on thicker (a dark page
+ * needs more ink) and force the text under it back to black. */
+[data-theme="dark"] section:target h2,
+[data-theme="dark"] mark,
+[data-theme="dark"] .highlight,
+[data-theme="dark"] .highlight-links a {
+  color: #171717;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 225, 0, 0.55),
+    rgba(255, 225, 0, 0.95) 4%,
+    rgba(255, 225, 0, 0.75)
+  );
+}
+
+/* The soft "there's more" scroll shadow needs to be deeper to read on dark. */
+[data-theme="dark"] .scroller-affordance {
+  background: radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0)) 0
+    100%;
+}
+
 /* Hotpink focus outline — matches wolstenhol.me. Elements with
  * .outline-offset-invert get a negative offset so the ring draws inset. */
 :focus,
@@ -283,6 +346,8 @@ a:where(:hover, :focus-visible) {
   --color-instagram-dark: #c13584;
   --color-bluesky: #0085ff;
   --color-bluesky-dark: #0065c4;
+  /* One step deeper again, used to step the Bluesky cards down in dark mode */
+  --color-bluesky-deep: #004e97;
 
   /* The offset, blur-less "hard" shadow used on every card on the original
    * site. It's what gives the cards their slightly cut-out, sticker-y feel.
