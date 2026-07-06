@@ -52,7 +52,7 @@ const grainOpacity = Math.round((0.3 + Math.random() * 0.2) * 100) / 100;
     keyHint && (
       <div
         aria-hidden="true"
-        class="absolute right-2 top-2 z-10 hidden h-5 w-5 items-center justify-center rounded border border-yellow-300/60 text-xs font-bold text-yellow-300 opacity-0 transition-opacity duration-150 group-[.keyboard-active]/player:opacity-100 pointer-fine:flex"
+        class="absolute right-2 top-2 z-10 hidden h-5 w-5 items-center justify-center rounded border border-accent/60 text-xs font-bold text-accent opacity-0 transition-opacity duration-150 group-[.keyboard-active]/player:opacity-100 pointer-fine:flex"
       >
         {keyHint}
       </div>
@@ -79,7 +79,7 @@ const grainOpacity = Math.round((0.3 + Math.random() * 0.2) * 100) / 100;
         data-spotify-play-button
         href={previewUrl}
         target="spotify-preview"
-        class="outline-offset-invert group absolute inset-0 text-yellow-300"
+        class="outline-offset-invert group absolute inset-0 text-accent"
         role="button"
         aria-pressed="false"
         x-data
@@ -136,7 +136,7 @@ const grainOpacity = Math.round((0.3 + Math.random() * 0.2) * 100) / 100;
 
   <div class="absolute bottom-0 left-0 z-10 block p-2 text-xs font-bold">
     <div
-      class="card-music__caption group-hocus/card:-translate-y-1 relative inline-block transform-gpu p-1 px-2 text-yellow-300 transition-transform duration-75"
+      class="card-music__caption group-hocus/card:-translate-y-1 relative inline-block transform-gpu p-1 px-2 text-accent transition-transform duration-75"
     >
       <span class="relative z-10 text-black">{artist.name}</span>
     </div>

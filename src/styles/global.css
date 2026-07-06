@@ -44,6 +44,7 @@ html {
 
 :root[data-theme="dark"] {
   color-scheme: dark;
+  --color-accent: var(--color-purple-700);
 }
 
 /* Make a custom fallback font based on the local Times New Roman */
@@ -330,7 +331,7 @@ a:where(:hover, :focus-visible) {
 /* Match the site's yellow text selection rather than the browser default. */
 ::selection,
 ::target-text {
-  background-color: var(--color-yellow-300);
+  background-color: var(--color-accent);
   color: black;
 }
 
@@ -349,6 +350,11 @@ a:where(:hover, :focus-visible) {
 @theme {
   --animate-typewriter: typewriter 3s steps(69) 1 normal both;
   --font-serif: "Roboto Slab", "Roboto Slab-fallback", serif;
+
+  /* The site's accent colour — yellow in light mode, swapped for purple in
+     dark mode (see the [data-theme="dark"] override above). Kept as a single
+     variable so any future contrast fix only needs changing in one place. */
+  --color-accent: var(--color-yellow-300);
 
   --color-medium: #228665;
   --color-medium-dark: #1e785a;
