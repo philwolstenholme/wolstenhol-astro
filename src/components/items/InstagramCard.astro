@@ -83,14 +83,14 @@ const onMouseleave = post.isVideo ? "$refs.video && $refs.video.play()" : null;
                   <>
                     <span aria-hidden="true" class="text-red-500">
                       ♥
-                    </span>
+                    </span>{" "}
                     <span class="sr-only">Likes: </span>
                     <span class="mr-2 inline-block">{post.likeCount}</span>
                   </>
                 )}
                 {post.commentCount > 0 && (
                   <>
-                    <span aria-hidden="true">💬</span>
+                    <span aria-hidden="true">💬</span>{" "}
                     <span class="sr-only">Comments: </span>
                     <span class="inline-block">{post.commentCount}</span>
                   </>
@@ -101,7 +101,7 @@ const onMouseleave = post.isVideo ? "$refs.video && $refs.video.play()" : null;
               <p>
                 <span aria-hidden="true" class="mr-1">
                   📍
-                </span>
+                </span>{" "}
                 <span class="sr-only">Tagged location: </span>
                 <span>{post.locationName}</span>
               </p>
