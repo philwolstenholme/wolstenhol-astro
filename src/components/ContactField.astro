@@ -1,0 +1,70 @@
+---
+import clsx from "clsx";
+
+// One labelled field of the contact form. Validation state lives in the
+// pwContact Alpine component on the surrounding form; the x-bind expressions
+// here read from its `values`/`touched`/`errors` records keyed by `name`.
+interface Props {
+  name: "name" | "email" | "subject" | "message";
+  label: string;
+  placeholder: string;
+  type?: "text" | "email" | "textarea";
+  minlength?: number;
+  autocomplete?: string;
+}
+
+const {
+  name,
+  label,
+  placeholder,
+  type = "text",
+  minlength,
+  autocomplete,
+} = Astro.props;
+
+const id = `contact-${name}`;
+const hasError = `touched.${name} && errors.${name}`;
+
+const controlClass =
+  "w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard dark:border-stone-500 dark:bg-stone-800 dark:text-stone-100 lg:flex-1";
+
+const controlAttrs = {
+  id,
+  name,
+  required: true,
+  "aria-required": "true" as const,
+  minlength,
+  autocomplete,
+  placeholder,
+  "x-model": `values.${name}`,
+  "x-on:blur": `touch('${name}')`,
+  "x-bind:aria-invalid": `touched.${name} && !!errors.${name} ? 'true' : 'false'`,
+  "x-bind:class": `{ 'border-red-800 dark:border-red-400': ${hasError} }`,
+};
+---
+
+<p class="space-y-2 lg:flex lg:space-y-0 lg:space-x-5">
+  <label
+    for={id}
+    class="font-bold lg:w-28 lg:pt-4 lg:text-right"
+    x-bind:class={`{ 'text-red-800 dark:text-red-400': ${hasError} }`}
+  >
+    {label}:<sup class="text-red-800 dark:text-red-400"
+      ><span aria-hidden="true">*</span><span class="sr-only"
+        >(this field is required)</span
+      ></sup
+    >
+  </label>
+  <br class="hidden" />
+  {
+    type === "textarea" ? (
+      <textarea
+        {...controlAttrs}
+        rows="6"
+        class={clsx("min-h-24", controlClass)}
+      />
+    ) : (
+      <input type={type} {...controlAttrs} class={controlClass} />
+    )
+  }
+</p>

@@ -19,6 +19,32 @@ if (Astro.response) {
     "public, max-age=0, must-revalidate",
   );
 }
+
+// Decorative coffee-stain images scattered behind the page content. Only the
+// first is in the initial viewport, so it loads eagerly.
+const coffeeStains = [
+  {
+    class: "",
+    eager: true,
+    width: 500,
+    height: 451,
+    style: "left: -230px; top: 600px",
+  },
+  {
+    class: "object-cover object-left",
+    eager: false,
+    width: 112,
+    height: 405,
+    style: "right: 0; top: 1900px; height: 405px; width: 9%",
+  },
+  {
+    class: "-rotate-45",
+    eager: false,
+    width: 500,
+    height: 451,
+    style: "left: -230px; top: 2900px",
+  },
+];
 ---
 
 <!doctype html>
@@ -79,7 +105,7 @@ if (Astro.response) {
         typeof document < "u" && s();
       })();
     </script>
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="preconnect" href="https://res.cloudinary.com" />
     <link
       rel="preload"
@@ -124,10 +150,6 @@ if (Astro.response) {
     <meta name="generator" content={Astro.generator} />
     <meta name="robots" content="noindex, nofollow" />
     <title>{fullTitle}</title>
-    <meta charset="UTF-8" /><meta
-      name="viewport"
-      content="width=device-width,initial-scale=1"
-    />
     <meta name="view-transition" content="same-origin" />
     <meta name="description" content="Phil Wolstenholme's personal site" />
     <link rel="canonical" href="https://wolstenhol.me/" />
@@ -179,45 +201,24 @@ if (Astro.response) {
       class="pointer-events-none absolute inset-0 overflow-hidden"
       aria-hidden="true"
     >
-      <img
-        class="absolute opacity-40 mix-blend-multiply slow-connection:hidden dark:opacity-15 dark:mix-blend-screen dark:invert"
-        loading="eager"
-        fetchpriority="high"
-        alt=""
-        width="500"
-        height="451"
-        srcset="
-          /proxy/cloudinary/image/upload/c_scale,q_10,w_500,fl_progressive/v1614122419/one-offs/cup-coffee-stain-2.jpg  1x,
-          /proxy/cloudinary/image/upload/c_scale,q_10,w_1000,fl_progressive/v1614122419/one-offs/cup-coffee-stain-2.jpg 2x
-        "
-        style="left: -230px; top: 600px"
-      />
-      <img
-        class="absolute object-cover object-left opacity-40 mix-blend-multiply slow-connection:hidden dark:opacity-15 dark:mix-blend-screen dark:invert"
-        loading="lazy"
-        decoding="async"
-        alt=""
-        width="112"
-        height="405"
-        srcset="
-          /proxy/cloudinary/image/upload/c_scale,q_10,w_500,fl_progressive/v1614122419/one-offs/cup-coffee-stain-2.jpg  1x,
-          /proxy/cloudinary/image/upload/c_scale,q_10,w_1000,fl_progressive/v1614122419/one-offs/cup-coffee-stain-2.jpg 2x
-        "
-        style="right: 0; top: 1900px; height: 405px; width: 9%"
-      />
-      <img
-        class="absolute -rotate-45 opacity-40 mix-blend-multiply slow-connection:hidden dark:opacity-15 dark:mix-blend-screen dark:invert"
-        loading="lazy"
-        decoding="async"
-        alt=""
-        width="500"
-        height="451"
-        srcset="
-          /proxy/cloudinary/image/upload/c_scale,q_10,w_500,fl_progressive/v1614122419/one-offs/cup-coffee-stain-2.jpg  1x,
-          /proxy/cloudinary/image/upload/c_scale,q_10,w_1000,fl_progressive/v1614122419/one-offs/cup-coffee-stain-2.jpg 2x
-        "
-        style="left: -230px; top: 2900px"
-      />
+      {
+        coffeeStains.map((stain) => (
+          <img
+            class={`absolute opacity-40 mix-blend-multiply slow-connection:hidden dark:opacity-15 dark:mix-blend-screen dark:invert ${stain.class}`}
+            loading={stain.eager ? "eager" : "lazy"}
+            fetchpriority={stain.eager ? "high" : undefined}
+            decoding={stain.eager ? undefined : "async"}
+            alt=""
+            width={stain.width}
+            height={stain.height}
+            srcset="
+              /proxy/cloudinary/image/upload/c_scale,q_10,w_500,fl_progressive/v1614122419/one-offs/cup-coffee-stain-2.jpg  1x,
+              /proxy/cloudinary/image/upload/c_scale,q_10,w_1000,fl_progressive/v1614122419/one-offs/cup-coffee-stain-2.jpg 2x
+            "
+            style={stain.style}
+          />
+        ))
+      }
     </div>
     <Header />
     {
