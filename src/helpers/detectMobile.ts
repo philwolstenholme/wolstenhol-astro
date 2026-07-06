@@ -9,6 +9,7 @@ export function detectMobile(request: Request): boolean {
 
   const ua = request.headers.get("User-Agent");
   if (ua) {
+    console.log("User-Agent:", ua);
     const { device } = UAParser(ua);
     console.log("Device Type:", device.type);
     const mobileDeviceTypes: (typeof device.type)[] = ["mobile", "wearable"];
