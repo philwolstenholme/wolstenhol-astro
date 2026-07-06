@@ -246,7 +246,7 @@ import Squiggle from "../components/icons/Squiggle.astro";
                 x-model="values.message"
                 x-on:blur="touch('message')"
                 x-bind:aria-invalid="touched.message && !!errors.message ? 'true' : 'false'"
-                class="min-h-24 w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard dark:border-stone-500 dark:bg-stone-800 dark:text-stone-100 lg:flex-1"
+                class="field-sizing-content min-h-24 w-full rounded border-2 border-gray-800 bg-white p-4 font-serif text-black shadow-hard dark:border-stone-500 dark:bg-stone-800 dark:text-stone-100 lg:flex-1"
                 x-bind:class="{ 'border-red-800 dark:border-red-400': touched.message && errors.message }"
               ></textarea>
             </p>
