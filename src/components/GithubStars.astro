@@ -2,18 +2,18 @@
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
+import { getItemsPerPage } from "../helpers/getItemsPerPage";
+import { sortStars } from "../helpers/getStarsSorted";
 import Section from "./Section.astro";
+import StyledTextLink from "./StyledTextLink.astro";
+import PaginatedGrid from "./PaginatedGrid.astro";
+import Lede from "./Lede.astro";
+import GithubStarCard from "./items/GithubStarCard.astro";
 
 interface Props {
   collection?: CollectionEntry<"github-stars">[];
   isMobile?: boolean;
 }
-import { getItemsPerPage } from "../helpers/getItemsPerPage";
-import { byStarredAtDesc } from "../helpers/getStarsSorted";
-import StyledTextLink from "./StyledTextLink.astro";
-import PaginatedGrid from "./PaginatedGrid.astro";
-import Lede from "./Lede.astro";
-import GithubStarCard from "./items/GithubStarCard.astro";
 
 const { collection: collectionProp, isMobile: isMobileProp } = Astro.props;
 
@@ -23,7 +23,7 @@ const isMobile = isMobileProp ?? Astro.locals.isMobile ?? false;
 const itemsPerPage = getItemsPerPage({ isMobile });
 const collection = collectionProp || (await getCollection("github-stars"));
 
-const items = collection.map((entry) => entry.data).sort(byStarredAtDesc);
+const items = sortStars(collection);
 ---
 
 <Section id="stars" heading="Starred">

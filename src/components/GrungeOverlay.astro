@@ -1,0 +1,37 @@
+---
+import clsx from "clsx";
+import {
+  grungeWallSrc,
+  grungeWallSrcSet,
+  randomGrungeOpacity,
+  randomSubtleGrungeOpacity,
+} from "../helpers/textures";
+
+// The grunge-wall texture layered over solid-coloured cards and screenshots
+// as a mix-blend-multiply overlay with a randomised opacity, so no two cards
+// end up looking quite the same. Pass positioning classes (absolute/grid
+// placement, rounding) via `class`; `subtle` picks the quieter opacity range
+// for imagery that should stay legible underneath.
+interface Props {
+  class?: string;
+  subtle?: boolean;
+}
+
+const { class: className, subtle = false } = Astro.props;
+const opacity = subtle ? randomSubtleGrungeOpacity() : randomGrungeOpacity();
+---
+
+<img
+  src={grungeWallSrc}
+  srcset={grungeWallSrcSet}
+  alt=""
+  aria-hidden="true"
+  loading="lazy"
+  decoding="async"
+  crossorigin="anonymous"
+  class={clsx(
+    "opacity-grunge pointer-events-none h-full w-full object-cover mix-blend-multiply slow-connection:hidden",
+    className,
+  )}
+  style={`--opacity: ${opacity}`}
+/>

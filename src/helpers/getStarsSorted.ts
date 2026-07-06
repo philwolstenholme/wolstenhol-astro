@@ -1,9 +1,10 @@
 import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
-export const byStarredAtDesc = (a: { starred_at: string }, b: { starred_at: string }) =>
+const byStarredAtDesc = (a: { starred_at: string }, b: { starred_at: string }) =>
   b.starred_at.localeCompare(a.starred_at);
 
-export const getSortedStars = async () => {
-  const collection = await getCollection("github-stars");
-  return collection.map((entry) => entry.data).sort(byStarredAtDesc);
-};
+export const sortStars = (collection: CollectionEntry<"github-stars">[]) =>
+  collection.map((entry) => entry.data).sort(byStarredAtDesc);
+
+export const getSortedStars = async () => sortStars(await getCollection("github-stars"));

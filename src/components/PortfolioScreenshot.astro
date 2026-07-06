@@ -1,0 +1,71 @@
+---
+import clsx from "clsx";
+import { buildPortfolioImageUrl } from "../helpers/buildPortfolioImageUrl";
+import GrungeOverlay from "./GrungeOverlay.astro";
+
+// A portfolio screenshot stacked on top of a brand-coloured, tilted backing
+// card with the grunge texture over it. Used on the work page and in the
+// homepage work preview.
+interface Props {
+  cloudinarySuffix: string;
+  alt: string;
+  color?: string;
+  href?: string;
+  ariaLabel?: string;
+  eager?: boolean;
+  imgClass?: string;
+}
+
+const {
+  cloudinarySuffix,
+  alt,
+  color,
+  href,
+  ariaLabel,
+  eager = false,
+  imgClass,
+} = Astro.props;
+
+const imgAttrs = {
+  src: buildPortfolioImageUrl(cloudinarySuffix, 560),
+  srcset: `${buildPortfolioImageUrl(cloudinarySuffix, 560)} 1x, ${buildPortfolioImageUrl(cloudinarySuffix, 1120)} 2x`,
+  width: "548",
+  height: "344",
+  loading: eager ? "eager" : "lazy",
+  fetchpriority: eager ? "high" : "low",
+  alt,
+} as const;
+
+const baseImgClass = clsx(
+  "screenshot rounded-2xl border-2 border-white bg-white object-cover object-top shadow-hard",
+  imgClass,
+);
+---
+
+<div class="grid">
+  <div
+    class="work-card__image-bg col-start-1 row-start-1 -rotate-3 transform rounded-2xl"
+    style={color ? `--brand-colour: ${color}` : ""}
+  >
+  </div>
+  {
+    href ? (
+      <a
+        class="relative col-start-1 row-start-1 block"
+        href={href}
+        aria-label={ariaLabel}
+      >
+        <img {...imgAttrs} class={baseImgClass} />
+      </a>
+    ) : (
+      <img
+        {...imgAttrs}
+        class={clsx(baseImgClass, "relative col-start-1 row-start-1")}
+      />
+    )
+  }
+  <GrungeOverlay
+    subtle
+    class="relative col-start-1 row-start-1 rounded-2xl object-cover"
+  />
+</div>

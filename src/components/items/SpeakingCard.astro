@@ -1,10 +1,6 @@
 ---
 import clsx from "clsx";
-import {
-  grungeWallSrc,
-  grungeWallSrcSet,
-  randomGrungeOpacity,
-} from "../../helpers/textures";
+import GrungeOverlay from "../GrungeOverlay.astro";
 
 const { item, class: className } = Astro.props;
 
@@ -15,7 +11,6 @@ const outerClass = clsx(
   className,
 );
 
-const grungeOpacity = randomGrungeOpacity();
 const imgClass =
   "object-cover aspect-none w-full h-full mix-blend-luminosity transition-opacity" +
   (hasHref ? " group-hocus:opacity-10" : "");
@@ -60,17 +55,7 @@ const Tag = (hasHref ? "a" : "div") as "a" | "div";
   ) : (
     <div class={outerClass}>
       <figure class="stack grid-cols-[1fr] shadow-hard border border-purple-900 rounded bg-purple-700 text-white contain-content relative grid h-full">
-        <img
-          src={grungeWallSrc}
-          srcset={grungeWallSrcSet}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          decoding="async"
-          crossorigin="anonymous"
-          class="opacity-grunge pointer-events-none absolute inset-0 block h-full w-full object-cover mix-blend-multiply slow-connection:hidden"
-          style={`--opacity: ${grungeOpacity}`}
-        />
+        <GrungeOverlay class="absolute inset-0 block" />
         <div class="isolate flex flex-col justify-center space-y-3 p-4 text-center">
           <blockquote class="isolate mx-auto max-w-md font-serif text-xl font-bold leading-tight">
             <h3>{item.quote}</h3>

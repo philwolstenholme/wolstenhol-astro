@@ -1,18 +1,13 @@
 ---
 import { markdownToTxt } from "markdown-to-txt";
 import type { CollectionEntry } from "astro:content";
-import {
-  grungeWallSrc,
-  grungeWallSrcSet,
-  randomGrungeOpacity,
-} from "../../helpers/textures";
+import GrungeOverlay from "../GrungeOverlay.astro";
 import { longDateFormatter } from "../../helpers/longDateFormatter";
 
 const { item: post } = Astro.props as {
   item: CollectionEntry<"dev-to-posts">["data"];
 };
 
-const grungeOpacity = randomGrungeOpacity();
 const dateStr = post.published_at || post.published_timestamp;
 const formattedDate = dateStr
   ? longDateFormatter.format(new Date(dateStr))
@@ -27,17 +22,7 @@ const formattedDate = dateStr
     class="row-span-1 text-white bg-medium rounded-t font-bold font-serif transition-colors hocus:bg-medium-dark"
   >
     <span class="relative block overflow-hidden rounded-t p-4">
-      <img
-        src={grungeWallSrc}
-        srcset={grungeWallSrcSet}
-        alt=""
-        aria-hidden="true"
-        loading="lazy"
-        decoding="async"
-        crossorigin="anonymous"
-        class="opacity-grunge pointer-events-none absolute inset-0 block h-full w-full object-cover mix-blend-multiply slow-connection:hidden"
-        style={`--opacity: ${grungeOpacity}`}
-      />
+      <GrungeOverlay class="absolute inset-0 block" />
       <span class="relative">{post.title}</span>
     </span>
   </a>

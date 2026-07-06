@@ -1,6 +1,5 @@
+import { DIGIT_KEYS } from "../helpers/digitKeys";
 import { defineComponent } from "./alpine-define";
-
-const DIGIT_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 
 interface SpotifyArtist {
   top_track: { preview_url: string | null } | null;
