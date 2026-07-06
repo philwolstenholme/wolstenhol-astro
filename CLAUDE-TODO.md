@@ -14,5 +14,6 @@ If you create a new page then update the global site navigation to include a lin
 - [x] Look through the whole codebase for duplication, over-complicated code, or redundant comments and remove them.
 - [x] Look for chances to use more modern CSS features. To get ideas, check 'CSS wrapped' blog posts like <https://developer.chrome.com/blog/css-wrapped-2025> and <https://developer.chrome.com/blog/css-wrapped-2024> and <https://developer.chrome.com/blog/css-wrapped-2023>
 - [x] Add a bit of randomised grunge to the work card screenshots, like the maps images have. Keep it subtle.
+- [ ] Use https://github.com/paperlesspaper/epdoptimize and `node-canvas` for SSR to dither all my Instagram images. Show the undithered image on hover/focus. Pick the optimum settings for a retro but still recognisable style. Use the 'Automatic Processing' option with the 'Poster scan' preset.
 - [ ] Copy the 'scrolling title' feature from the 11ty site when a Spotify track is playing. See https://github.com/philwolstenholme/wolstenhol-11ty/blob/main/src/assets/scripts/utils/scrolling-title.js and https://github.com/philwolstenholme/wolstenhol-11ty/blob/main/src/assets/scripts/alpine/PwMusic/PwMusic.js#L54
 - [ ] Write a README summarising the approach taken to implement the site, including any performance improvements made, and any other interesting things about the site.
