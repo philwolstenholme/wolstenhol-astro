@@ -313,6 +313,15 @@ a:where(:hover, :focus-visible) {
     100%;
 }
 
+/* Pagination buttons: the masking-tape background is a dark PNG with white
+ * text baked into the image, which disappears against a dark page. Cloudinary's
+ * e_negate effect inverts it to a light strip, so the text needs to flip to
+ * black to still read against it. */
+[data-theme="dark"] .pagination__button {
+  background-image: var(--pagination-bg-dark);
+  color: #171717;
+}
+
 /* Hotpink focus outline — matches wolstenhol.me. Elements with
  * .outline-offset-invert get a negative offset so the ring draws inset. */
 :focus,
@@ -453,6 +462,10 @@ main .card--portfolio + .card--portfolio {
 
 .card-music__image {
   filter: grayscale(1) contrast(1.05);
+}
+
+.pagination__button {
+  background-image: var(--pagination-bg-light);
 }
 
 .card-music__caption::after {
