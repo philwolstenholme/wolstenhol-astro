@@ -15,8 +15,8 @@ const imgClass =
   "object-cover aspect-none w-full h-full mix-blend-luminosity transition-opacity" +
   (hasHref ? " group-hocus:opacity-10" : "");
 const containerClass = hasHref
-  ? "outline-offset-invert group block w-full overflow-hidden stack grid-cols-[1fr] isolate"
-  : "outline-offset-invert group aspect-h-9 aspect-w-16 block w-full overflow-hidden stack grid-cols-[1fr] isolate";
+  ? "outline-offset-invert group block w-full overflow-hidden stack grid-cols-[1fr]"
+  : "outline-offset-invert group aspect-h-9 aspect-w-16 block w-full overflow-hidden stack grid-cols-[1fr]";
 
 const Tag = (hasHref ? "a" : "div") as "a" | "div";
 ---
