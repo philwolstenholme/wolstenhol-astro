@@ -6,7 +6,6 @@ const PAGINATION_PARAMS = ["githubStars", "posts", "readingList", "speaking"];
 
 export const onRequest = defineMiddleware((context, next) => {
   context.locals.isMobile = detectMobile(context.request);
-  console.log("Is Mobile:", context.locals.isMobile);
 
   const url = new URL(context.request.url);
 
