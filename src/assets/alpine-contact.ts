@@ -13,21 +13,21 @@ const FIELD_LABELS: Record<FormFields, string> = {
 };
 
 const RULES: Record<FormFields, (val: string) => string | null> = {
-  name: (v) => (v.trim().length < 2 ? "Please enter your name (at least 2 characters)." : null),
+  name: (v) => (v.trim().length < 2 ? "please enter your name (at least 2 characters)." : null),
   email: (v) => {
     if (!v.trim()) {
-      return "Please enter your email address.";
+      return "please enter your email address.";
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())) {
-      return "Please enter a valid email address.";
+      return "please enter a valid email address.";
     }
     return null;
   },
-  subject: (v) => (v.trim().length < 8 ? "Please enter a subject (at least 8 characters)." : null),
+  subject: (v) => (v.trim().length < 8 ? "please enter a subject (at least 8 characters)." : null),
   message: (v) =>
-    v.trim().length < 8 ? "Please enter your message (at least 8 characters)." : null,
+    v.trim().length < 8 ? "please enter your message (at least 8 characters)." : null,
   agreement: (v) =>
-    v !== "true" ? "Please tick the box to confirm you have read the above." : null,
+    v !== "true" ? "please tick the box to confirm you have read the above." : null,
 };
 
 export default defineComponent(() => ({

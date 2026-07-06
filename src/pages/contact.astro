@@ -57,7 +57,7 @@ import PageHeader from "../components/PageHeader.astro";
                     x-bind:href="`#${item.id}`"
                     x-text="item.label"
                     class="text-yellow-300 underline hocus:text-yellow-200"></a>
-                  (<span x-text="item.message"></span>)
+                  {" "}-{" "}<span x-text="item.message"></span>
                 </li>
               </template>
             </ul>
