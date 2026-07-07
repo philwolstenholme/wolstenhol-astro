@@ -10,8 +10,13 @@ export default defineComponent(() => ({
   isKeyboardActive: false,
   _playingProgress: null as HTMLProgressElement | null,
   _artists: [] as SpotifyArtist[],
+  _originalTitle: null as string | null,
+  _currentArtist: null as string | null,
+  _currentTrack: null as string | null,
 
   init() {
+    this._originalTitle = document.title;
+
     this._artists = JSON.parse(
       (this.$el as HTMLElement).dataset.artists || "[]",
     ) as SpotifyArtist[];
@@ -56,9 +61,15 @@ export default defineComponent(() => ({
         this._playingProgress.value = audio.currentTime / audio.duration;
       });
       audio.addEventListener("ended", () => this.stop());
+      audio.addEventListener("playing", () => this._setTitle());
     }
 
-    this.$watch("playingUrl", () => this._updateCards());
+    this.$watch("playingUrl", () => {
+      this._updateCards();
+      if (!this.playingUrl) {
+        this._restoreTitle();
+      }
+    });
     this.$watch("isKeyboardActive", () => {
       const player = this.$el.closest("[data-spotify-player]") as HTMLElement | null;
       player?.classList.toggle("keyboard-active", this.isKeyboardActive);
@@ -71,6 +82,33 @@ export default defineComponent(() => ({
 
   play(url: string) {
     this.playingUrl = url;
+  },
+
+  async _setTitle() {
+    if (!this._currentArtist || !this._currentTrack) return;
+
+    const { stopRotatingTitle, rotateTitle } = await import("../helpers/scrollingTitle");
+    stopRotatingTitle();
+
+    const newTitle = `${this._currentArtist} - ${this._currentTrack}`;
+    const prefix = "▶︎ ";
+    document.title = prefix + newTitle;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    if (!this.playingUrl) return;
+    rotateTitle(newTitle, "-", 300, prefix);
+  },
+
+  async _restoreTitle() {
+    const { stopRotatingTitle } = await import("../helpers/scrollingTitle");
+    stopRotatingTitle();
+    window.requestAnimationFrame(() => {
+      document.title = this._originalTitle ?? document.title;
+    });
   },
 
   _handleKey(e: KeyboardEvent) {
@@ -111,6 +149,11 @@ export default defineComponent(() => ({
     document.querySelectorAll<HTMLElement>("[data-spotify-card]").forEach((card) => {
       const cardUrl = card.dataset.previewUrl;
       const isPlaying = !!cardUrl && cardUrl === this.playingUrl;
+
+      if (isPlaying) {
+        this._currentArtist = card.dataset.artist ?? null;
+        this._currentTrack = card.dataset.track ?? null;
+      }
 
       card.classList.toggle("card-music--playing", isPlaying);
 
