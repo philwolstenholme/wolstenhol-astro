@@ -27,3 +27,5 @@ pnpm-debug.log*
 .netlify
 
 .playwright-mcp
+# dithered Instagram images generated at build time
+public/instagram-dithered/

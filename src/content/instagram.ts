@@ -5,6 +5,8 @@ import { InstagramScraper } from "@aduptive/instagram-scraper";
 import { z } from "astro/zod";
 import { defineCollection } from "astro:content";
 
+import { ditherInstagramImage } from "../helpers/ditherInstagramImage";
+
 const CLOUDINARY_PROXY = "/proxy/cloudinary";
 const CARD_WIDTH = 365;
 
@@ -26,7 +28,7 @@ type RawPost = {
   is_video: boolean;
 };
 
-function mapPost(post: RawPost) {
+async function mapPost(post: RawPost) {
   const caption = post.caption || null;
   const isParty = !!(
     caption &&
@@ -51,6 +53,7 @@ function mapPost(post: RawPost) {
     isParty,
     videoUrl: post.is_video ? cloudinaryVideoUrl(post.id) : null,
     accessibilityCaption: null,
+    ditheredUrl: post.is_video ? null : await ditherInstagramImage(post.id, CARD_WIDTH),
   };
 }
 
@@ -75,7 +78,7 @@ export const instagram = defineCollection({
 
       if (results.success && results.posts && results.posts.length > 0) {
         console.log(`Instagram: ${results.posts.length} posts fetched`);
-        return results.posts.map(mapPost);
+        return Promise.all(results.posts.map(mapPost));
       }
 
       console.warn(`Instagram: scraper returned no results — ${results.error ?? "unknown reason"}`);
@@ -86,7 +89,7 @@ export const instagram = defineCollection({
     const fallback = loadFallback();
     if (fallback) {
       console.log(`Instagram: using ${fallback.length} posts from fallback JSON`);
-      return fallback.map(mapPost);
+      return Promise.all(fallback.map(mapPost));
     }
 
     console.warn("Instagram: no fallback data available, returning empty");
@@ -105,5 +108,6 @@ export const instagram = defineCollection({
     isParty: z.boolean(),
     videoUrl: z.string().nullable(),
     accessibilityCaption: z.string().nullable(),
+    ditheredUrl: z.string().nullable(),
   }),
 });
