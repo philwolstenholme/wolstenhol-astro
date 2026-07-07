@@ -57,17 +57,31 @@ const onMouseleave = post.isVideo ? "$refs.video && $refs.video.play()" : null;
           <source src={post.videoUrl} />
         </video>
       ) : (
-        <img
-          src={post.cloudinaryUrl}
-          srcset={post.cloudinarySrcset}
-          alt={post.accessibilityCaption ?? ""}
-          width="365"
-          height="365"
-          sizes="365px"
-          class="card-instagram__img w-full transition-opacity group-hocus:opacity-50"
-          loading="lazy"
-          decoding="async"
-        />
+        <>
+          <img
+            src={post.cloudinaryUrl}
+            srcset={post.cloudinarySrcset}
+            alt={post.accessibilityCaption ?? ""}
+            width="365"
+            height="365"
+            sizes="365px"
+            class="card-instagram__img w-full transition-opacity group-hocus:opacity-50"
+            loading="lazy"
+            decoding="async"
+          />
+          {post.ditheredUrl && (
+            <img
+              src={post.ditheredUrl}
+              alt=""
+              aria-hidden="true"
+              width="365"
+              height="365"
+              class="pointer-events-none absolute inset-0 h-full w-full object-cover [image-rendering:pixelated] transition-opacity group-hocus:opacity-0"
+              loading="lazy"
+              decoding="async"
+            />
+          )}
+        </>
       )
     }
 
