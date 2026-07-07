@@ -44,8 +44,18 @@ export const ditherInstagramImage = async (id: string, width: number): Promise<s
       aitjcizeSpectra6Palette,
       { intent: "natural" },
     );
+    // Keep the auto-suggested dither algorithm, but swap the tone handling for
+    // the "dynamic" preset (S-curve, no range compression) — the suggestion's
+    // own dynamicRangeCompression washes photos out, so it must not override
+    // the preset.
+    const {
+      processingPreset: _preset,
+      dynamicRangeCompression: _drc,
+      ...ditherOptions
+    } = suggestion.ditherOptions;
     await ditherImage(input as unknown as DOMCanvas, output as unknown as DOMCanvas, {
-      ...suggestion.ditherOptions,
+      ...ditherOptions,
+      processingPreset: "dynamic",
       palette: aitjcizeSpectra6Palette,
     });
 
