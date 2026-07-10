@@ -1,5 +1,5 @@
-import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import { sortBy } from "es-toolkit";
 
 export const sortDevToPosts = (collection: CollectionEntry<"dev-to-posts">[]) =>

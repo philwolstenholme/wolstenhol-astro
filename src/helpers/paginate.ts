@@ -5,19 +5,19 @@ import { chunk, clamp, take } from "es-toolkit";
 const PLACEHOLDER_ORIGIN = "http://x";
 
 type PageHrefOptions = {
-  currentUrl?: URL;
-  base?: string;
-  param?: string;
   anchor?: string;
-  index: number | null;
+  base?: string;
+  currentUrl?: URL;
+  index: null | number;
+  param?: string;
 };
 
 export const buildPageHref = ({
-  currentUrl,
-  base = "/",
-  param = "page",
   anchor,
+  base = "/",
+  currentUrl,
   index,
+  param = "page",
 }: PageHrefOptions): string => {
   const url = currentUrl ? new URL(currentUrl.toString()) : new URL(base, PLACEHOLDER_ORIGIN);
 
@@ -51,10 +51,10 @@ export const buildPageHref = ({
 export const buildPartialHref = (
   partialPath: string,
   param: string,
-  index: number | null,
+  index: null | number,
   perPage?: number,
 ): string => {
-  const href = buildPageHref({ base: partialPath, param, index });
+  const href = buildPageHref({ base: partialPath, index, param });
 
   if (perPage === undefined) {
     return href;
@@ -69,17 +69,17 @@ export const buildPartialHref = (
 export type PaginationInput<T> = {
   items: readonly T[];
   itemsPerPage: number;
-  url: URL;
-  searchParam?: string;
   onlyFullPages?: boolean;
+  searchParam?: string;
+  url: URL;
 };
 
 export const paginate = <T>({
   items,
   itemsPerPage,
-  url,
-  searchParam = "page",
   onlyFullPages = false,
+  searchParam = "page",
+  url,
 }: PaginationInput<T>) => {
   let collectionData = items;
 
@@ -101,10 +101,10 @@ export const paginate = <T>({
 
   return {
     data: chunks[index] || [],
-    index,
-    hasPrev,
     hasNext,
-    prevIndex,
+    hasPrev,
+    index,
     nextIndex,
+    prevIndex,
   };
 };

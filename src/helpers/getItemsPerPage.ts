@@ -1,9 +1,9 @@
 export const getItemsPerPage = ({
+  desktopItemsPerPage = 12,
   isMobile = false,
   mobileItemsPerPage = 5,
-  desktopItemsPerPage = 12,
 }: {
+  desktopItemsPerPage?: number;
   isMobile?: boolean;
   mobileItemsPerPage?: number;
-  desktopItemsPerPage?: number;
 } = {}) => (isMobile ? mobileItemsPerPage : desktopItemsPerPage);

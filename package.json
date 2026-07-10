@@ -45,6 +45,7 @@
     "@types/alpinejs": "^3.13.11",
     "@types/canvas-confetti": "^1.9.0",
     "capture-website": "^5.1.0",
+    "eslint-plugin-perfectionist": "^5.10.0",
     "front-matter": "^4.0.2",
     "nano-staged": "^1.0.2",
     "netlify-cli": "^26.1.0",

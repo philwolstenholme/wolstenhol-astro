@@ -2,10 +2,11 @@
 export const prerender = false;
 
 import { getCollection } from "astro:content";
-import { preparePartialPage } from "../../helpers/preparePartialPage";
-import PaginatedGrid from "../../components/PaginatedGrid.astro";
+
 import ReadingListCard from "../../components/items/ReadingListCard.astro";
+import PaginatedGrid from "../../components/PaginatedGrid.astro";
 import { mergeReadingLists } from "../../helpers/mergeReadingLists";
+import { preparePartialPage } from "../../helpers/preparePartialPage";
 
 const searchParam = "readingList";
 const htmxPartialPath = "/partials/reading-list";

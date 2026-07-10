@@ -3,11 +3,11 @@ import { defineCollection } from "astro:content";
 import { sortBy } from "es-toolkit";
 
 const escapeMap: Record<string, string> = {
+  '"': "&quot;",
   "&": "&amp;",
+  "'": "&#39;",
   "<": "&lt;",
   ">": "&gt;",
-  '"': "&quot;",
-  "'": "&#39;",
 };
 
 const escapeHTML = (str: string) =>
@@ -16,43 +16,13 @@ const escapeHTML = (str: string) =>
 const nl2br = (str: string) => str?.replaceAll("\n", "<br />\n") ?? "";
 
 interface BskyFacet {
-  index: { byteStart: number; byteEnd: number };
   features: Array<{
     $type: string;
-    uri?: string;
     did?: string;
     tag?: string;
+    uri?: string;
   }>;
-}
-
-interface BskyPost {
-  record?: {
-    text?: string;
-    facets?: BskyFacet[];
-  };
-  uri: string;
-  indexedAt?: string;
-  createdAt?: string;
-  author: {
-    handle: string;
-    displayName?: string;
-    avatar?: string;
-  };
-  embed?: {
-    images?: Array<{
-      fullsize: string;
-      thumb: string;
-      alt?: string;
-    }>;
-    external?: {
-      uri: string;
-      title?: string;
-      description?: string;
-      thumb?: string;
-    };
-  };
-  repostCount?: number;
-  likeCount?: number;
+  index: { byteEnd: number; byteStart: number };
 }
 
 interface BskyFeedEntry {
@@ -60,11 +30,41 @@ interface BskyFeedEntry {
   reason?: {
     $type?: string;
     by?: {
-      handle: string;
-      displayName?: string;
       avatar?: string;
+      displayName?: string;
+      handle: string;
     };
   };
+}
+
+interface BskyPost {
+  author: {
+    avatar?: string;
+    displayName?: string;
+    handle: string;
+  };
+  createdAt?: string;
+  embed?: {
+    external?: {
+      description?: string;
+      thumb?: string;
+      title?: string;
+      uri: string;
+    };
+    images?: Array<{
+      alt?: string;
+      fullsize: string;
+      thumb: string;
+    }>;
+  };
+  indexedAt?: string;
+  likeCount?: number;
+  record?: {
+    facets?: BskyFacet[];
+    text?: string;
+  };
+  repostCount?: number;
+  uri: string;
 }
 
 function renderPostContent(post: BskyPost): string {
@@ -100,86 +100,86 @@ function renderPostContent(post: BskyPost): string {
 }
 
 const schema = z.object({
-  created_at: z.string(),
-  content: z.string(),
-  url: z.string(),
   account: z.object({
     acct: z.string(),
-    display_name: z.string(),
     avatar: z.string(),
+    display_name: z.string(),
   }),
-  media_attachments: z.array(
-    z.object({
-      type: z.string(),
-      url: z.string(),
-      preview_url: z.string(),
-      alt: z.string().optional(),
-    }),
-  ),
   card: z
     .object({
-      url: z.string(),
-      title: z.string(),
       description: z.string(),
       image: z.string(),
+      title: z.string(),
+      url: z.string(),
     })
     .nullable(),
-  repostCount: z.number(),
+  content: z.string(),
+  created_at: z.string(),
   likeCount: z.number(),
+  media_attachments: z.array(
+    z.object({
+      alt: z.string().optional(),
+      preview_url: z.string(),
+      type: z.string(),
+      url: z.string(),
+    }),
+  ),
   reblog: z
     .object({
       account: z.object({
         acct: z.string(),
-        display_name: z.string(),
         avatar: z.string(),
+        display_name: z.string(),
       }),
     })
     .nullable(),
+  repostCount: z.number(),
+  url: z.string(),
 });
 
 function transformEntry(entry: BskyFeedEntry): z.infer<typeof schema> & { id: string } {
   const { post } = entry;
 
   const transformed: z.infer<typeof schema> & { id: string } = {
-    id: post.uri,
-    created_at: post.indexedAt ?? post.createdAt ?? new Date().toISOString(),
-    content: renderPostContent(post),
-    url: `https://bsky.app/profile/${post.author.handle}/post/${post.uri.split("/").pop()}`,
     account: {
       acct: post.author.handle,
-      display_name: post.author.displayName ?? post.author.handle,
       avatar: post.author.avatar ?? "",
+      display_name: post.author.displayName ?? post.author.handle,
     },
-    media_attachments: [],
     card: null,
-    repostCount: post.repostCount ?? 0,
+    content: renderPostContent(post),
+    created_at: post.indexedAt ?? post.createdAt ?? new Date().toISOString(),
+    id: post.uri,
     likeCount: post.likeCount ?? 0,
+    media_attachments: [],
     reblog: null,
+    repostCount: post.repostCount ?? 0,
+    url: `https://bsky.app/profile/${post.author.handle}/post/${post.uri.split("/").pop()}`,
   };
 
   if (entry.reason?.by) {
     transformed.reblog = {
       account: {
         acct: entry.reason.by.handle,
-        display_name: entry.reason.by.displayName ?? entry.reason.by.handle,
         avatar: entry.reason.by.avatar ?? "",
+        display_name: entry.reason.by.displayName ?? entry.reason.by.handle,
       },
     };
   }
 
   if (post.embed?.images) {
     transformed.media_attachments = post.embed.images.map((img) => ({
+      alt: img.alt ?? "",
+      preview_url: img.thumb,
       type: "image",
       url: img.fullsize,
-      preview_url: img.thumb,
-      alt: img.alt ?? "",
     }));
   } else if (post.embed?.external) {
     transformed.card = {
-      url: post.embed.external.uri,
-      title: post.embed.external.title ?? "",
       description: post.embed.external.description ?? "",
       image: post.embed.external.thumb ?? "",
+      title: post.embed.external.title ?? "",
+      url: post.embed.external.uri,
     };
   }
 

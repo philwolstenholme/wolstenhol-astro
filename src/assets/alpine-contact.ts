@@ -1,19 +1,20 @@
 import { defineComponent } from "./alpine-define";
 
-type FormFields = "name" | "email" | "subject" | "message" | "agreement";
+type FormFields = "agreement" | "email" | "message" | "name" | "subject";
 
 const FIELDS: FormFields[] = ["name", "email", "subject", "message", "agreement"];
 
 const FIELD_LABELS: Record<FormFields, string> = {
-  name: "Name",
-  email: "Email",
-  subject: "Subject",
-  message: "Message",
   agreement: "Agreement",
+  email: "Email",
+  message: "Message",
+  name: "Name",
+  subject: "Subject",
 };
 
-const RULES: Record<FormFields, (val: string) => string | null> = {
-  name: (v) => (v.trim().length < 2 ? "please enter your name (at least 2 characters)." : null),
+const RULES: Record<FormFields, (val: string) => null | string> = {
+  agreement: (v) =>
+    v !== "true" ? "please tick the box to confirm you have read the above." : null,
   email: (v) => {
     if (!v.trim()) {
       return "please enter your email address.";
@@ -23,22 +24,25 @@ const RULES: Record<FormFields, (val: string) => string | null> = {
     }
     return null;
   },
-  subject: (v) => (v.trim().length < 8 ? "please enter a subject (at least 8 characters)." : null),
   message: (v) =>
     v.trim().length < 8 ? "please enter your message (at least 8 characters)." : null,
-  agreement: (v) =>
-    v !== "true" ? "please tick the box to confirm you have read the above." : null,
+  name: (v) => (v.trim().length < 2 ? "please enter your name (at least 2 characters)." : null),
+  subject: (v) => (v.trim().length < 8 ? "please enter a subject (at least 8 characters)." : null),
 };
 
 export default defineComponent(() => ({
-  submitted: false,
-  submitError: false,
-  showSummary: false,
-  values: Object.fromEntries(FIELDS.map((f) => [f, ""])) as Record<FormFields, string>,
-  errors: Object.fromEntries(FIELDS.map((f) => [f, null])) as Record<FormFields, string | null>,
-  touched: Object.fromEntries(FIELDS.map((f) => [f, false])) as Record<FormFields, boolean>,
   _cleanup: null as (() => void) | null,
-
+  destroy() {
+    this._cleanup?.();
+  },
+  get errorList() {
+    return FIELDS.filter((f) => this.errors[f] !== null).map((f) => ({
+      id: `contact-${f}`,
+      label: FIELD_LABELS[f],
+      message: this.errors[f],
+    }));
+  },
+  errors: Object.fromEntries(FIELDS.map((f) => [f, null])) as Record<FormFields, null | string>,
   init() {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail as { successful: boolean };
@@ -56,10 +60,23 @@ export default defineComponent(() => ({
     this.$el.addEventListener("htmx:afterRequest", handler);
     this._cleanup = () => this.$el.removeEventListener("htmx:afterRequest", handler);
   },
-
-  destroy() {
-    this._cleanup?.();
+  showSummary: false,
+  submit(formEl: HTMLFormElement) {
+    const isValid = this.validateAll();
+    this.showSummary = !isValid;
+    if (!isValid) {
+      document.dispatchEvent(new CustomEvent("play-sound", { detail: "error" }));
+      void this.$nextTick(() => {
+        (this.$refs["summary"] as HTMLElement)?.focus();
+      });
+      return;
+    }
+    formEl.dispatchEvent(new CustomEvent("pwContactSubmit", { bubbles: true }));
   },
+
+  submitError: false,
+
+  submitted: false,
 
   touch(field: FormFields) {
     this.touched[field] = true;
@@ -68,6 +85,8 @@ export default defineComponent(() => ({
       this.showSummary = FIELDS.some((f) => this.errors[f] !== null);
     }
   },
+
+  touched: Object.fromEntries(FIELDS.map((f) => [f, false])) as Record<FormFields, boolean>,
 
   validateAll(): boolean {
     let valid = true;
@@ -82,24 +101,5 @@ export default defineComponent(() => ({
     return valid;
   },
 
-  get errorList() {
-    return FIELDS.filter((f) => this.errors[f] !== null).map((f) => ({
-      id: `contact-${f}`,
-      label: FIELD_LABELS[f],
-      message: this.errors[f],
-    }));
-  },
-
-  submit(formEl: HTMLFormElement) {
-    const isValid = this.validateAll();
-    this.showSummary = !isValid;
-    if (!isValid) {
-      document.dispatchEvent(new CustomEvent("play-sound", { detail: "error" }));
-      void this.$nextTick(() => {
-        (this.$refs["summary"] as HTMLElement)?.focus();
-      });
-      return;
-    }
-    formEl.dispatchEvent(new CustomEvent("pwContactSubmit", { bubbles: true }));
-  },
+  values: Object.fromEntries(FIELDS.map((f) => [f, ""])) as Record<FormFields, string>,
 }));

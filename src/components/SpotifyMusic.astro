@@ -1,11 +1,13 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import Section from "./Section.astro";
-import SpotifyGenresLede from "./SpotifyGenresLede.astro";
+
+import type { SpotifyArtist } from "./SpotifyAudioController.astro";
+
 import HorizontalScroller from "./HorizontalScroller.astro";
 import SpotifyMusicCard from "./items/SpotifyMusicCard.astro";
+import Section from "./Section.astro";
 import SpotifyAudioController from "./SpotifyAudioController.astro";
-import type { SpotifyArtist } from "./SpotifyAudioController.astro";
+import SpotifyGenresLede from "./SpotifyGenresLede.astro";
 
 interface Props {
   data: CollectionEntry<"spotify"> | undefined;

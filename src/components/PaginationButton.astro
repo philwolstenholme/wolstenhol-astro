@@ -1,25 +1,26 @@
 ---
 import clsx from "clsx";
+
 import { buildPageHref, buildPartialHref } from "../helpers/paginate";
 
 interface Props {
-  direction: "prev" | "next";
-  index: number | null;
-  url?: string | null;
   currentUrl: URL;
-  searchParam: string;
+  direction: "next" | "prev";
   htmxPartialPath?: string;
+  index: null | number;
   itemsPerPage?: number;
+  searchParam: string;
+  url?: null | string;
 }
 
 const {
-  direction,
-  index,
-  url,
   currentUrl,
-  searchParam,
+  direction,
   htmxPartialPath,
+  index,
   itemsPerPage,
+  searchParam,
+  url,
 } = Astro.props;
 
 const isPrev = direction === "prev";

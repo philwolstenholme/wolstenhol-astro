@@ -9,27 +9,27 @@ const stripEmojis = (str: string) => str.replace(emojiRegex(), "").replace(/\s+/
 const GITHUB_USERNAME = "philwolstenholme";
 
 const githubStarSchema = z.object({
-  id: z.string(),
+  created_at: z.string(),
+  description: z.string().nullable(),
   full_name: z.string(),
   html_url: z.string(),
-  description: z.string().nullable(),
-  stargazers_count: z.number(),
+  id: z.string(),
   language: z.string().nullable(),
-  created_at: z.string(),
+  stargazers_count: z.number(),
   starred_at: z.string(),
 });
 
 type StarredItem = {
-  starred_at: string;
   repo: {
-    id: number;
+    created_at: string;
+    description: null | string;
     full_name: string;
     html_url: string;
-    description: string | null;
+    id: number;
+    language: null | string;
     stargazers_count: number;
-    language: string | null;
-    created_at: string;
   };
+  starred_at: string;
 };
 
 export const githubStars = defineCollection({
@@ -42,9 +42,9 @@ export const githubStars = defineCollection({
       const octokit = new Octokit({ auth: GITHUB_PAT });
 
       const starParams = {
-        username: GITHUB_USERNAME,
-        per_page: 100,
         headers: { accept: "application/vnd.github.star+json" },
+        per_page: 100,
+        username: GITHUB_USERNAME,
       };
 
       const [page1, page2, page3] = await Promise.all([
@@ -56,13 +56,13 @@ export const githubStars = defineCollection({
       const repos = [...page1.data, ...page2.data, ...page3.data] as unknown as StarredItem[];
 
       return repos.map((item) => ({
-        id: String(item.repo.id),
+        created_at: item.repo.created_at,
+        description: item.repo.description ? stripEmojis(item.repo.description) : null,
         full_name: item.repo.full_name,
         html_url: item.repo.html_url,
-        description: item.repo.description ? stripEmojis(item.repo.description) : null,
-        stargazers_count: item.repo.stargazers_count,
+        id: String(item.repo.id),
         language: item.repo.language ?? null,
-        created_at: item.repo.created_at,
+        stargazers_count: item.repo.stargazers_count,
         starred_at: item.starred_at,
       }));
     } catch (error) {

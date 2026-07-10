@@ -1,10 +1,14 @@
 import { defineComponent } from "./alpine-define";
 
 export default defineComponent(() => ({
+  _cleanup: null as (() => void) | null,
   activeHash: "",
   activePath: "",
   activeSection: "",
-  _cleanup: null as (() => void) | null,
+
+  destroy() {
+    this._cleanup?.();
+  },
 
   init() {
     this.activePath = window.location.pathname;
@@ -43,10 +47,6 @@ export default defineComponent(() => ({
       window.removeEventListener("popstate", onPopState);
       observer.disconnect();
     };
-  },
-
-  destroy() {
-    this._cleanup?.();
   },
 
   isActive(el: HTMLAnchorElement): boolean {

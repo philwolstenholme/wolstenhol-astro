@@ -1,9 +1,18 @@
 import { defineComponent } from "./alpine-define";
 
 export default defineComponent(({ scrollFull = false }: { scrollFull?: boolean } = {}) => ({
-  overflowing: { left: false, right: true } as { left: boolean; right: boolean },
-  scrollAmount: 0 as number,
   _cleanup: null as (() => void) | null,
+  destroy() {
+    this._cleanup?.();
+  },
+  focusOnFirstItem() {
+    setTimeout(() => {
+      const list = this.$refs.scroller as HTMLElement;
+      (list?.querySelectorAll("li[tabindex]:not([inert])")[0] as HTMLElement)?.focus({
+        preventScroll: true,
+      });
+    }, 750);
+  },
 
   init() {
     const list = this.$refs.scroller as HTMLElement;
@@ -59,23 +68,14 @@ export default defineComponent(({ scrollFull = false }: { scrollFull?: boolean }
     }
   },
 
-  destroy() {
-    this._cleanup?.();
-  },
+  overflowing: { left: false, right: true } as { left: boolean; right: boolean },
 
-  focusOnFirstItem() {
-    setTimeout(() => {
-      const list = this.$refs.scroller as HTMLElement;
-      (list?.querySelectorAll("li[tabindex]:not([inert])")[0] as HTMLElement)?.focus({
-        preventScroll: true,
-      });
-    }, 750);
-  },
+  scrollAmount: 0 as number,
 
   scrollLeft() {
     (this.$refs.scroller as HTMLElement)?.scrollBy({
-      left: -this.scrollAmount,
       behavior: "smooth",
+      left: -this.scrollAmount,
     });
 
     this.focusOnFirstItem();
@@ -83,8 +83,8 @@ export default defineComponent(({ scrollFull = false }: { scrollFull?: boolean }
 
   scrollRight() {
     (this.$refs.scroller as HTMLElement)?.scrollBy({
-      left: this.scrollAmount,
       behavior: "smooth",
+      left: this.scrollAmount,
     });
 
     this.focusOnFirstItem();

@@ -16,8 +16,8 @@ const originFor = (el: HTMLElement) => {
 };
 
 const baseOptions = (el: HTMLElement) => ({
-  origin: originFor(el),
   disableForReducedMotion: true,
+  origin: originFor(el),
   particleCount: 75,
   spread: 100,
   startVelocity: 40,
@@ -57,7 +57,6 @@ const loadAvatarShapes = async () => {
   // The matrix must stay a plain array — canvas-confetti passes shapes to a
   // web worker, and a DOMMatrix instance can't be reconstructed there.
   avatarShapes = [2.5, 4, 6].map((downscale) => ({
-    type: "bitmap",
     bitmap,
     matrix: [
       1 / downscale,
@@ -67,6 +66,7 @@ const loadAvatarShapes = async () => {
       -AVATAR_BITMAP_SIZE / (2 * downscale),
       -AVATAR_BITMAP_SIZE / (2 * downscale),
     ],
+    type: "bitmap",
   })) as unknown as import("canvas-confetti").Shape[];
   return avatarShapes;
 };
@@ -79,7 +79,7 @@ export const fireAvatarConfettiFrom = async (el: HTMLElement) => {
   const options = { ...baseOptions(el), particleCount: 40 };
   try {
     const shapes = await loadAvatarShapes();
-    await confetti({ ...options, shapes, scalar: 2 });
+    await confetti({ ...options, scalar: 2, shapes });
   } catch {
     await confetti(options);
   }

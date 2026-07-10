@@ -1,11 +1,12 @@
 ---
 import { getCollection } from "astro:content";
-import Section from "./Section.astro";
-import Lede from "./Lede.astro";
-import PaginatedGrid from "./PaginatedGrid.astro";
-import ReadingListCard from "./items/ReadingListCard.astro";
+
 import { getItemsPerPage } from "../helpers/getItemsPerPage";
 import { mergeReadingLists } from "../helpers/mergeReadingLists";
+import ReadingListCard from "./items/ReadingListCard.astro";
+import Lede from "./Lede.astro";
+import PaginatedGrid from "./PaginatedGrid.astro";
+import Section from "./Section.astro";
 
 interface Props {
   isMobile?: boolean;

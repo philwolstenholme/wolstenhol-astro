@@ -1,6 +1,6 @@
 import { defineSound, ensureReady } from "@web-kits/audio";
 
-import { click, tap, pageEnter, slide, success, error } from "../../public/patches/minimal";
+import { click, error, pageEnter, slide, success, tap } from "../../public/patches/minimal";
 import { success as playfulSuccess } from "../../public/patches/playful";
 
 const playClick = defineSound(click);
@@ -89,10 +89,10 @@ document.addEventListener(
 );
 
 const sounds: Record<string, () => void> = {
-  slide: playSlide,
-  "playful-success": playPlayfulSuccess,
-  success: playSuccess,
   error: playError,
+  "playful-success": playPlayfulSuccess,
+  slide: playSlide,
+  success: playSuccess,
 };
 
 document.addEventListener("play-sound", async (e: Event) => {

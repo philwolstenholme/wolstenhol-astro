@@ -1,16 +1,16 @@
 ---
 export const prerender = true;
 
-import Layout from "../layouts/Layout.astro";
 import Content from "../components/Content.astro";
 import CurvyArrow from "../components/icons/CurvyArrow.astro";
 import PageHeader from "../components/PageHeader.astro";
+import Layout from "../layouts/Layout.astro";
 
 const suggestions = [
-  { label: "The homepage", href: "/" },
-  { label: "My work/portfolio", href: "/work" },
-  { label: "Repos I've starred", href: "/github-stars" },
-  { label: "The contact form", href: "/contact" },
+  { href: "/", label: "The homepage" },
+  { href: "/work", label: "My work/portfolio" },
+  { href: "/github-stars", label: "Repos I've starred" },
+  { href: "/contact", label: "The contact form" },
 ];
 
 // A slightly different lean each time the page is built keeps the note

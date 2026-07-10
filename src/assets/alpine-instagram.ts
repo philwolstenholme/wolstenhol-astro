@@ -2,7 +2,9 @@ import { defineComponent } from "./alpine-define";
 import { fireConfettiFrom } from "./confetti";
 
 export default defineComponent(() => ({
-  useLightbox: false,
+  async fireConfetti() {
+    await fireConfettiFrom(this.$root as HTMLElement);
+  },
 
   init() {
     const mql = window.matchMedia("(hover: hover)");
@@ -12,7 +14,5 @@ export default defineComponent(() => ({
     });
   },
 
-  async fireConfetti() {
-    await fireConfettiFrom(this.$root as HTMLElement);
-  },
+  useLightbox: false,
 }));

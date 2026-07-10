@@ -1,8 +1,9 @@
 ---
 import clsx from "clsx";
+
 import GrungeOverlay from "../GrungeOverlay.astro";
 
-const { item, class: className } = Astro.props;
+const { class: className, item } = Astro.props;
 
 const isThumbnail = item.type === "thumbnail";
 const hasHref = !!item.href;

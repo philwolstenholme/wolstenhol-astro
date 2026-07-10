@@ -8,23 +8,23 @@ const AIRTABLE_TABLE = "List";
 const OWNER_EMAIL = "philgw@gmail.com";
 
 type ReadingItem = {
+  commentary: string;
+  skipTweet: boolean;
   title: string;
   url: string;
-  skipTweet: boolean;
-  commentary: string;
 };
 
 const json = (data: unknown, status: number) =>
   new Response(JSON.stringify(data), {
-    status,
     headers: { "content-type": "application/json" },
+    status,
   });
 
 // Verify the caller's Netlify Identity token by asking the site's own GoTrue
 // endpoint who it belongs to. The Eleventy version relied on Netlify injecting
 // `context.clientContext.user`; an Astro API route has to check the bearer
 // token itself.
-const getVerifiedEmail = async (authHeader: string, origin: string): Promise<string | null> => {
+const getVerifiedEmail = async (authHeader: string, origin: string): Promise<null | string> => {
   try {
     const response = await fetch(`${origin}/.netlify/identity/user`, {
       headers: { authorization: authHeader },
@@ -47,14 +47,14 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response("", { status: 403 });
   }
 
-  const { title, url, skipTweet, commentary } = (await request.json()) as ReadingItem;
+  const { commentary, skipTweet, title, url } = (await request.json()) as ReadingItem;
 
   const email = await getVerifiedEmail(authHeader, new URL(request.url).origin);
   const itsMe = email === OWNER_EMAIL;
 
   if (!itsMe) {
     console.log("It wasn't me…");
-    return json({ title, url, skipTweet, commentary }, 403);
+    return json({ commentary, skipTweet, title, url }, 403);
   }
 
   if (!AIRTABLE_KEY) {
@@ -63,7 +63,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const body = {
-    records: [{ fields: { title, url, skipTweet, commentary } }],
+    records: [{ fields: { commentary, skipTweet, title, url } }],
   };
 
   console.log("going out: ", JSON.stringify(body, null, 2));
@@ -71,12 +71,12 @@ export const POST: APIRoute = async ({ request }) => {
   const airtableResponse = await fetch(
     `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE}`,
     {
-      method: "POST",
+      body: JSON.stringify(body),
       headers: {
         authorization: `Bearer ${AIRTABLE_KEY}`,
         "content-type": "application/json",
       },
-      body: JSON.stringify(body),
+      method: "POST",
     },
   );
 

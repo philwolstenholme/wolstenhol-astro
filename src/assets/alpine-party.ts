@@ -4,11 +4,15 @@ import { fireAvatarConfettiFrom } from "./confetti";
 const REPEAT_INTERVAL_MS = 300;
 
 export default defineComponent(() => ({
-  repeatTimer: null as ReturnType<typeof setInterval> | null,
+  destroy() {
+    this.stopHold();
+  },
 
   fireConfetti() {
     fireAvatarConfettiFrom(this.$root as HTMLElement);
   },
+
+  repeatTimer: null as null | ReturnType<typeof setInterval>,
 
   // Press-and-hold (mouse, touch, or a held Enter/Space) fires a burst
   // straight away and keeps them coming until release.
@@ -25,9 +29,5 @@ export default defineComponent(() => ({
       clearInterval(this.repeatTimer);
       this.repeatTimer = null;
     }
-  },
-
-  destroy() {
-    this.stopHold();
   },
 }));
