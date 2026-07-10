@@ -23,6 +23,11 @@ export default async (request, context) => {
     "referrer-policy",
     "strict-transport-security",
     "link",
+    // document-only headers, not covered by the sources above
+    "cross-origin-opener-policy",
+    "origin-agent-cluster",
+    "permissions-policy",
+    "x-dns-prefetch-control",
   ];
 
   response.headers.forEach((value, key, object) => {
