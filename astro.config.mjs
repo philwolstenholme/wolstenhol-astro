@@ -35,6 +35,11 @@ export default defineConfig({
         access: "secret",
         optional: true,
       }),
+      BUILD_HOOK_KEY: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
       GOOGLE_MAPS_KEY: envField.string({
         context: "server",
         access: "secret",
