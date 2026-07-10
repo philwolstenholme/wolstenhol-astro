@@ -1,0 +1,192 @@
+---
+export const prerender = true;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Submit a reading list item</title>
+    <meta name="theme-color" content="#fbbf24" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+
+    <link
+      rel="stylesheet"
+      href="/proxy/jsdelivr/npm/@picocss/pico@1.4.3/css/pico.min.css"
+      integrity="sha256-TIn00VKReRM7C4b75V7I37Sl5QZhs5E+gZwUVLrR8Vk="
+      crossorigin="anonymous"
+    />
+
+    <script
+      is:inline
+      src="/proxy/jsdelivr/npm/wretch@2.3.1/dist/bundle/wretch.min.js"
+      integrity="sha256-42xWqbeV0DPZSNBzJC7XoUzoSFOgn+mle1wxf369hT8="
+      crossorigin="anonymous"></script>
+
+    <script
+      is:inline
+      type="text/javascript"
+      src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+    <script
+      is:inline
+      defer
+      src="/proxy/jsdelivr/npm/alpinejs@3.9.5/dist/cdn.min.js"
+      integrity="sha256-lwKcAFvw4QunRY7rShq1JG1oGB/VcFMzOuCwEFzt5Ew="
+      crossorigin="anonymous"></script>
+
+    <style>
+      a {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <main
+      x-bind:hidden="!currentUser"
+      id="main"
+      class="container"
+      x-data="{
+        title: '',
+        url: '',
+        text: '',
+        skipTweet: false,
+        commentary: '',
+        currentUser: {},
+        commentaryCharacterCount: 0
+      }"
+      x-init="() => {
+        setInterval(() => { currentUser = netlifyIdentity.currentUser(); }, 250);
+
+        function decodeHTMLEntities(text) {
+          var textArea = document.createElement('textarea');
+          textArea.innerHTML = text;
+          return textArea.value;
+        }
+
+        const params = new URLSearchParams(location.search);
+        url = params.get('url');
+        title = decodeURIComponent(params.get('title') || '');
+        text = decodeURIComponent(params.get('text') || '');
+
+        if (title) {
+          title = title.replace(/\+/g, ' ');
+          title = decodeHTMLEntities(title);
+        }
+
+        if (text) {
+          text = text.replace(/\+/g, ' ');
+          text = decodeHTMLEntities(text);
+        }
+
+        if (text && (text.includes('https://') || text.includes('http://')) && !url) {
+          url = text;
+        }
+
+        commentaryCharacterCount = $refs.commentary.value.length;
+      }"
+    >
+      <h1>Submit a reading list item</h1>
+
+      <p>
+        Hi! I use this form to submit links to an Airtable which then appear in
+        the 'Reading list' part of my website. This idea is based on
+        <a
+          href="https://timkadlec.com/remembers/2018-02-06-saving-links-to-my-site-with-a-bookmarklet/"
+          >this</a
+        >
+        <a href="https://www.aaron-gustafson.com/notebook/my-own-personal-pwa/"
+          >kind</a
+        >
+        of <a href="https://mxb.dev/blog/indieweb-link-sharing/">thing</a>.
+        You'll need to login as me to be able to do anything when you submit the
+        form.
+      </p>
+
+      <form
+        x-on:submit.prevent="async (form) => {
+          const user = netlifyIdentity.currentUser();
+          await netlifyIdentity.refresh();
+
+          const data = await window
+            .wretch(`${window.location.origin}/api/submit-reading-item`)
+            .auth(`Bearer ${user.token.access_token}`)
+            .post({
+              title,
+              url,
+              skipTweet,
+              commentary,
+            })
+            .json();
+
+          alert(`Posted ${data.records[0].fields.title}!`);
+
+          window.close();
+          window.close(``, `_parent`, ``);
+          form.target.reset();
+        }"
+      >
+        <label for="title">
+          Title
+          <input x-model="title" type="text" id="title" name="title" required />
+        </label>
+
+        <label for="url">
+          <abbr>URL</abbr>
+          <input
+            x-model="url"
+            type="url"
+            id="url"
+            name="url"
+            required
+            enterkeyhint="send"
+          />
+        </label>
+
+        <label for="skipTweet">
+          Skip tweeting about this one
+          <input
+            x-model="skipTweet"
+            type="checkbox"
+            id="skipTweet"
+            name="skipTweet"
+          />
+        </label>
+
+        <label for="commentary">
+          Commentary (<span x-html="commentaryCharacterCount"></span>/280 if you
+          want it in a tweet reply)
+          <textarea
+            x-model="commentary"
+            x-ref="commentary"
+            x-on:keyup="commentaryCharacterCount = $refs.commentary.value.length"
+            id="commentary"
+            name="commentary"
+            rows="5"></textarea>
+        </label>
+
+        <button type="submit" x-bind:disabled="!currentUser">Submit</button>
+      </form>
+
+      <script is:inline type="text/javascript">
+        netlifyIdentity.on("login", () => {
+          netlifyIdentity.close();
+        });
+
+        document.addEventListener(
+          "DOMContentLoaded",
+          async () => {
+            if (!netlifyIdentity.currentUser()) {
+              netlifyIdentity.open("login");
+            } else {
+              await netlifyIdentity.refresh();
+            }
+          },
+          false,
+        );
+      </script>
+    </main>
+  </body>
+</html>
