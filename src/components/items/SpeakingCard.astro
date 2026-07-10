@@ -8,7 +8,7 @@ const { class: className, item } = Astro.props;
 const isThumbnail = item.type === "thumbnail";
 const hasHref = !!item.href;
 const outerClass = clsx(
-  "contain-content rounded shadow-hard overflow-hidden bg-purple-700",
+  "overflow-hidden rounded bg-purple-700 shadow-hard contain-content",
   className,
 );
 
