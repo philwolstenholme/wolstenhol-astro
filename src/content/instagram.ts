@@ -8,6 +8,16 @@ import { defineCollection } from "astro:content";
 const CLOUDINARY_PROXY = "/proxy/cloudinary";
 const CARD_WIDTH = 365;
 
+type RawPost = {
+  caption?: null | string;
+  comments: number;
+  id: string;
+  is_video: boolean;
+  likes: number;
+  timestamp: number;
+  url: string;
+};
+
 function cloudinaryImageUrl(id: string, width: number): string {
   return `${CLOUDINARY_PROXY}/image/upload/f_auto,q_auto,w_${width}/11ty/instagram/${id}`;
 }
@@ -15,16 +25,6 @@ function cloudinaryImageUrl(id: string, width: number): string {
 function cloudinaryVideoUrl(id: string): string {
   return `${CLOUDINARY_PROXY}/video/upload/ac_none,f_auto/11ty/instagram/${id}`;
 }
-
-type RawPost = {
-  id: string;
-  timestamp: number;
-  url: string;
-  caption?: string | null;
-  likes: number;
-  comments: number;
-  is_video: boolean;
-};
 
 function mapPost(post: RawPost) {
   const caption = post.caption || null;
@@ -36,27 +36,27 @@ function mapPost(post: RawPost) {
       caption.includes("🎂"))
   );
   return {
-    id: post.id,
-    takenAt: post.timestamp,
-    cloudinaryUrl: cloudinaryImageUrl(post.id, CARD_WIDTH),
+    accessibilityCaption: null,
+    caption,
     cloudinarySrcset: [1, 2, 3]
       .map((n) => `${cloudinaryImageUrl(post.id, CARD_WIDTH * n)} ${CARD_WIDTH * n}w`)
       .join(", "),
-    link: post.url,
-    caption,
-    likeCount: post.likes,
+    cloudinaryUrl: cloudinaryImageUrl(post.id, CARD_WIDTH),
     commentCount: post.comments,
-    locationName: null,
-    isVideo: post.is_video,
+    id: post.id,
     isParty,
+    isVideo: post.is_video,
+    likeCount: post.likes,
+    link: post.url,
+    locationName: null,
+    takenAt: post.timestamp,
     videoUrl: post.is_video ? cloudinaryVideoUrl(post.id) : null,
-    accessibilityCaption: null,
   };
 }
 
 const FALLBACK_PATH = join(process.cwd(), "src/data/instagram-fallback.json");
 
-function loadFallback(): RawPost[] | null {
+function loadFallback(): null | RawPost[] {
   if (!existsSync(FALLBACK_PATH)) {
     return null;
   }
@@ -93,17 +93,17 @@ export const instagram = defineCollection({
     return [];
   },
   schema: z.object({
-    takenAt: z.number(),
-    cloudinaryUrl: z.string(),
-    cloudinarySrcset: z.string(),
-    link: z.string(),
-    caption: z.string().nullable(),
-    likeCount: z.number(),
-    commentCount: z.number(),
-    locationName: z.string().nullable(),
-    isVideo: z.boolean(),
-    isParty: z.boolean(),
-    videoUrl: z.string().nullable(),
     accessibilityCaption: z.string().nullable(),
+    caption: z.string().nullable(),
+    cloudinarySrcset: z.string(),
+    cloudinaryUrl: z.string(),
+    commentCount: z.number(),
+    isParty: z.boolean(),
+    isVideo: z.boolean(),
+    likeCount: z.number(),
+    link: z.string(),
+    locationName: z.string().nullable(),
+    takenAt: z.number(),
+    videoUrl: z.string().nullable(),
   }),
 });

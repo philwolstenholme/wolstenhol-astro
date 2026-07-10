@@ -1,15 +1,15 @@
 ---
-import StyledTextLink from "../components/StyledTextLink.astro";
-import MuteToggle from "../components/MuteToggle.astro";
-import ThemeToggle from "../components/ThemeToggle.astro";
-import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import MuteToggle from "../components/MuteToggle.astro";
+import StyledTextLink from "../components/StyledTextLink.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
 import "../styles/global.css";
 type Props = {
-  title?: string;
   hasTitleSuffix?: boolean;
+  title?: string;
 };
-const { title = "Phil Wolstenholme", hasTitleSuffix = true } = Astro.props;
+const { hasTitleSuffix = true, title = "Phil Wolstenholme" } = Astro.props;
 const titleSuffix = " | Phil Wolstenholme";
 const fullTitle = hasTitleSuffix ? `${title}${titleSuffix}` : title;
 
@@ -26,23 +26,23 @@ const coffeeStains = [
   {
     class: "",
     eager: true,
-    width: 500,
     height: 451,
     style: "left: -230px; top: 600px",
+    width: 500,
   },
   {
     class: "object-cover object-left",
     eager: false,
-    width: 112,
     height: 405,
     style: "right: 0; top: 1900px; height: 405px; width: 9%",
+    width: 112,
   },
   {
     class: "-rotate-45",
     eager: false,
-    width: 500,
     height: 451,
     style: "left: -230px; top: 2900px",
+    width: 500,
   },
 ];
 ---
@@ -88,9 +88,9 @@ const coffeeStains = [
           root: typeof document < "u" ? document.documentElement : void 0,
         };
         function s() {
-          let i = o.root,
-            t = (n, r) => i.style.setProperty(o.constPrefix + n, String(r)),
-            e = document.createElement("div");
+          let e = document.createElement("div"),
+            i = o.root,
+            t = (n, r) => i.style.setProperty(o.constPrefix + n, String(r));
           ((e.style.cssText =
             "position:absolute;top:-9999px;width:100px;height:100px;overflow:scroll;visibility:hidden"),
             (document.body ?? i).appendChild(e),

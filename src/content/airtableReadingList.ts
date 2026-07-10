@@ -9,7 +9,7 @@ const TABLE = "List";
 
 const metascraper = metascraperFactory([metascraperDescription()]);
 
-async function getDescription(targetUrl: string): Promise<string | null> {
+async function getDescription(targetUrl: string): Promise<null | string> {
   try {
     const res = await fetch(targetUrl, {
       headers: { "User-Agent": "Mozilla/5.0 (compatible; wolstenhol-bot/1.0)" },
@@ -46,11 +46,11 @@ export const airtableReadingList = defineCollection({
           const url = record.fields.url ?? "";
           const description = record.fields.subTitle || (url ? await getDescription(url) : null);
           return {
+            date: record.fields.date ?? record.createdTime ?? null,
+            description: description ?? null,
             id: record.id,
             title: record.fields.title ?? "",
             url,
-            description: description ?? null,
-            date: record.fields.date ?? record.createdTime ?? null,
           };
         }),
       );
@@ -60,10 +60,10 @@ export const airtableReadingList = defineCollection({
     }
   },
   schema: z.object({
+    date: z.string().nullable(),
+    description: z.string().nullable(),
     id: z.string(),
     title: z.string(),
     url: z.string(),
-    description: z.string().nullable(),
-    date: z.string().nullable(),
   }),
 });

@@ -3,16 +3,16 @@ import { paginate } from "./paginate";
 import { setupPartial } from "./setupPartial";
 
 type PreparePartialPageAstro = {
+  locals: { isMobile?: boolean };
   request: Request;
   response: { headers: Headers };
   url: URL;
-  locals: { isMobile?: boolean };
 };
 
 type PreparePartialPageOptions<T> = {
   items: readonly T[];
-  searchParam: string;
   itemsPerPage?: number;
+  searchParam: string;
 };
 
 /**
@@ -21,7 +21,7 @@ type PreparePartialPageOptions<T> = {
  */
 export const preparePartialPage = <T>(
   Astro: PreparePartialPageAstro,
-  { items, searchParam, itemsPerPage }: PreparePartialPageOptions<T>,
+  { items, itemsPerPage, searchParam }: PreparePartialPageOptions<T>,
 ) => {
   const resolvedItemsPerPage =
     itemsPerPage !== undefined
@@ -32,9 +32,9 @@ export const preparePartialPage = <T>(
   const { index } = paginate({
     items,
     itemsPerPage: resolvedItemsPerPage,
-    url: new URL(Astro.request.url),
-    searchParam,
     onlyFullPages: true,
+    searchParam,
+    url: new URL(Astro.request.url),
   });
 
   const pageUrl = setupPartial(Astro, searchParam, index);

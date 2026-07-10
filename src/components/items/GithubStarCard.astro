@@ -1,6 +1,7 @@
 ---
-import { pluralise } from "../../helpers/words";
 import type { CollectionEntry } from "astro:content";
+
+import { pluralise } from "../../helpers/words";
 
 const { item: star } = Astro.props as {
   item: CollectionEntry<"github-stars">["data"];

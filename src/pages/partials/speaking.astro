@@ -1,10 +1,10 @@
 ---
 export const prerender = false;
 
-import { preparePartialPage } from "../../helpers/preparePartialPage";
-import { getSortedSpeaking } from "../../helpers/getSpeakingSorted";
-import PaginatedGrid from "../../components/PaginatedGrid.astro";
 import SpeakingCard from "../../components/items/SpeakingCard.astro";
+import PaginatedGrid from "../../components/PaginatedGrid.astro";
+import { getSortedSpeaking } from "../../helpers/getSpeakingSorted";
+import { preparePartialPage } from "../../helpers/preparePartialPage";
 
 const searchParam = "speaking";
 const htmxPartialPath = "/partials/speaking";

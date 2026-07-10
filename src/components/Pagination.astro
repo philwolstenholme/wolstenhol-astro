@@ -2,27 +2,27 @@
 import PaginationButton from "./PaginationButton.astro";
 
 const {
-  hasPrev,
   hasNext,
-  prevIndex,
-  nextIndex,
-  searchParam,
+  hasPrev,
   htmxPartialPath,
-  pageUrl,
   itemsPerPage,
-  prevUrl,
+  nextIndex,
   nextUrl,
+  pageUrl,
+  prevIndex,
+  prevUrl,
+  searchParam,
 } = Astro.props as {
-  hasPrev: boolean;
   hasNext: boolean;
-  prevIndex: number | null;
-  nextIndex: number | null;
-  searchParam: string;
+  hasPrev: boolean;
   htmxPartialPath?: string;
-  pageUrl?: URL;
   itemsPerPage?: number;
-  prevUrl?: string | null;
-  nextUrl?: string | null;
+  nextIndex: null | number;
+  nextUrl?: null | string;
+  pageUrl?: URL;
+  prevIndex: null | number;
+  prevUrl?: null | string;
+  searchParam: string;
 };
 
 // When rendered inside a partial response, Astro.request.url is the partial

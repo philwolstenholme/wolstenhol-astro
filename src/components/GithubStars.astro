@@ -1,14 +1,15 @@
 ---
-import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+
+import { getCollection } from "astro:content";
 
 import { getItemsPerPage } from "../helpers/getItemsPerPage";
 import { sortStars } from "../helpers/getStarsSorted";
+import GithubStarCard from "./items/GithubStarCard.astro";
+import Lede from "./Lede.astro";
+import PaginatedGrid from "./PaginatedGrid.astro";
 import Section from "./Section.astro";
 import StyledTextLink from "./StyledTextLink.astro";
-import PaginatedGrid from "./PaginatedGrid.astro";
-import Lede from "./Lede.astro";
-import GithubStarCard from "./items/GithubStarCard.astro";
 
 interface Props {
   collection?: CollectionEntry<"github-stars">[];

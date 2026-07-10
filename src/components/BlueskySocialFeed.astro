@@ -1,9 +1,11 @@
 ---
 import type { CollectionEntry } from "astro:content";
+
 import { sortBy } from "es-toolkit";
-import Section from "./Section.astro";
-import Lede from "./Lede.astro";
+
 import BlueskyPostCard from "./items/BlueskyPostCard.astro";
+import Lede from "./Lede.astro";
+import Section from "./Section.astro";
 
 interface Props {
   collection: CollectionEntry<"bluesky">[];

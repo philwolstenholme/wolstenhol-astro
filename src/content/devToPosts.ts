@@ -15,8 +15,8 @@ export const devToPosts = defineCollection({
     try {
       const response = await fetch("https://dev.to/api/articles/me", {
         headers: {
-          "api-key": DEV_TO_API_KEY,
           Accept: "application/vnd.forem.api-v1+json",
+          "api-key": DEV_TO_API_KEY,
           "Content-Type": "application/json",
         },
       });

@@ -1,23 +1,23 @@
 ---
 interface NavLink {
-  label: string;
   href: string;
+  label: string;
 }
 
 const navLinks: NavLink[] = [
-  { label: "Words", href: "/#words" },
-  { label: "Reading", href: "/#reading" },
-  { label: "Speaking", href: "/#speaking" },
-  { label: "Music", href: "/#music" },
-  { label: "Photos", href: "/#photos" },
-  { label: "Posts", href: "/#posts" },
-  { label: "Places", href: "/#places" },
+  { href: "/#words", label: "Words" },
+  { href: "/#reading", label: "Reading" },
+  { href: "/#speaking", label: "Speaking" },
+  { href: "/#music", label: "Music" },
+  { href: "/#photos", label: "Photos" },
+  { href: "/#posts", label: "Posts" },
+  { href: "/#places", label: "Places" },
 
   // Keep anchor links to the homepage grouped ABOVE this line, below this are links to other pages.
 
-  { label: "Work", href: "/work" },
-  { label: "Contact", href: "/contact" },
-  { label: "Starred", href: "/github-stars" },
+  { href: "/work", label: "Work" },
+  { href: "/contact", label: "Contact" },
+  { href: "/github-stars", label: "Starred" },
 ];
 ---
 

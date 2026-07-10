@@ -10,14 +10,14 @@ import { speaking } from "./content/speaking";
 import { spotify } from "./content/spotify";
 
 export const collections = {
-  "github-stars": githubStars,
-  "dev-to-posts": devToPosts,
-  "dev-to-reading-list": devToReadingList,
   "airtable-reading-list": airtableReadingList,
   bluesky,
-  speaking,
+  "dev-to-posts": devToPosts,
+  "dev-to-reading-list": devToReadingList,
+  "github-stars": githubStars,
+  instagram,
   places,
   portfolio,
+  speaking,
   spotify,
-  instagram,
 };

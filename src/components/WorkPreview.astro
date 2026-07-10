@@ -1,13 +1,15 @@
 ---
-import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+
 import slugify from "@sindresorhus/slugify";
+import { getCollection } from "astro:content";
+
 import { sortPortfolio } from "../helpers/getPortfolioSorted";
-import PortfolioScreenshot from "./PortfolioScreenshot.astro";
-import Section from "./Section.astro";
-import ScrollerButton from "./ScrollerButton.astro";
-import Lede from "./Lede.astro";
 import CurvyArrow from "./icons/CurvyArrow.astro";
+import Lede from "./Lede.astro";
+import PortfolioScreenshot from "./PortfolioScreenshot.astro";
+import ScrollerButton from "./ScrollerButton.astro";
+import Section from "./Section.astro";
 
 interface Props {
   collection?: CollectionEntry<"portfolio">[];

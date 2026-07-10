@@ -2,13 +2,13 @@
 import clsx from "clsx";
 
 interface Props {
-  href?: string;
+  [key: string]: unknown;
   class?: string;
   color?: "green" | "instagram";
-  [key: string]: unknown;
+  href?: string;
 }
 
-const { href, class: className = "", color = "green", ...rest } = Astro.props;
+const { class: className = "", color = "green", href, ...rest } = Astro.props;
 
 const colorClasses: Record<string, string> = {
   green: "bg-green-700 hocus:bg-green-600",

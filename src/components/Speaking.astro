@@ -1,12 +1,13 @@
 ---
-import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
-import Section from "./Section.astro";
-import Lede from "./Lede.astro";
-import SpeakingCard from "./items/SpeakingCard.astro";
-import HorizontalScroller from "./HorizontalScroller.astro";
+import { getCollection } from "astro:content";
+
 import { sortSpeaking } from "../helpers/getSpeakingSorted";
+import HorizontalScroller from "./HorizontalScroller.astro";
+import SpeakingCard from "./items/SpeakingCard.astro";
+import Lede from "./Lede.astro";
+import Section from "./Section.astro";
 
 interface Props {
   collection?: CollectionEntry<"speaking">[];

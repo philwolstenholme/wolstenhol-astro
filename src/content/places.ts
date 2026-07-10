@@ -2,10 +2,18 @@ import { createHmac } from "crypto";
 
 import { z } from "astro/zod";
 import { defineCollection } from "astro:content";
-import { GOOGLE_MAPS_KEY, GOOGLE_MAPS_SECRET, FOURSQUARE_OAUTH_TOKEN } from "astro:env/server";
+import { FOURSQUARE_OAUTH_TOKEN, GOOGLE_MAPS_KEY, GOOGLE_MAPS_SECRET } from "astro:env/server";
 import { sampleSize, sortBy } from "es-toolkit";
 
 const PLACES_COUNT = 9;
+
+function buildMapUrl(lat: number, lng: number): null | string {
+  if (!GOOGLE_MAPS_KEY) {
+    return null;
+  }
+  const base = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=13&size=365x182&maptype=roadmap&key=${GOOGLE_MAPS_KEY}&format=png&visual_refresh=true&map_id=db8ea46f9ea0d213&scale=2`;
+  return GOOGLE_MAPS_SECRET ? signGoogleMapsUrl(base, GOOGLE_MAPS_SECRET) : base;
+}
 
 function signGoogleMapsUrl(url: string, secret: string): string {
   const urlObj = new URL(url);
@@ -18,14 +26,6 @@ function signGoogleMapsUrl(url: string, secret: string): string {
     .replace(/\+/g, "-")
     .replace(/\//g, "_");
   return `${url}&signature=${signature}`;
-}
-
-function buildMapUrl(lat: number, lng: number): string | null {
-  if (!GOOGLE_MAPS_KEY) {
-    return null;
-  }
-  const base = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=13&size=365x182&maptype=roadmap&key=${GOOGLE_MAPS_KEY}&format=png&visual_refresh=true&map_id=db8ea46f9ea0d213&scale=2`;
-  return GOOGLE_MAPS_SECRET ? signGoogleMapsUrl(base, GOOGLE_MAPS_SECRET) : base;
 }
 
 export const places = defineCollection({
@@ -54,27 +54,27 @@ export const places = defineCollection({
     const sortedVenues = sortBy(venues, [(v) => v.ratedAt ?? 0]).reverse();
 
     return sampleSize(sortedVenues, PLACES_COUNT).map((v) => ({
-      id: v.id,
-      name: v.name,
-      lat: v.location.lat,
-      lng: v.location.lng,
       address: v.location.formattedAddress?.[0] ?? v.location.address ?? "",
       city: v.location.city ?? "",
-      url: v.url ?? `https://foursquare.com/v/${v.id}`,
-      tip: v.tipHint ?? null,
+      id: v.id,
+      lat: v.location.lat,
       likedAt: v.ratedAt ? new Date(v.ratedAt * 1000).toISOString() : null,
+      lng: v.location.lng,
       mapUrl: buildMapUrl(v.location.lat, v.location.lng),
+      name: v.name,
+      tip: v.tipHint ?? null,
+      url: v.url ?? `https://foursquare.com/v/${v.id}`,
     }));
   },
   schema: z.object({
-    name: z.string(),
-    lat: z.number(),
-    lng: z.number(),
     address: z.string(),
     city: z.string(),
-    url: z.url().optional(),
-    tip: z.string().nullable().optional(),
+    lat: z.number(),
     likedAt: z.string().nullable().optional(),
+    lng: z.number(),
     mapUrl: z.string().nullable(),
+    name: z.string(),
+    tip: z.string().nullable().optional(),
+    url: z.url().optional(),
   }),
 });

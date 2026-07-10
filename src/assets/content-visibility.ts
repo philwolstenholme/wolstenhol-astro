@@ -1,11 +1,11 @@
 const eqIsh = (a: number, b: number, fuzz = 2) => Math.abs(a - b) <= fuzz;
 
-const rectNotEQ = (a: DOMRectReadOnly | DOMRect, b: DOMRectReadOnly | DOMRect) =>
+const rectNotEQ = (a: DOMRect | DOMRectReadOnly, b: DOMRect | DOMRectReadOnly) =>
   !eqIsh(a.width, b.width) || !eqIsh(a.height, b.height);
 
-const spaced = new WeakMap<Element, DOMRectReadOnly | DOMRect>();
+const spaced = new WeakMap<Element, DOMRect | DOMRectReadOnly>();
 
-const reserveSpace = (el: Element, rect: DOMRectReadOnly | DOMRect) => {
+const reserveSpace = (el: Element, rect: DOMRect | DOMRectReadOnly) => {
   const old = spaced.get(el);
   if (!old || rectNotEQ(old, rect)) {
     spaced.set(el, rect);

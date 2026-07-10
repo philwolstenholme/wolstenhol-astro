@@ -1,10 +1,10 @@
 ---
 export const prerender = false;
 
-import { preparePartialPage } from "../../helpers/preparePartialPage";
-import { getSortedStars } from "../../helpers/getStarsSorted";
-import PaginatedGrid from "../../components/PaginatedGrid.astro";
 import GithubStarCard from "../../components/items/GithubStarCard.astro";
+import PaginatedGrid from "../../components/PaginatedGrid.astro";
+import { getSortedStars } from "../../helpers/getStarsSorted";
+import { preparePartialPage } from "../../helpers/preparePartialPage";
 
 const searchParam = "githubStars";
 const htmxPartialPath = "/partials/stars";

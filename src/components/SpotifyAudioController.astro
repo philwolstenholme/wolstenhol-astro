@@ -1,19 +1,19 @@
 ---
 export interface SpotifyArtist {
-  id: string;
-  name: string;
-  images: { url: string; width: number; height: number }[];
   external_urls: { spotify: string };
-  top_track: {
-    id: string;
-    name: string;
-    preview_url: string | null;
+  id: string;
+  images: { height: number; url: string; width: number }[];
+  name: string;
+  top_track: null | {
     album: {
+      images: { height: number; url: string; width: number }[];
       name: string;
-      images: { url: string; width: number; height: number }[];
     };
     features?: { tempo: number };
-  } | null;
+    id: string;
+    name: string;
+    preview_url: null | string;
+  };
 }
 
 interface Props {

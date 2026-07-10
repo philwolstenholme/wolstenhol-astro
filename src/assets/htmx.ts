@@ -38,8 +38,8 @@ htmx.defineExtension("preload", {
         const hxGet = node.getAttribute("hx-get") || node.getAttribute("data-hx-get");
         if (hxGet) {
           htmx.ajax("get", hxGet, {
-            source: node,
             handler: (_elt: unknown, info: { xhr: XMLHttpRequest }) => done(info.xhr.responseText),
+            source: node,
           });
           return;
         }

@@ -1,10 +1,10 @@
 ---
 export const prerender = false;
 
-import { preparePartialPage } from "../../helpers/preparePartialPage";
-import { getSortedDevToPosts } from "../../helpers/getDevToPostsSorted";
-import PaginatedGrid from "../../components/PaginatedGrid.astro";
 import DevToPostCard from "../../components/items/DevToPostCard.astro";
+import PaginatedGrid from "../../components/PaginatedGrid.astro";
+import { getSortedDevToPosts } from "../../helpers/getDevToPostsSorted";
+import { preparePartialPage } from "../../helpers/preparePartialPage";
 
 const searchParam = "posts";
 const htmxPartialPath = "/partials/posts";
@@ -13,8 +13,8 @@ const items = await getSortedDevToPosts();
 
 const { itemsPerPage, pageUrl } = preparePartialPage(Astro, {
   items,
-  searchParam,
   itemsPerPage: 3,
+  searchParam,
 });
 ---
 

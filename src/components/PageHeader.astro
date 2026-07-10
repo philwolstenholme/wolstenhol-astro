@@ -1,16 +1,17 @@
 ---
 import clsx from "clsx";
+
 import Squiggle from "./icons/Squiggle.astro";
 
 // Shared page-title treatment (gradient-filled heading with a hand-drawn
 // squiggle underneath, followed by the serif intro) used by every
 // non-homepage page. The default slot holds the intro paragraphs.
 interface Props {
-  title: string;
   size?: "default" | "large";
+  title: string;
 }
 
-const { title, size = "default" } = Astro.props;
+const { size = "default", title } = Astro.props;
 ---
 
 <h1

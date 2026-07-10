@@ -11,18 +11,18 @@ export const speaking = defineCollection({
     })),
   schema: z.discriminatedUnion("type", [
     z.object({
-      type: z.literal("thumbnail"),
-      href: z.url().optional(),
-      imageSrc: z.url(),
-      imageAlt: z.string().optional(),
       eventName: z.string(),
+      href: z.url().optional(),
+      imageAlt: z.string().optional(),
+      imageSrc: z.url(),
       talkTitle: z.string(),
+      type: z.literal("thumbnail"),
     }),
     z.object({
-      type: z.literal("quote"),
+      attribution: z.string(),
       href: z.url().optional(),
       quote: z.string(),
-      attribution: z.string(),
+      type: z.literal("quote"),
     }),
   ]),
 });

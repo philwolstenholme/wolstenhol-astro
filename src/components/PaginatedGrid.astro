@@ -3,52 +3,52 @@ import { paginate } from "../helpers/paginate";
 import Pagination from "./Pagination.astro";
 
 const {
+  anchor,
+  htmxPartialPath,
+  itemComponent: Item,
   items,
   itemsPerPage,
-  searchParam = "page",
-  anchor,
-  onlyFullPages = true,
-  itemComponent: Item,
-  htmxPartialPath,
-  pageUrl,
-  staticMode = false,
-  prevUrl,
   nextUrl,
+  onlyFullPages = true,
+  pageUrl,
+  prevUrl,
+  searchParam = "page",
+  staticMode = false,
 } = Astro.props as {
+  anchor?: string;
+  htmxPartialPath?: string;
+  itemComponent: any; // Component expected to output its own <li>
   items: readonly unknown[];
   itemsPerPage: number;
-  searchParam?: string;
-  anchor?: string;
+  nextUrl?: null | string;
   onlyFullPages?: boolean;
-  itemComponent: any; // Component expected to output its own <li>
-  htmxPartialPath?: string;
   pageUrl?: URL;
+  prevUrl?: null | string;
+  searchParam?: string;
   staticMode?: boolean;
-  prevUrl?: string | null;
-  nextUrl?: string | null;
 };
 
-const { data, hasPrev, hasNext, prevIndex, nextIndex } = staticMode
+const { data, hasNext, hasPrev, nextIndex, prevIndex } = staticMode
   ? {
       data: items as unknown[],
-      hasPrev: prevUrl != null,
       hasNext: nextUrl != null,
-      prevIndex: null as null,
+      hasPrev: prevUrl != null,
       nextIndex: null as null,
+      prevIndex: null as null,
     }
   : paginate({
-      onlyFullPages,
       items,
       itemsPerPage,
-      url: new URL(Astro.request.url),
+      onlyFullPages,
       searchParam,
+      url: new URL(Astro.request.url),
     });
 
 const htmxAttrs = staticMode
   ? {}
   : {
-      "x-data": "",
       "@htmx:after-swap": `$event.target.id === 'paginated-grid-${searchParam}' && $focus.within($event.target).first()`,
+      "x-data": "",
     };
 ---
 

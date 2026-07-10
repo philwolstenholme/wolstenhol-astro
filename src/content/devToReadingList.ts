@@ -13,8 +13,8 @@ export const devToReadingList = defineCollection({
     try {
       const response = await fetch("https://dev.to/api/readinglist?per_page=50", {
         headers: {
-          "API-key": DEV_TO_API_KEY,
           Accept: "application/vnd.forem.api-v1+json",
+          "API-key": DEV_TO_API_KEY,
           "Content-Type": "application/json",
         },
       });
@@ -35,9 +35,9 @@ export const devToReadingList = defineCollection({
     }
   },
   schema: z.object({
+    article: devtoArticleSchema,
+    created_at: z.string().nullable(),
     id: z.string(),
     status: z.string(),
-    created_at: z.string().nullable(),
-    article: devtoArticleSchema,
   }),
 });

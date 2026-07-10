@@ -16,15 +16,15 @@ export const spotify = defineCollection({
       // 1. Exchange refresh token for access token.
       const credentials = btoa(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`);
       const tokenRes = await fetch("https://accounts.spotify.com/api/token", {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${credentials}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
         body: new URLSearchParams({
           grant_type: "refresh_token",
           refresh_token: SPOTIFY_REFRESH_TOKEN,
         }),
+        headers: {
+          Authorization: `Basic ${credentials}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        method: "POST",
       });
 
       if (!tokenRes.ok) {
@@ -97,7 +97,7 @@ export const spotify = defineCollection({
 
       console.log(`Spotify: ${artists.length} artists, ${randomGenres.length} genres`);
 
-      return [{ id: "data", artists, randomGenres }];
+      return [{ artists, id: "data", randomGenres }];
     } catch (error) {
       console.error("Spotify fetch failed:", error);
       return [];
@@ -116,26 +116,26 @@ export const spotify = defineCollection({
 
 // Minimal shapes — enough to drive the loader; expanded when building UI.
 interface SpotifyArtist {
-  id: string;
-  name: string;
-  genres: string[];
-  images: { url: string; width: number; height: number }[];
   external_urls: { spotify: string };
-  popularity: number;
   followers: { total: number };
-}
-
-interface SpotifyTrack {
+  genres: string[];
   id: string;
+  images: { height: number; url: string; width: number }[];
   name: string;
-  preview_url: string | null;
-  external_urls: { spotify: string };
-  album: {
-    name: string;
-    images: { url: string; width: number; height: number }[];
-  };
+  popularity: number;
 }
 
 interface SpotifyArtistWithTrack extends SpotifyArtist {
-  top_track: SpotifyTrack | null;
+  top_track: null | SpotifyTrack;
+}
+
+interface SpotifyTrack {
+  album: {
+    images: { height: number; url: string; width: number }[];
+    name: string;
+  };
+  external_urls: { spotify: string };
+  id: string;
+  name: string;
+  preview_url: null | string;
 }

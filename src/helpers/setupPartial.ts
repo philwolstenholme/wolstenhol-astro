@@ -4,7 +4,7 @@ export const setupPartial = (
   Astro: { request: Request; response: { headers: Headers } },
   searchParam: string,
   index: number,
-): URL | undefined => {
+): undefined | URL => {
   Astro.response.headers.set("Cache-Control", "public, max-age=300, stale-while-revalidate=3600");
   Astro.response.headers.set("X-Robots-Tag", "noindex");
 
@@ -14,8 +14,8 @@ export const setupPartial = (
       "HX-Replace-Url",
       buildPageHref({
         currentUrl: new URL(htmxCurrentUrl),
-        param: searchParam,
         index,
+        param: searchParam,
       }),
     );
     return new URL(htmxCurrentUrl);

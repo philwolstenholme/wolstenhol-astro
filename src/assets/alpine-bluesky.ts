@@ -7,7 +7,7 @@ declare global {
 }
 
 export default defineComponent(() => ({
-  colcadeInstance: null as object | null,
+  colcadeInstance: null as null | object,
   colcadeLoading: false,
 
   initMasonry() {

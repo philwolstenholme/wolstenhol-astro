@@ -2,12 +2,13 @@
 export const prerender = true;
 
 import { chunk } from "es-toolkit";
-import { getSortedStars } from "../../helpers/getStarsSorted";
-import Layout from "../../layouts/Layout.astro";
+
 import Content from "../../components/Content.astro";
+import GithubStarCard from "../../components/items/GithubStarCard.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PaginatedGrid from "../../components/PaginatedGrid.astro";
-import GithubStarCard from "../../components/items/GithubStarCard.astro";
+import { getSortedStars } from "../../helpers/getStarsSorted";
+import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
   const ITEMS_PER_PAGE = 36;
@@ -21,13 +22,13 @@ export async function getStaticPaths() {
     props: {
       items: pageItems,
       itemsPerPage: ITEMS_PER_PAGE,
-      prevUrl: i === 0 ? null : i === 1 ? BASE_PATH : `${BASE_PATH}/${i - 1}`,
       nextUrl: i < pages.length - 1 ? `${BASE_PATH}/${i + 1}` : null,
+      prevUrl: i === 0 ? null : i === 1 ? BASE_PATH : `${BASE_PATH}/${i - 1}`,
     },
   }));
 }
 
-const { items, itemsPerPage, prevUrl, nextUrl } = Astro.props;
+const { items, itemsPerPage, nextUrl, prevUrl } = Astro.props;
 ---
 
 <Layout title="Github stars">

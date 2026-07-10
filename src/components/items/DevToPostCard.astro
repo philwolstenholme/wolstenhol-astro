@@ -1,8 +1,10 @@
 ---
-import { markdownToTxt } from "markdown-to-txt";
 import type { CollectionEntry } from "astro:content";
-import GrungeOverlay from "../GrungeOverlay.astro";
+
+import { markdownToTxt } from "markdown-to-txt";
+
 import { longDateFormatter } from "../../helpers/longDateFormatter";
+import GrungeOverlay from "../GrungeOverlay.astro";
 
 const { item: post } = Astro.props as {
   item: CollectionEntry<"dev-to-posts">["data"];

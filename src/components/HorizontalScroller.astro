@@ -1,19 +1,20 @@
 ---
 import clsx from "clsx";
+
 import ScrollerArrow from "./ScrollerArrow.astro";
 
 interface Props {
-  label: string;
-  theme?: "instagram" | "speaking" | "spotify";
-  scrollFull?: boolean;
   class?: string;
+  label: string;
+  scrollFull?: boolean;
+  theme?: "instagram" | "speaking" | "spotify";
 }
 
 const {
-  label,
-  theme = "speaking",
-  scrollFull = false,
   class: className,
+  label,
+  scrollFull = false,
+  theme = "speaking",
 } = Astro.props;
 
 const themeArrowClasses = {

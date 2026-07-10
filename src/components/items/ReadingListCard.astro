@@ -1,13 +1,14 @@
 ---
-import { getRandomRotation } from "../../helpers/getRandomRotation";
 import type { ReadingListCardItem } from "../../helpers/mergeReadingLists";
+
+import { getRandomRotation } from "../../helpers/getRandomRotation";
 
 const { item: article } = Astro.props as { item: ReadingListCardItem };
 
 const rotation = getRandomRotation();
 
-let faviconUrl: string | null = null;
-let favicon2xUrl: string | null = null;
+let faviconUrl: null | string = null;
+let favicon2xUrl: null | string = null;
 try {
   const hostname = new URL(article.canonical_url || article.url).hostname;
   faviconUrl = `/proxy/cloudinary/image/fetch/f_auto,w_16,h_16,q_auto/https://t2.gstatic.com/faviconV2%3Fclient=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${hostname}&size=32`;
