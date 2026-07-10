@@ -53,6 +53,24 @@ html {
   src: local("Times New Roman");
 }
 
+/* local()-only, no url() fallback — if the real font isn't installed this
+ * @font-face simply never matches, so the browser moves straight on to the
+ * subsetted webfont below rather than waiting on a network request. Lets
+ * visitors who have Roboto Slab installed skip the download entirely. */
+@font-face {
+  font-family: "Roboto Slab-local";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Roboto Slab Regular"), local("RobotoSlab-Regular");
+}
+
+@font-face {
+  font-family: "Roboto Slab-local";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Roboto Slab Bold"), local("RobotoSlab-Bold");
+}
+
 @font-face {
   font-family: "Roboto Slab";
   font-style: normal;
@@ -357,7 +375,7 @@ a:where(:hover, :focus-visible) {
 
 @theme {
   --animate-typewriter: typewriter 3s steps(69) 1 normal both;
-  --font-serif: "Roboto Slab", "Roboto Slab-fallback", serif;
+  --font-serif: "Roboto Slab-local", "Roboto Slab", "Roboto Slab-fallback", serif;
 
   --color-medium: #228665;
   --color-medium-dark: #1e785a;

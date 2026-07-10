@@ -1,0 +1,22 @@
+diff --git a/node_modules/font-tracer/lib/expandAnimations.js b/node_modules/font-tracer/lib/expandAnimations.js
+index 7b3d917..cf77fb1 100644
+--- a/node_modules/font-tracer/lib/expandAnimations.js
++++ b/node_modules/font-tracer/lib/expandAnimations.js
+@@ -9,7 +9,7 @@ function expandAnimations(computedStyle, keyframesDefinitions) {
+       for (const keyframesDefinition of keyframesDefinitions) {
+         if (keyframesDefinition.name === animationNameValue.value) {
+           keyframesDefinition.node.walkDecls((decl) => {
+-            if (/^--/.test(decl.prop) || computedStyle.props[decl.prop]) {
++            if (computedStyle.props[decl.prop]) {
+               isAnimatedByPropertyName[decl.prop] = true;
+             }
+           });
+@@ -36,7 +36,7 @@ function expandAnimations(computedStyle, keyframesDefinitions) {
+                 seenValuesByProp[prop] = [permutation[prop].value];
+               }
+               keyframesDefinition.node.walkDecls((decl) => {
+-                if (/^--/.test(decl.prop) || computedStyle.props[decl.prop]) {
++                if (seenValuesByProp[decl.prop]) {
+                   seenValuesByProp[decl.prop].push(decl.value);
+                 }
+               });
