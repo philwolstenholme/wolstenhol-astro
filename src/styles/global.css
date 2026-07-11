@@ -46,11 +46,24 @@ html {
   color-scheme: dark;
 }
 
-/* Make a custom fallback font based on the local Times New Roman */
+/* Make a custom fallback font based on the local Times New Roman. Multiple
+ * rules sharing this family name form a fallback chain: the browser uses the
+ * first `local()` it can actually resolve. Liberation Serif is a metrically
+ * identical clone of Times New Roman (same advance widths by design), so it
+ * reuses the same size-adjust — this covers the many Linux/ChromeOS installs
+ * that ship Liberation Serif but not Times New Roman itself, which otherwise
+ * fall through to an unmatched generic serif and reflow when the real
+ * webfont swaps in. */
 @font-face {
   font-family: "Roboto Slab-fallback";
   size-adjust: 117.8%;
   src: local("Times New Roman");
+}
+
+@font-face {
+  font-family: "Roboto Slab-fallback";
+  size-adjust: 117.8%;
+  src: local("Liberation Serif");
 }
 
 /* local()-only, no url() fallback — if the real font isn't installed this
