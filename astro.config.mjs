@@ -20,7 +20,7 @@ import { subfont } from "./integrations/subfont.ts";
 //     `prop-for-that`) each get their own chunk so their frequent bumps never
 //     invalidate anything else.
 const clientVendorChunks = {
-  alpine: ["alpinejs", "@alpinejs/focus", "async-alpine"],
+  alpine: ["alpinejs", "@alpinejs/csp", "@alpinejs/focus", "async-alpine"],
   audio: ["@web-kits/audio"],
   "es-toolkit": ["es-toolkit"],
   htmx: ["htmx.org"],
@@ -43,6 +43,14 @@ const manualChunks = (id) => {
 // https://astro.build/config
 export default defineConfig({
   adapter: netlify({ edgeMiddleware: true }),
+  build: {
+    // Astro's default "auto" inlines small component stylesheets straight
+    // into the page instead of linking them, which the CSP's hash-based
+    // style-src-elem can't reliably track (which components qualify depends
+    // on their compiled CSS size, so it can flip as content changes). Force
+    // every stylesheet external so 'self' alone covers style-src-elem.
+    inlineStylesheets: "never",
+  },
   cache: {
     provider: {
       entrypoint: "@astrojs/netlify/cache/provider",
@@ -108,6 +116,13 @@ export default defineConfig({
   },
   vite: {
     build: {
+      // Vite's default 4kb threshold silently inlines small compiled script
+      // chunks (and other small assets) straight into the page as literal
+      // <script> text instead of a separate file — which a hash-based CSP
+      // script-src can't reliably track, since whether a given component's
+      // script "counts as small enough" can flip as its content changes.
+      // Forcing every asset external keeps the CSP surface predictable.
+      assetsInlineLimit: 0,
       rollupOptions: {
         output: {
           manualChunks,

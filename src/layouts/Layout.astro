@@ -1,4 +1,10 @@
 ---
+import {
+  DEVICE_CAPABILITIES_SCRIPT,
+  NOSCRIPT_STYLE,
+  SPECULATION_RULES_SCRIPT,
+  THEME_INIT_SCRIPT,
+} from "../assets/csp-inline-assets";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import MuteToggle from "../components/MuteToggle.astro";
@@ -51,60 +57,17 @@ const coffeeStains = [
 <html lang="en" data-props-for="network">
   <head>
     <meta charset="UTF-8" />
-    <script is:inline>
-      // Decide the theme before first paint to avoid a flash of the wrong
-      // theme. System preference is primary; an explicit user choice in
-      // localStorage overrides it. Runs again on pageshow/prerenderingchange
-      // so speculation-rules prerendered pages pick up a toggle made after
-      // they were rendered, and on storage so other tabs stay in sync.
-      (() => {
-        const mq = window.matchMedia("(prefers-color-scheme: dark)");
-        const apply = () => {
-          const stored = localStorage.getItem("theme");
-          document.documentElement.dataset.theme =
-            stored === "dark" || stored === "light"
-              ? stored
-              : mq.matches
-                ? "dark"
-                : "light";
-        };
-        apply();
-        mq.addEventListener("change", apply);
-        window.addEventListener("pageshow", apply);
-        document.addEventListener("prerenderingchange", apply);
-        window.addEventListener("storage", (event) => {
-          if (event.key === "theme") {
-            apply();
-          }
-        });
-      })();
-    </script>
-    <script is:inline>
-      /* oxlint-disable no-unused-expressions -- vendored minified snippet */
-      (function () {
-        "use strict";
-        var o = {
-          constPrefix: "--const-",
-          root: typeof document < "u" ? document.documentElement : void 0,
-        };
-        function s() {
-          let e = document.createElement("div"),
-            i = o.root,
-            t = (n, r) => i.style.setProperty(o.constPrefix + n, String(r));
-          ((e.style.cssText =
-            "position:absolute;top:-9999px;width:100px;height:100px;overflow:scroll;visibility:hidden"),
-            (document.body ?? i).appendChild(e),
-            t("scrollbar-w", e.offsetWidth - e.clientWidth),
-            (e.style.scrollbarWidth = "thin"),
-            t("scrollbar-thin-w", e.offsetWidth - e.clientWidth),
-            e.remove(),
-            t("dpr", window.devicePixelRatio || 1),
-            t("cores", navigator.hardwareConcurrency || 0),
-            t("mem", navigator.deviceMemory || 0));
-        }
-        typeof document < "u" && s();
-      })();
-    </script>
+    <!-- Decide the theme before first paint to avoid a flash of the wrong
+         theme. System preference is primary; an explicit user choice in
+         localStorage overrides it. Runs again on pageshow/prerenderingchange
+         so speculation-rules prerendered pages pick up a toggle made after
+         they were rendered, and on storage so other tabs stay in sync.
+         Content lives in ../assets/csp-inline-assets.ts so its CSP hash
+         (see src/middleware.ts) can't drift out of sync with what renders. -->
+    <script is:inline set:html={THEME_INIT_SCRIPT} />
+    <!-- Vendored minified snippet: records viewport/device capabilities as
+         CSS custom properties before first paint. -->
+    <script is:inline set:html={DEVICE_CAPABILITIES_SCRIPT} />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="preconnect" href="https://res.cloudinary.com" />
     <!-- Font preloads are injected by the subfont build integration (integrations/subfont.ts). -->
@@ -174,13 +137,7 @@ const coffeeStains = [
     />
     <meta name="theme-color" content="#161616" />
     <noscript>
-      <style>
-        main section + section,
-        main .card--portfolio + .card--portfolio {
-          contain-intrinsic-size: unset;
-          content-visibility: unset;
-        }
-      </style>
+      <style is:inline set:html={NOSCRIPT_STYLE}></style>
     </noscript>
   </head>
   <body class="bg-subtle-grunge slow-connection:bg-none dark:text-stone-200">
@@ -220,10 +177,7 @@ const coffeeStains = [
               https://wolstenhol.me
             </StyledTextLink>
           </marquee>
-          <button
-            class="shrink-0 underline"
-            onclick="document.getElementById('wip-banner').style.display='none'; document.cookie = 'hideWipBanner=true; max-age=' + 60*60*24*5 + '; path=/';"
-          >
+          <button class="shrink-0 underline" data-wip-banner-close>
             Close me
           </button>
         </div>
@@ -234,6 +188,9 @@ const coffeeStains = [
     <ThemeToggle />
     <MuteToggle />
     <script src="../assets/audio-interactions.ts"></script>
+    <script>
+      import "../assets/wip-banner.ts";
+    </script>
     <script>
       import "../assets/htmx.ts";
     </script>
@@ -246,23 +203,11 @@ const coffeeStains = [
     <script>
       import "../assets/content-visibility.ts";
     </script>
-    <script is:inline type="speculationrules">
-      {
-        "prerender": [
-          {
-            "source": "document",
-            "where": {
-              "and": [
-                { "href_matches": "/*" },
-                { "not": { "selector_matches": ".no-prerender" } },
-                { "not": { "selector_matches": "[rel~=nofollow]" } }
-              ]
-            },
-            "eagerness": "eager"
-          }
-        ]
-      }
-    </script>
+    <script
+      is:inline
+      type="speculationrules"
+      set:html={SPECULATION_RULES_SCRIPT}
+    />
   </body>
 </html>
 

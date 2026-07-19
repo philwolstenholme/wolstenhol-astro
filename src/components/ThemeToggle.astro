@@ -8,14 +8,7 @@
 
 <button
   id="theme-toggle"
-  x-data="{
-    toggle() {
-      const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-      const system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      if (next === system) { localStorage.removeItem('theme'); } else { localStorage.setItem('theme', next); }
-      document.documentElement.dataset.theme = next;
-    }
-  }"
+  x-data="themeToggle"
   x-on:click="toggle()"
   aria-label="Switch between dark and light theme"
   title="Switch between dark and light theme"

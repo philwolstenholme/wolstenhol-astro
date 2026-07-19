@@ -33,10 +33,8 @@ const onMouseleave = post.isVideo ? "$refs.video && $refs.video.play()" : null;
   x-on:focus.once={onMouseenterOnce}
   x-on:blur={onMouseleave}
   data-lightbox-image={!post.isVideo ? post.cloudinaryUrl : undefined}
-  x-init={!post.isVideo ? "$root.setAttribute('role', 'button')" : undefined}
-  x-on:click.prevent={!post.isVideo
-    ? "if (useLightbox) $root.dispatchEvent(new CustomEvent('pw-lightbox-open', { bubbles: true }))"
-    : undefined}
+  x-bind:role={!post.isVideo ? "'button'" : undefined}
+  x-on:click.prevent={!post.isVideo ? "openLightbox()" : undefined}
   x-on:keydown.enter.prevent={!post.isVideo ? "$root.click()" : undefined}
   x-on:keydown.space={!post.isVideo ? "$root.click()" : undefined}
 >
