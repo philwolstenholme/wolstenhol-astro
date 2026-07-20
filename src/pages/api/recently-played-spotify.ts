@@ -46,10 +46,14 @@ export const GET: APIRoute = async () => {
     const current = (await spotifyFetch(accessToken, "/me/player/currently-playing")) as null | {
       is_playing: boolean;
       item: null | SpotifyLiveTrack;
+      progress_ms: null | number;
     };
 
     if (current?.is_playing && current.item) {
-      return json(toPayload(current.item, new Date().toISOString()));
+      // Anchor to when the track started, not "now" — otherwise every 30s
+      // poll would reset the relative-time label back to "just now".
+      const startedAt = new Date(Date.now() - (current.progress_ms ?? 0)).toISOString();
+      return json(toPayload(current.item, startedAt));
     }
 
     const recent = (await spotifyFetch(accessToken, "/me/player/recently-played?limit=1")) as {
