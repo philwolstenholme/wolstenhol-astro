@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@aduptive/instagram-scraper": "^1.0.3",
+    "@alpinejs/csp": "^3.15.12",
     "@alpinejs/focus": "^3.15.12",
     "@astrojs/netlify": "^8.0.0",
     "@octokit/types": "^16.0.0",

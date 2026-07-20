@@ -60,6 +60,13 @@ export default defineComponent(() => ({
     this.$el.addEventListener("htmx:afterRequest", handler);
     this._cleanup = () => this.$el.removeEventListener("htmx:afterRequest", handler);
   },
+  // Replaces an inline x-on:change that ran two statements — the CSP-safe
+  // Alpine build's expression parser only accepts a single expression.
+  setAgreement(checked: boolean) {
+    this.values.agreement = checked ? "true" : "";
+    this.touch("agreement");
+  },
+
   showSummary: false,
   submit(formEl: HTMLFormElement) {
     const isValid = this.validateAll();
