@@ -3,11 +3,17 @@
 ---
 
 <div
-  hidden
+  x-cloak
   class="text-sm"
   x-data="spotifyLive"
   x-load="idle"
-  x-bind:hidden="!('name' in data)"
+  x-show="'name' in data"
+  x-transition:enter="transition-opacity duration-500"
+  x-transition:enter-start="opacity-0"
+  x-transition:enter-end="opacity-100"
+  x-transition:leave="transition-opacity duration-300"
+  x-transition:leave-start="opacity-100"
+  x-transition:leave-end="opacity-0"
 >
   <div class="flex items-center gap-1.5">
     <span
