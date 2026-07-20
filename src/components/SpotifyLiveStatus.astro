@@ -1,0 +1,29 @@
+---
+
+---
+
+<div
+  hidden
+  class="text-sm"
+  x-data="spotifyLive"
+  x-load="idle"
+  x-bind:hidden="!('name' in data)"
+>
+  <div class="flex items-center gap-1.5">
+    <span
+      aria-hidden="true"
+      class="animate-spotify-pulse size-3 shrink-0 rounded-full bg-spotify"
+    ></span>
+    <p class="max-w-72 truncate sm:max-w-96">
+      <time
+        class="tabular-nums tracking-tight uppercase"
+        x-ref="label"
+        x-bind:datetime="data.playedAt ?? ''"></time>:
+      <span class="sr-only">I just finished listening to</span>
+      <a
+        x-bind:href="data.trackUrl ?? '#'"
+        x-text="`${data.name} — ${data.artistList}`"
+        class="font-semibold"></a>
+    </p>
+  </div>
+</div>
