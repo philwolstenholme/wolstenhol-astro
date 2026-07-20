@@ -250,6 +250,35 @@ html {
     opacity: var(--opacity, 0.3);
   }
 
+  /* Procedural film-grain layer (see components/GrainOverlay.astro). Fixed to
+   * the viewport and pinned behind the page content with a negative z-index, so
+   * it textures the paper surfaces and the gaps between cards without ever
+   * sitting over — and dirtying — body copy. Two turbulence tiles are stacked:
+   * a coarse blotchy grime under a fine paper speckle. Multiplied into the
+   * light paper so only the darker specks survive. The data URIs come in as
+   * custom properties from the component. */
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: var(--grain-fine), var(--grain-coarse);
+    background-repeat: repeat, repeat;
+    background-size:
+      220px 220px,
+      340px 340px;
+    mix-blend-mode: multiply;
+    opacity: 0.55;
+  }
+
+  /* Hand-torn edge: a gentle turbulence displacement that roughens the crisp
+   * vector edges of decorative marks (the heading squiggles) so the marker
+   * strokes bleed and fray like real ink on paper rather than reading as clean
+   * SVG. Kept off text-bearing elements — displacement would distort glyphs. */
+  .edge-rough {
+    filter: url(#rough-edge);
+  }
+
   .text-fill-transparent {
     -webkit-text-fill-color: transparent;
     -moz-text-fill-color: transparent;
@@ -336,6 +365,15 @@ a:where(:hover, :focus-visible) {
     rgba(255, 225, 0, 0.95) 4%,
     rgba(255, 225, 0, 0.75)
   );
+}
+
+/* Grain on the dark theme: multiplying the specks into a near-black page would
+ * just swallow them, so screen the tiles instead — the light flecks lift the
+ * warm charcoal like dust caught on a photocopy — and pull the strength right
+ * down, since a dark ground shows grain far more readily than paper does. */
+[data-theme="dark"] .grain-overlay {
+  mix-blend-mode: screen;
+  opacity: 0.09;
 }
 
 /* The soft "there's more" scroll shadow needs to be deeper to read on dark. */
