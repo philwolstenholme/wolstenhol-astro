@@ -1,0 +1,19 @@
+---
+import { grainCoarse, grainFine } from "../helpers/grain";
+
+// A fixed, viewport-locked film-grain layer generated from SVG turbulence (see
+// helpers/grain.ts). It sits behind the page content — texturing the paper
+// surfaces without touching the legibility of body copy — and, unlike the
+// raster grunge that streams from the Cloudinary proxy, needs no network, so it
+// keeps the site from ever going completely flat. The two backgrounds stack a
+// fine paper grain over a coarser blotchy layer so it reads as grime rather
+// than even TV static. Blend mode and opacity are re-tuned for dark mode in
+// global.css.
+---
+
+<div
+  class="grain-overlay"
+  aria-hidden="true"
+  style={`--grain-fine: ${grainFine}; --grain-coarse: ${grainCoarse}`}
+>
+</div>
