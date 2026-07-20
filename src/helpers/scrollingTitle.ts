@@ -1,6 +1,8 @@
 let intervalId: ReturnType<typeof setInterval> | undefined;
 
 export const rotateTitle = (text: string, separator = "-", speed = 300, prefix = "") => {
+  stopRotatingTitle();
+
   let title = `${text} ${separator} `;
 
   intervalId = setInterval(() => {
@@ -14,4 +16,5 @@ export const rotateTitle = (text: string, separator = "-", speed = 300, prefix =
 
 export const stopRotatingTitle = () => {
   clearInterval(intervalId);
+  intervalId = undefined;
 };

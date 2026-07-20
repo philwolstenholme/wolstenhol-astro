@@ -42,7 +42,10 @@ export default defineComponent(() => ({
   async _setTitle() {
     if (!this._currentArtist || !this._currentTrack) return;
 
+    const urlAtStart = this.playingUrl;
+
     const { rotateTitle, stopRotatingTitle } = await import("../helpers/scrollingTitle");
+    if (this.playingUrl !== urlAtStart) return;
     stopRotatingTitle();
 
     const newTitle = `${this._currentArtist} - ${this._currentTrack}`;
@@ -54,7 +57,7 @@ export default defineComponent(() => ({
     }
 
     await new Promise((resolve) => setTimeout(resolve, 400));
-    if (!this.playingUrl) return;
+    if (this.playingUrl !== urlAtStart) return;
     rotateTitle(newTitle, "-", 300, prefix);
   },
 
