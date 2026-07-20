@@ -44,13 +44,15 @@ export const GET: APIRoute = async () => {
 
   try {
     const current = (await spotifyFetch(accessToken, "/me/player/currently-playing")) as null | {
+      currently_playing_type: "ad" | "episode" | "track" | "unknown";
       is_playing: boolean;
       item: null | SpotifyLiveTrack;
       progress_ms: null | number;
       timestamp: number;
     };
 
-    if (current?.is_playing && current.item) {
+    // Podcasts, ads, etc. fall through to the recently-played track below.
+    if (current?.is_playing && current.item && current.currently_playing_type === "track") {
       // Anchor to when the track started, not "now" — otherwise every 30s poll
       // would reset the relative-time label back to "just now". `timestamp` is
       // when Spotify measured `progress_ms`, so both numbers come from the same
