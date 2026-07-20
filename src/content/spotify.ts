@@ -1,71 +1,45 @@
 import { z } from "astro/zod";
 import { defineCollection } from "astro:content";
-import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN } from "astro:env/server";
 import { compact, sampleSize } from "es-toolkit";
+
+import { getSpotifyAccessToken, spotifyFetch } from "../helpers/spotifyAuth";
 
 const EXCLUDED_GENRES = ["modern alternative rock", "modern rock", "alternative rock"];
 
 export const spotify = defineCollection({
   loader: async () => {
-    if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REFRESH_TOKEN) {
+    const accessToken = await getSpotifyAccessToken();
+
+    if (!accessToken) {
       console.warn("Spotify: credentials not set, skipping fetch");
       return [];
     }
 
     try {
-      // 1. Exchange refresh token for access token.
-      const credentials = btoa(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`);
-      const tokenRes = await fetch("https://accounts.spotify.com/api/token", {
-        body: new URLSearchParams({
-          grant_type: "refresh_token",
-          refresh_token: SPOTIFY_REFRESH_TOKEN,
-        }),
-        headers: {
-          Authorization: `Basic ${credentials}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        method: "POST",
-      });
-
-      if (!tokenRes.ok) {
-        console.error("Spotify token refresh failed:", await tokenRes.text());
-        return [];
-      }
-
-      const { access_token } = (await tokenRes.json()) as {
-        access_token: string;
-      };
-
-      const spotifyFetch = async (path: string) => {
-        const res = await fetch(`https://api.spotify.com/v1${path}`, {
-          headers: { Authorization: `Bearer ${access_token}` },
-        });
-        if (!res.ok) {
-          throw new Error(`Spotify API ${path} → ${res.status}`);
-        }
-        return res.json();
-      };
-
-      // 2. Fetch top 14 artists from the past ~4 weeks.
+      // Fetch top 14 artists from the past ~4 weeks.
       const topArtistsData = (await spotifyFetch(
+        accessToken,
         "/me/top/artists?time_range=short_term&limit=14",
       )) as { items: SpotifyArtist[] };
 
       const topArtists = topArtistsData.items;
 
-      // 3. Fetch the top track and audio features for every artist in parallel.
-      //    Audio features are optional — Spotify deprecated this endpoint for apps
-      //    created after Nov 2024, so errors are swallowed.
+      // Fetch the top track and audio features for every artist in parallel.
+      // Audio features are optional — Spotify deprecated this endpoint for apps
+      // created after Nov 2024, so errors are swallowed.
       const artists: SpotifyArtistWithTrack[] = await Promise.all(
         topArtists.map(async (artist) => {
           try {
-            const data = (await spotifyFetch(`/artists/${artist.id}/top-tracks?market=GB`)) as {
+            const data = (await spotifyFetch(
+              accessToken,
+              `/artists/${artist.id}/top-tracks?market=GB`,
+            )) as {
               tracks: SpotifyTrack[];
             };
             const top_track = data.tracks[0] ?? null;
             if (top_track?.id) {
               try {
-                const features = await spotifyFetch(`/audio-features/${top_track.id}`);
+                const features = await spotifyFetch(accessToken, `/audio-features/${top_track.id}`);
                 (top_track as unknown as Record<string, unknown>).features = features;
               } catch {
                 // silently skip — used only for BPM-driven card animation
@@ -79,7 +53,7 @@ export const spotify = defineCollection({
         }),
       );
 
-      // 4. Pick one unique genre per artist, favouring the longest (most ridiculous) names.
+      // Pick one unique genre per artist, favouring the longest (most ridiculous) names.
       const usedGenres = [...EXCLUDED_GENRES];
       const artistGenres = compact(
         artists.map((artist) => {

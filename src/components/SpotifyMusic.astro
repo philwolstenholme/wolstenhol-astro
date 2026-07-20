@@ -8,6 +8,7 @@ import SpotifyMusicCard from "./items/SpotifyMusicCard.astro";
 import Section from "./Section.astro";
 import SpotifyAudioController from "./SpotifyAudioController.astro";
 import SpotifyGenresLede from "./SpotifyGenresLede.astro";
+import SpotifyLiveStatus from "./SpotifyLiveStatus.astro";
 
 interface Props {
   data: CollectionEntry<"spotify"> | undefined;
@@ -39,6 +40,7 @@ const { artists, randomGenres } = data.data;
   </defs>
 </svg>
 <Section id="music" hasScroller heading="Music">
+  <SpotifyLiveStatus slot="heading-extra" />
   <SpotifyGenresLede genres={randomGenres} />
   <div class="col-[full] group/player relative mt-12" data-spotify-player>
     <HorizontalScroller
