@@ -47,12 +47,15 @@ export const GET: APIRoute = async () => {
       is_playing: boolean;
       item: null | SpotifyLiveTrack;
       progress_ms: null | number;
+      timestamp: number;
     };
 
     if (current?.is_playing && current.item) {
-      // Anchor to when the track started, not "now" — otherwise every 30s
-      // poll would reset the relative-time label back to "just now".
-      const startedAt = new Date(Date.now() - (current.progress_ms ?? 0)).toISOString();
+      // Anchor to when the track started, not "now" — otherwise every 30s poll
+      // would reset the relative-time label back to "just now". `timestamp` is
+      // when Spotify measured `progress_ms`, so both numbers come from the same
+      // clock and instant rather than mixing in our own server's Date.now().
+      const startedAt = new Date(current.timestamp - (current.progress_ms ?? 0)).toISOString();
       return json(toPayload(current.item, startedAt));
     }
 
