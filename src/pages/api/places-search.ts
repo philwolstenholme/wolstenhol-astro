@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { GOOGLE_MAPS_KEY } from "astro:env/server";
+import { GOOGLE_MAPS_KEY, GOOGLE_PLACES_KEY } from "astro:env/server";
 
 import { buildStaticMapUrl } from "../../helpers/googleStaticMap";
 import { isOwner } from "../../helpers/verifyNetlifyIdentity";
@@ -93,8 +93,12 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response("", { status: 403 });
   }
 
-  if (!GOOGLE_MAPS_KEY) {
-    return json({ message: "GOOGLE_MAPS_KEY not configured" }, 500);
+  // Prefer a dedicated, non-referrer-restricted Places key; fall back to the
+  // Maps key (which works only if it is not referrer-restricted).
+  const apiKey = GOOGLE_PLACES_KEY ?? GOOGLE_MAPS_KEY;
+
+  if (!apiKey) {
+    return json({ message: "GOOGLE_PLACES_KEY / GOOGLE_MAPS_KEY not configured" }, 500);
   }
 
   const body = (await request.json()) as SearchBody;
@@ -142,16 +146,24 @@ export const POST: APIRoute = async ({ request }) => {
     body: JSON.stringify(payload),
     headers: {
       "content-type": "application/json",
-      "X-Goog-Api-Key": GOOGLE_MAPS_KEY,
+      "X-Goog-Api-Key": apiKey,
       "X-Goog-FieldMask": FIELD_MASK,
     },
     method: "POST",
   });
 
   if (!response.ok) {
-    const detail = await response.text();
-    console.error("Google Places error:", response.status, detail);
-    return json({ message: "Google Places request failed", status: response.status }, 502);
+    const raw = await response.text();
+    console.error("Google Places error:", response.status, raw);
+    // Forward Google's own error message (e.g. "API keys with referer
+    // restrictions cannot be used with this API") so it surfaces in the UI.
+    let detail = raw;
+    try {
+      detail = (JSON.parse(raw) as { error?: { message?: string } }).error?.message ?? raw;
+    } catch {
+      // Non-JSON body; keep the raw text.
+    }
+    return json({ detail, message: "Google Places request failed", status: response.status }, 502);
   }
 
   const data = (await response.json()) as { places?: Parameters<typeof normalise>[0][] };

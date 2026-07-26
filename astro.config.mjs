@@ -85,6 +85,16 @@ export default defineConfig({
         context: "server",
         optional: true,
       }),
+      // Server-side key for the Places API (New). Kept separate from
+      // GOOGLE_MAPS_KEY because that one is referrer-restricted (it is exposed
+      // in public Static Maps URLs) and referrer-restricted keys are rejected
+      // with 403 on server-to-server Places calls. Falls back to
+      // GOOGLE_MAPS_KEY when unset.
+      GOOGLE_PLACES_KEY: envField.string({
+        access: "secret",
+        context: "server",
+        optional: true,
+      }),
       SPOTIFY_CLIENT_ID: envField.string({
         access: "secret",
         context: "server",
