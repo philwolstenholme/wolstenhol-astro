@@ -99,6 +99,28 @@ const loadFoursquarePlaces = async (): Promise<Place[]> => {
   }
 };
 
+// Google's formattedAddress repeats the place name and trails the postcode,
+// city and country (e.g. "The Rat & Pigeon, 33 Back Piccadilly, Manchester
+// M1 1HP, UK"). Reduce it to just the street line so Airtable places read like
+// the old Foursquare ones ("33 Back Piccadilly"), with the city shown
+// separately by the card. Idempotent, so an already-clean address is unchanged.
+const simplifyAddress = (address: string, name: string, city: string): string => {
+  const parts = address
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+  if (parts.length === 0) {
+    return "";
+  }
+  // Skip a leading segment that just repeats the place name; the next segment
+  // is the street line.
+  const start = name && parts[0].toLowerCase() === name.trim().toLowerCase() ? 1 : 0;
+  const street = parts[start] ?? parts[0];
+  // If that segment is really the city (e.g. "Name, City, Country"), drop it so
+  // the separately-rendered city is not duplicated.
+  return city && street.toLowerCase() === city.trim().toLowerCase() ? "" : street;
+};
+
 const loadAirtablePlaces = async (): Promise<Place[]> => {
   if (!AIRTABLE_KEY) {
     console.warn("Places: AIRTABLE_KEY not set, skipping Airtable fetch");
@@ -125,15 +147,17 @@ const loadAirtablePlaces = async (): Promise<Place[]> => {
       .map((record) => {
         const lat = record.fields.lat as number;
         const lng = record.fields.lng as number;
+        const name = record.fields.name ?? "";
+        const city = record.fields.city ?? "";
         return {
-          address: record.fields.address ?? "",
-          city: record.fields.city ?? "",
+          address: simplifyAddress(record.fields.address ?? "", name, city),
+          city,
           id: record.id,
           lat,
           likedAt: record.fields.likedAt ?? record.createdTime ?? null,
           lng,
           mapUrl: buildStaticMapUrl(lat, lng),
-          name: record.fields.name ?? "",
+          name,
           source: "airtable" as const,
           tip: record.fields.tip ?? null,
           url: record.fields.url ?? undefined,
