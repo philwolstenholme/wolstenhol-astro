@@ -1,70 +1,82 @@
-import { createHmac } from "crypto";
-
 import { z } from "astro/zod";
 import { defineCollection } from "astro:content";
-import { FOURSQUARE_OAUTH_TOKEN, GOOGLE_MAPS_KEY, GOOGLE_MAPS_SECRET } from "astro:env/server";
+import { AIRTABLE_KEY } from "astro:env/server";
 import { sampleSize, sortBy } from "es-toolkit";
 
+import { buildStaticMapUrl } from "../helpers/googleStaticMap";
+
+// Places used to come from Foursquare "venue likes", but Foursquare shut its
+// API down. They now come from an Airtable "Places" table that I populate with
+// the /add-place mini app. The fields mirror the old Foursquare shape so the
+// PlacesCard component did not have to change.
+const BASE_ID = "appT2NMQ7UD8T2smq";
+const TABLE = "Places";
 const PLACES_COUNT = 9;
 
-function buildMapUrl(lat: number, lng: number): null | string {
-  if (!GOOGLE_MAPS_KEY) {
-    return null;
-  }
-  const base = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=13&size=365x182&maptype=roadmap&key=${GOOGLE_MAPS_KEY}&format=png&visual_refresh=true&map_id=db8ea46f9ea0d213&scale=2`;
-  return GOOGLE_MAPS_SECRET ? signGoogleMapsUrl(base, GOOGLE_MAPS_SECRET) : base;
-}
-
-function signGoogleMapsUrl(url: string, secret: string): string {
-  const urlObj = new URL(url);
-  const pathAndQuery = urlObj.pathname + urlObj.search;
-  const normalBase64 = secret.replace(/-/g, "+").replace(/_/g, "/");
-  const keyBytes = Buffer.from(normalBase64, "base64");
-  const signature = createHmac("sha1", keyBytes)
-    .update(pathAndQuery)
-    .digest("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_");
-  return `${url}&signature=${signature}`;
-}
+type PlaceRecord = {
+  createdTime?: string;
+  fields: {
+    address?: string;
+    city?: string;
+    lat?: number;
+    likedAt?: string;
+    lng?: number;
+    name?: string;
+    tip?: string;
+    url?: string;
+  };
+  id: string;
+};
 
 export const places = defineCollection({
   loader: async () => {
-    if (!FOURSQUARE_OAUTH_TOKEN) {
-      console.warn("Places: FOURSQUARE_OAUTH_TOKEN not set, skipping fetch");
+    if (!AIRTABLE_KEY) {
+      console.warn("Places: AIRTABLE_KEY not set, skipping fetch");
       return [];
     }
 
-    const response = await fetch(
-      `https://api.foursquare.com/v2/users/self/venuelikes?oauth_token=${FOURSQUARE_OAUTH_TOKEN}&v=20151227&limit=200`,
-    );
+    try {
+      const response = await fetch(
+        `https://api.airtable.com/v0/${BASE_ID}/${TABLE}?maxRecords=200`,
+        { headers: { Authorization: `Bearer ${AIRTABLE_KEY}` } },
+      );
 
-    if (!response.ok) {
-      throw new Error(`Foursquare API error: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`Airtable API error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = (await response.json()) as { records: PlaceRecord[] };
+
+      // Only records with coordinates can render a map, so drop anything without
+      // them rather than shipping a broken card.
+      const located = data.records.filter(
+        (record) => typeof record.fields.lat === "number" && typeof record.fields.lng === "number",
+      );
+
+      const sorted = sortBy(located, [
+        (record) => record.fields.likedAt ?? record.createdTime ?? "",
+      ]).reverse();
+
+      return sampleSize(sorted, Math.min(PLACES_COUNT, sorted.length)).map((record) => {
+        const lat = record.fields.lat as number;
+        const lng = record.fields.lng as number;
+        return {
+          address: record.fields.address ?? "",
+          city: record.fields.city ?? "",
+          id: record.id,
+          lat,
+          likedAt: record.fields.likedAt ?? record.createdTime ?? null,
+          lng,
+          mapUrl: buildStaticMapUrl(lat, lng),
+          name: record.fields.name ?? "",
+          tip: record.fields.tip ?? null,
+          url: record.fields.url ?? undefined,
+        };
+      });
+    } catch (error) {
+      console.error("Places (Airtable) fetch failed:", error);
+      return [];
     }
-
-    const data = await response.json();
-
-    if (data.meta?.code !== 200) {
-      throw new Error(`Foursquare error: ${data.meta?.errorDetail}`);
-    }
-
-    const venues: any[] = data.response?.venues?.items ?? [];
-
-    const sortedVenues = sortBy(venues, [(v) => v.ratedAt ?? 0]).reverse();
-
-    return sampleSize(sortedVenues, PLACES_COUNT).map((v) => ({
-      address: v.location.formattedAddress?.[0] ?? v.location.address ?? "",
-      city: v.location.city ?? "",
-      id: v.id,
-      lat: v.location.lat,
-      likedAt: v.ratedAt ? new Date(v.ratedAt * 1000).toISOString() : null,
-      lng: v.location.lng,
-      mapUrl: buildMapUrl(v.location.lat, v.location.lng),
-      name: v.name,
-      tip: v.tipHint ?? null,
-      url: v.url ?? `https://foursquare.com/v/${v.id}`,
-    }));
   },
   schema: z.object({
     address: z.string(),

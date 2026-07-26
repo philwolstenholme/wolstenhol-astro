@@ -1,11 +1,12 @@
 import type { APIRoute } from "astro";
 import { AIRTABLE_KEY, BUILD_HOOK_KEY } from "astro:env/server";
 
+import { isOwner } from "../../helpers/verifyNetlifyIdentity";
+
 export const prerender = false;
 
 const AIRTABLE_BASE_ID = "appT2NMQ7UD8T2smq";
 const AIRTABLE_TABLE = "List";
-const OWNER_EMAIL = "philgw@gmail.com";
 
 type ReadingItem = {
   commentary: string;
@@ -20,25 +21,6 @@ const json = (data: unknown, status: number) =>
     status,
   });
 
-// Verify the caller's Netlify Identity token by asking the site's own GoTrue
-// endpoint who it belongs to. The Eleventy version relied on Netlify injecting
-// `context.clientContext.user`; an Astro API route has to check the bearer
-// token itself.
-const getVerifiedEmail = async (authHeader: string, origin: string): Promise<null | string> => {
-  try {
-    const response = await fetch(`${origin}/.netlify/identity/user`, {
-      headers: { authorization: authHeader },
-    });
-    if (!response.ok) {
-      return null;
-    }
-    const user = (await response.json()) as { email?: string };
-    return user.email ?? null;
-  } catch {
-    return null;
-  }
-};
-
 export const POST: APIRoute = async ({ request }) => {
   const authHeader = request.headers.get("authorization");
 
@@ -49,10 +31,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const { commentary, skipTweet, title, url } = (await request.json()) as ReadingItem;
 
-  const email = await getVerifiedEmail(authHeader, new URL(request.url).origin);
-  const itsMe = email === OWNER_EMAIL;
-
-  if (!itsMe) {
+  if (!(await isOwner(authHeader, new URL(request.url).origin))) {
     console.log("It wasn't me…");
     return json({ commentary, skipTweet, title, url }, 403);
   }
