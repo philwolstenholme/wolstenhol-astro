@@ -1,0 +1,748 @@
+---
+export const prerender = true;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Add a place</title>
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+
+    <script
+      is:inline
+      type="text/javascript"
+      src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+    <script
+      is:inline
+      defer
+      src="/proxy/jsdelivr/npm/alpinejs@3.9.5/dist/cdn.min.js"
+      integrity="sha256-lwKcAFvw4QunRY7rShq1JG1oGB/VcFMzOuCwEFzt5Ew="
+      crossorigin="anonymous"></script>
+
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #0f172a;
+        --panel: #1e293b;
+        --panel-2: #273449;
+        --border: #334155;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --accent: #38bdf8;
+        --accent-ink: #04263a;
+        --danger: #f87171;
+        --ok: #34d399;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      [x-cloak] {
+        display: none !important;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .app {
+        max-width: 34rem;
+        margin: 0 auto;
+        padding: 1.5rem 1.25rem 4rem;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        margin: 0 0 0.25rem;
+        letter-spacing: -0.01em;
+      }
+
+      .sub {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin: 0 0 1.5rem;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .tabs button {
+        flex: 1;
+        padding: 0.6rem 0.75rem;
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--muted);
+        border-radius: 0.6rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+
+      .tabs button.active {
+        background: var(--panel-2);
+        color: var(--text);
+        border-color: var(--accent);
+      }
+
+      form,
+      .nearby {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      input[type="search"],
+      textarea {
+        width: 100%;
+        padding: 0.65rem 0.75rem;
+        border-radius: 0.55rem;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--text);
+        font: inherit;
+      }
+
+      input[type="search"]:focus,
+      textarea:focus {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+
+      .bias {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      button.primary {
+        padding: 0.7rem 1rem;
+        border: none;
+        border-radius: 0.6rem;
+        background: var(--accent);
+        color: var(--accent-ink);
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+      }
+
+      button.primary:disabled {
+        opacity: 0.55;
+        cursor: progress;
+      }
+
+      button.link {
+        background: none;
+        border: none;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 0.85rem;
+        text-decoration: underline;
+        padding: 0;
+      }
+
+      .status {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .error {
+        color: var(--danger);
+        font-size: 0.9rem;
+      }
+
+      .saved {
+        color: var(--ok);
+        font-size: 0.95rem;
+        font-weight: 600;
+      }
+
+      .results {
+        list-style: none;
+        margin: 1.25rem 0 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+      }
+
+      .result {
+        border: 1px solid var(--border);
+        border-radius: 0.75rem;
+        overflow: hidden;
+        background: var(--panel);
+      }
+
+      .result img {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 365 / 182;
+        object-fit: cover;
+        background: var(--panel-2);
+      }
+
+      .result .info {
+        padding: 0.85rem 1rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+
+      .result h2 {
+        font-size: 1.05rem;
+        margin: 0;
+      }
+
+      .result .cat {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--accent);
+        margin: 0;
+      }
+
+      .result .addr {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .result .info button {
+        align-self: flex-start;
+        margin-top: 0.4rem;
+        padding: 0.5rem 0.9rem;
+        border: 1px solid var(--accent);
+        background: transparent;
+        color: var(--accent);
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+      }
+
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgb(2 6 23 / 70%);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 1rem;
+        z-index: 50;
+      }
+
+      @media (min-width: 40rem) {
+        .overlay {
+          align-items: center;
+        }
+      }
+
+      .sheet {
+        width: 100%;
+        max-width: 32rem;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 0.9rem;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .sheet h2 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+
+      .sheet .place-addr {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin: 0;
+      }
+
+      .sheet label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      .actions {
+        display: flex;
+        gap: 0.6rem;
+        justify-content: flex-end;
+        margin-top: 0.25rem;
+      }
+
+      button.secondary {
+        padding: 0.7rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: 0.6rem;
+        background: transparent;
+        color: var(--text);
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+
+      .gate {
+        text-align: center;
+        padding-top: 4rem;
+      }
+
+      .gate button {
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="app" x-data="addPlace" x-cloak>
+      <!-- Logged out -->
+      <div class="gate" x-show="!currentUser">
+        <h1>Add a place</h1>
+        <p class="sub">
+          Log in to search Google Maps and save places to Airtable.
+        </p>
+        <button class="primary" @click="login()">Log in</button>
+      </div>
+
+      <!-- Logged in -->
+      <div x-show="currentUser" style="display: none">
+        <div class="topbar">
+          <div>
+            <h1>Add a place</h1>
+            <p class="sub">
+              Search Google Maps, then save to the Places table.
+            </p>
+          </div>
+          <button class="link" @click="logout()">Log out</button>
+        </div>
+
+        <div class="tabs">
+          <button :class="{ active: mode === 'name' }" @click="mode = 'name'">
+            Search by name
+          </button>
+          <button
+            :class="{ active: mode === 'nearby' }"
+            @click="mode = 'nearby'"
+          >
+            Near me
+          </button>
+        </div>
+
+        <form x-show="mode === 'name'" @submit.prevent="searchByName()">
+          <input
+            x-model="query"
+            type="search"
+            placeholder="e.g. The Whitworth, Manchester"
+            required
+            enterkeyhint="search"
+          />
+          <label class="bias">
+            <input
+              type="checkbox"
+              @change="$event.target.checked ? useMyLocation() : (coords = null)"
+            />
+            Prefer results near my current location
+          </label>
+          <button class="primary" type="submit" :disabled="loading">
+            <span x-text="loading ? 'Searching…' : 'Search'"></span>
+          </button>
+        </form>
+
+        <div class="nearby" x-show="mode === 'nearby'">
+          <p class="status" x-show="coords" style="display: none">
+            Using your current location.
+          </p>
+          <button
+            class="primary"
+            @click="searchNearby()"
+            :disabled="loading || locating"
+          >
+            <span x-show="locating" style="display: none">Locating…</span>
+            <span
+              x-show="!locating"
+              x-text="loading ? 'Searching…' : 'Find places near me'"></span>
+          </button>
+        </div>
+
+        <p class="status" x-show="loading" style="display: none">Searching…</p>
+        <p class="error" x-show="error" x-text="error" style="display: none">
+        </p>
+        <p
+          class="saved"
+          x-show="saved"
+          x-text="`Saved “${saved}” to Airtable ✓`"
+          style="display: none"
+        >
+        </p>
+
+        <ul class="results" x-show="results.length" style="display: none">
+          <template x-for="place in results" :key="place.id">
+            <li class="result">
+              <img
+                x-show="place.mapUrl"
+                :src="place.mapUrl"
+                alt=""
+                loading="lazy"
+                width="365"
+                height="182"
+              />
+              <div class="info">
+                <h2 x-text="place.name"></h2>
+                <p class="cat" x-show="place.category" x-text="place.category">
+                </p>
+                <p class="addr" x-text="place.address"></p>
+                <button @click="select(place)">Add this place</button>
+              </div>
+            </li>
+          </template>
+        </ul>
+      </div>
+
+      <!-- Confirm + optional tip -->
+      <div
+        class="overlay"
+        x-show="selected"
+        style="display: none"
+        @click.self="cancel()"
+      >
+        <div class="sheet">
+          <template x-if="selected">
+            <div style="display: contents">
+              <h2 x-text="selected.name"></h2>
+              <p
+                class="place-addr"
+                x-text="[selected.address, selected.city].filter(Boolean).join(' · ')"
+              >
+              </p>
+              <label>
+                Tip / note (optional)
+                <textarea
+                  x-model="tip"
+                  rows="3"
+                  placeholder="A short note, like the old Foursquare tips"
+                ></textarea>
+              </label>
+              <div class="actions">
+                <button class="secondary" @click="cancel()">Cancel</button>
+                <button
+                  class="primary"
+                  @click="submit()"
+                  :disabled="submitting"
+                >
+                  <span x-text="submitting ? 'Saving…' : 'Save to Airtable'"
+                  ></span>
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </main>
+
+    <script is:inline>
+      document.addEventListener("alpine:init", () => {
+        // Keys are sorted alphabetically to satisfy the perfectionist lint rule;
+        // the grouping (state, then helpers, then actions) is by name only.
+        Alpine.data("addPlace", () => ({
+          // Web Share Target: the manifest posts shared data to /add-place as
+          // ?title=&text=&url= (GET). Google Maps shares the place name plus a
+          // maps link (sometimes only a link), so strip URLs to recover a
+          // searchable name and prefill the search box with it.
+          applySharedParams() {
+            const params = new URLSearchParams(location.search);
+            const title = (params.get("title") || "").trim();
+            const text = (params.get("text") || "").trim();
+            const url = (params.get("url") || "").trim();
+            if (!title && !text && !url) {
+              return;
+            }
+            const combined = [title, text].filter(Boolean).join(" ");
+            const name = combined
+              .replace(/https?:\/\/\S+/g, " ")
+              .replace(/\s+/g, " ")
+              .trim();
+            const query = name || url || text;
+            if (query) {
+              this.mode = "name";
+              this.query = query;
+            }
+          },
+
+          cancel() {
+            this.selected = null;
+            this.tip = "";
+          },
+
+          coords: null,
+          currentUser: null,
+          error: "",
+
+          getLocation() {
+            return new Promise((resolve, reject) => {
+              if (!navigator.geolocation) {
+                reject(
+                  new Error("Geolocation is not supported by this browser"),
+                );
+                return;
+              }
+
+              // macOS CoreLocation often rejects a one-shot getCurrentPosition
+              // with kCLErrorLocationUnknown before it has a fix, even though a
+              // fix arrives moments later. watchPosition keeps trying and hands
+              // us the first good reading; we ignore transient failures and only
+              // bail on a denied permission or our own overall timeout.
+              let settled = false;
+              let watchId = null;
+
+              const finish = (settle, value) => {
+                if (settled) {
+                  return;
+                }
+                settled = true;
+                clearTimeout(timer);
+                if (watchId !== null) {
+                  navigator.geolocation.clearWatch(watchId);
+                }
+                settle(value);
+              };
+
+              const timer = setTimeout(() => {
+                finish(
+                  reject,
+                  new Error(
+                    "Timed out waiting for a location fix — try again.",
+                  ),
+                );
+              }, 20000);
+
+              watchId = navigator.geolocation.watchPosition(
+                (position) =>
+                  finish(resolve, {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                  }),
+                (positionError) => {
+                  if (positionError.code === positionError.PERMISSION_DENIED) {
+                    finish(
+                      reject,
+                      new Error("Location permission was denied."),
+                    );
+                  }
+                  // Otherwise keep watching until a fix arrives or we time out.
+                },
+                { enableHighAccuracy: false, maximumAge: 60000 },
+              );
+            });
+          },
+
+          init() {
+            this.applySharedParams();
+            this.pollUser();
+            setInterval(() => this.pollUser(), 500);
+          },
+
+          loading: false,
+          locating: false,
+
+          login() {
+            netlifyIdentity.open("login");
+          },
+
+          logout() {
+            netlifyIdentity.logout();
+          },
+
+          mode: "name",
+
+          pollUser() {
+            this.currentUser = window.netlifyIdentity
+              ? netlifyIdentity.currentUser()
+              : null;
+          },
+
+          query: "",
+          results: [],
+
+          async runSearch(payload) {
+            this.loading = true;
+            this.error = "";
+            this.saved = "";
+            this.results = [];
+            this.selected = null;
+            try {
+              const response = await fetch("/api/places-search", {
+                body: JSON.stringify(payload),
+                headers: {
+                  authorization: `Bearer ${await this.token()}`,
+                  "content-type": "application/json",
+                },
+                method: "POST",
+              });
+              const data = await response.json().catch(() => ({}));
+              if (!response.ok) {
+                throw new Error(
+                  data.detail ||
+                    data.message ||
+                    `Search failed (${response.status})`,
+                );
+              }
+              this.results = data.results || [];
+              if (this.results.length === 0) {
+                this.error = "No places found. Try a different search.";
+              }
+            } catch (searchError) {
+              this.error = searchError.message;
+            } finally {
+              this.loading = false;
+            }
+          },
+
+          saved: "",
+
+          async searchByName() {
+            if (!this.query.trim()) {
+              return;
+            }
+            await this.runSearch({
+              mode: "text",
+              query: this.query.trim(),
+              ...this.coords,
+            });
+          },
+
+          async searchNearby() {
+            this.error = "";
+            if (!this.coords) {
+              await this.useMyLocation();
+            }
+            if (!this.coords) {
+              return;
+            }
+            await this.runSearch({
+              lat: this.coords.lat,
+              lng: this.coords.lng,
+              mode: "nearby",
+              radius: 1000,
+            });
+          },
+
+          select(place) {
+            this.selected = place;
+            this.tip = "";
+          },
+
+          selected: null,
+
+          async submit() {
+            if (!this.selected) {
+              return;
+            }
+            this.submitting = true;
+            this.error = "";
+            try {
+              const place = this.selected;
+              const response = await fetch("/api/submit-place", {
+                body: JSON.stringify({
+                  address: place.address,
+                  city: place.city,
+                  lat: place.lat,
+                  lng: place.lng,
+                  name: place.name,
+                  placeId: place.id,
+                  tip: this.tip,
+                  url: place.url,
+                }),
+                headers: {
+                  authorization: `Bearer ${await this.token()}`,
+                  "content-type": "application/json",
+                },
+                method: "POST",
+              });
+              if (!response.ok) {
+                throw new Error(`Save failed (${response.status})`);
+              }
+              this.saved = place.name;
+              this.results = this.results.filter(
+                (result) => result.id !== place.id,
+              );
+              this.selected = null;
+              this.tip = "";
+            } catch (submitError) {
+              this.error = submitError.message;
+            } finally {
+              this.submitting = false;
+            }
+          },
+
+          submitting: false,
+          tip: "",
+
+          // A fresh bearer token for the API routes to verify against GoTrue.
+          async token() {
+            const user = netlifyIdentity.currentUser();
+            await netlifyIdentity.refresh();
+            return user.token.access_token;
+          },
+
+          async useMyLocation() {
+            this.error = "";
+            this.locating = true;
+            try {
+              this.coords = await this.getLocation();
+            } catch (locationError) {
+              this.error = `Could not get your location: ${locationError.message}`;
+            } finally {
+              this.locating = false;
+            }
+          },
+        }));
+      });
+
+      netlifyIdentity.on("login", () => netlifyIdentity.close());
+      document.addEventListener("DOMContentLoaded", () => {
+        if (!netlifyIdentity.currentUser()) {
+          netlifyIdentity.open("login");
+        }
+      });
+    </script>
+  </body>
+</html>
