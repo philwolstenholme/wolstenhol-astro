@@ -1,7 +1,6 @@
 import type { APIRoute } from "astro";
 import { GOOGLE_MAPS_KEY, GOOGLE_PLACES_KEY } from "astro:env/server";
 
-import { buildStaticMapUrl } from "../../helpers/googleStaticMap";
 import { isOwner } from "../../helpers/verifyNetlifyIdentity";
 
 export const prerender = false;
@@ -13,7 +12,6 @@ type NormalisedPlace = {
   id: string;
   lat: number;
   lng: number;
-  mapUrl: null | string;
   name: string;
   summary: null | string;
   url: string;
@@ -79,7 +77,6 @@ const normalise = (place: {
     id: place.id,
     lat,
     lng,
-    mapUrl: buildStaticMapUrl(lat, lng),
     name: place.displayName?.text ?? "",
     summary: place.editorialSummary?.text ?? null,
     url: place.googleMapsUri ?? `https://www.google.com/maps/place/?q=place_id:${place.id}`,
