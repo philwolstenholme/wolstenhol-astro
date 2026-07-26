@@ -70,7 +70,7 @@ export const prerender = true;
       .app {
         max-width: 34rem;
         margin: 0 auto;
-        padding: 1.5rem 1.25rem 4rem;
+        padding: 1.25rem 1.25rem 2rem;
       }
 
       .topbar {
@@ -81,7 +81,7 @@ export const prerender = true;
       }
 
       h1 {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         margin: 0 0 0.25rem;
         letter-spacing: -0.01em;
       }
@@ -95,7 +95,7 @@ export const prerender = true;
       .tabs {
         display: flex;
         gap: 0.5rem;
-        margin-bottom: 1rem;
+        margin: 0.75rem 0;
       }
 
       .tabs button {
@@ -129,6 +129,16 @@ export const prerender = true;
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
+      }
+
+      .search-row {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .search-row input[type="search"] {
+        flex: 1;
+        min-width: 0;
       }
 
       input[type="search"],
@@ -185,22 +195,25 @@ export const prerender = true;
       .status {
         color: var(--muted);
         font-size: 0.9rem;
+        margin: 0.75rem 0 0;
       }
 
       .error {
         color: var(--danger);
         font-size: 0.9rem;
+        margin: 0.75rem 0 0;
       }
 
       .saved {
         color: var(--ok);
         font-size: 0.95rem;
         font-weight: 600;
+        margin: 0.75rem 0 0;
       }
 
       .results {
         list-style: none;
-        margin: 1.25rem 0 0;
+        margin: 0.75rem 0 0;
         padding: 0;
         display: flex;
         flex-direction: column;
@@ -364,13 +377,18 @@ export const prerender = true;
         </div>
 
         <form x-show="mode === 'name'" @submit.prevent="searchByName()">
-          <input
-            x-model="query"
-            type="search"
-            placeholder="e.g. The Whitworth, Manchester"
-            required
-            enterkeyhint="search"
-          />
+          <div class="search-row">
+            <input
+              x-model="query"
+              type="search"
+              placeholder="e.g. The Whitworth, Manchester"
+              required
+              enterkeyhint="search"
+            />
+            <button class="primary" type="submit" :disabled="loading">
+              <span x-text="loading ? 'Searching…' : 'Search'"></span>
+            </button>
+          </div>
           <label class="bias">
             <input
               type="checkbox"
@@ -379,9 +397,6 @@ export const prerender = true;
             />
             Prefer results near my current location
           </label>
-          <button class="primary" type="submit" :disabled="loading">
-            <span x-text="loading ? 'Searching…' : 'Search'"></span>
-          </button>
         </form>
 
         <div class="nearby" x-show="mode === 'nearby'">
