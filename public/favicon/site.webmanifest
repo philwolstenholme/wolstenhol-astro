@@ -19,5 +19,15 @@
   "background_color": "#fbbf24",
   "display": "minimal-ui",
   "orientation": "natural",
-  "start_url": "/"
+  "start_url": "/",
+  "scope": "/",
+  "share_target": {
+    "action": "/add-place",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
 }

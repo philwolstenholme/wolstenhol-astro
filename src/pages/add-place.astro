@@ -483,6 +483,30 @@ export const prerender = true;
         // Keys are sorted alphabetically to satisfy the perfectionist lint rule;
         // the grouping (state, then helpers, then actions) is by name only.
         Alpine.data("addPlace", () => ({
+          // Web Share Target: the manifest posts shared data to /add-place as
+          // ?title=&text=&url= (GET). Google Maps shares the place name plus a
+          // maps link (sometimes only a link), so strip URLs to recover a
+          // searchable name and prefill the search box with it.
+          applySharedParams() {
+            const params = new URLSearchParams(location.search);
+            const title = (params.get("title") || "").trim();
+            const text = (params.get("text") || "").trim();
+            const url = (params.get("url") || "").trim();
+            if (!title && !text && !url) {
+              return;
+            }
+            const combined = [title, text].filter(Boolean).join(" ");
+            const name = combined
+              .replace(/https?:\/\/\S+/g, " ")
+              .replace(/\s+/g, " ")
+              .trim();
+            const query = name || url || text;
+            if (query) {
+              this.mode = "name";
+              this.query = query;
+            }
+          },
+
           cancel() {
             this.selected = null;
             this.tip = "";
@@ -551,6 +575,7 @@ export const prerender = true;
           },
 
           init() {
+            this.applySharedParams();
             this.pollUser();
             setInterval(() => this.pollUser(), 500);
           },
