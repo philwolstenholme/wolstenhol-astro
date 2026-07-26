@@ -500,14 +500,52 @@ export const prerender = true;
                 );
                 return;
               }
-              navigator.geolocation.getCurrentPosition(
+
+              // macOS CoreLocation often rejects a one-shot getCurrentPosition
+              // with kCLErrorLocationUnknown before it has a fix, even though a
+              // fix arrives moments later. watchPosition keeps trying and hands
+              // us the first good reading; we ignore transient failures and only
+              // bail on a denied permission or our own overall timeout.
+              let settled = false;
+              let watchId = null;
+
+              const finish = (settle, value) => {
+                if (settled) {
+                  return;
+                }
+                settled = true;
+                clearTimeout(timer);
+                if (watchId !== null) {
+                  navigator.geolocation.clearWatch(watchId);
+                }
+                settle(value);
+              };
+
+              const timer = setTimeout(() => {
+                finish(
+                  reject,
+                  new Error(
+                    "Timed out waiting for a location fix — try again.",
+                  ),
+                );
+              }, 20000);
+
+              watchId = navigator.geolocation.watchPosition(
                 (position) =>
-                  resolve({
+                  finish(resolve, {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
                   }),
-                (positionError) => reject(positionError),
-                { enableHighAccuracy: true, timeout: 10000 },
+                (positionError) => {
+                  if (positionError.code === positionError.PERMISSION_DENIED) {
+                    finish(
+                      reject,
+                      new Error("Location permission was denied."),
+                    );
+                  }
+                  // Otherwise keep watching until a fix arrives or we time out.
+                },
+                { enableHighAccuracy: false, maximumAge: 60000 },
               );
             });
           },
