@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { GOOGLE_MAPS_KEY, GOOGLE_PLACES_KEY, GOOGLE_PLACES_REFERER } from "astro:env/server";
+import { GOOGLE_MAPS_KEY, GOOGLE_PLACES_KEY } from "astro:env/server";
 
 import { buildStaticMapUrl } from "../../helpers/googleStaticMap";
 import { isOwner } from "../../helpers/verifyNetlifyIdentity";
@@ -142,17 +142,10 @@ export const POST: APIRoute = async ({ request }) => {
     }
   }
 
-  // Google checks the Referer header against a referrer-restricted key's
-  // allowed list. Unlike a browser, Node's fetch does not strip a manually set
-  // Referer, so sending the site's own origin lets the public Maps key work for
-  // this server-to-server call without a separate unrestricted key.
-  const referer = GOOGLE_PLACES_REFERER ?? `${origin}/`;
-
   const response = await fetch(endpoint, {
     body: JSON.stringify(payload),
     headers: {
       "content-type": "application/json",
-      Referer: referer,
       "X-Goog-Api-Key": apiKey,
       "X-Goog-FieldMask": FIELD_MASK,
     },

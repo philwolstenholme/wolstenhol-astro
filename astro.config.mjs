@@ -95,15 +95,6 @@ export default defineConfig({
         context: "server",
         optional: true,
       }),
-      // Referer to send on the server-side Places call so a referrer-restricted
-      // GOOGLE_MAPS_KEY is accepted. Must match one of the key's allowed
-      // referrers (e.g. "https://wolstenhol.me/"). Defaults to the request's
-      // own origin when unset.
-      GOOGLE_PLACES_REFERER: envField.string({
-        access: "secret",
-        context: "server",
-        optional: true,
-      }),
       SPOTIFY_CLIENT_ID: envField.string({
         access: "secret",
         context: "server",
