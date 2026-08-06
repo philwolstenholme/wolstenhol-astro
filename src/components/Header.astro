@@ -1,4 +1,6 @@
 ---
+import { NAV_SCROLL_RESTORE_SCRIPT } from "../assets/csp-inline-assets";
+
 interface NavLink {
   href: string;
   label: string;
@@ -92,54 +94,17 @@ const navLinks: NavLink[] = [
       >
       </div>
     </nav>
-    <script is:inline>
-      // Restores the nav's horizontal scroll position before first paint so
-      // hard navigations feel like an SPA instead of resetting the scroll.
-      // Placed right after .header-nav so it runs synchronously, once that
-      // element (and its children, which its scrollWidth depends on) has
-      // been parsed but before the browser paints the frame.
-      (() => {
-        const STORAGE_KEY = "header-nav-scroll-x";
-        const nav = document.querySelector(".header-nav");
-        if (!nav) {
-          return;
-        }
-
-        const restore = () => {
-          const stored = sessionStorage.getItem(STORAGE_KEY);
-          const x = stored === null ? NaN : Number(stored);
-          if (Number.isFinite(x)) {
-            nav.scrollLeft = x;
-          }
-        };
-
-        restore();
-
-        let persistQueued = false;
-        const persist = () => {
-          persistQueued = false;
-          sessionStorage.setItem(STORAGE_KEY, String(nav.scrollLeft));
-        };
-        nav.addEventListener(
-          "scroll",
-          () => {
-            if (persistQueued) {
-              return;
-            }
-            persistQueued = true;
-            requestAnimationFrame(persist);
-          },
-          { passive: true },
-        );
-        nav.addEventListener("scrollend", persist);
-
-        // Speculation-rules prerendered pages run this script before a later
-        // scroll on the referring page is saved, and bfcache restores can
-        // race with it too, so re-sync at activation in both cases.
-        window.addEventListener("pageshow", restore);
-        document.addEventListener("prerenderingchange", restore);
-      })();
-    </script>
+    <!-- Restores the nav's horizontal scroll position before first paint so
+         hard navigations feel like an SPA instead of resetting the scroll.
+         Placed right after .header-nav so it runs synchronously, once that
+         element (and its children, which its scrollWidth depends on) has
+         been parsed but before the browser paints the frame. Speculation-
+         rules prerendered pages run this script before a later scroll on the
+         referring page is saved, and bfcache restores can race with it too,
+         so it re-syncs at activation in both cases (see the script body in
+         ../assets/csp-inline-assets.ts, kept there so its CSP hash in
+         src/middleware.ts can't drift out of sync with what renders). -->
+    <script is:inline set:html={NAV_SCROLL_RESTORE_SCRIPT} />
   </div>
   <div
     class="sm:-mx-2 col-[full] bg-binding-dark h-3 shadow-hard"

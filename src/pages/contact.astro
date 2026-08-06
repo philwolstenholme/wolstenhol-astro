@@ -54,7 +54,7 @@ import Layout from "../layouts/Layout.astro";
               <template x-for="item in errorList" :key="item.id">
                 <li>
                   <a
-                    x-bind:href="`#${item.id}`"
+                    x-bind:href="'#' + item.id"
                     x-text="item.label"
                     class="text-yellow-300 underline hocus:text-yellow-200"></a>
                   {" "}-{" "}<span x-text="item.message"></span>
@@ -165,7 +165,7 @@ import Layout from "../layouts/Layout.astro";
                   required
                   aria-required="true"
                   class="mt-1.5 shrink-0 cursor-pointer"
-                  x-on:change="values.agreement = $el.checked ? 'true' : ''; touch('agreement')"
+                  x-on:change="setAgreement($el.checked)"
                   x-bind:aria-invalid="touched.agreement && !!errors.agreement ? 'true' : 'false'"
                 />
                 <label

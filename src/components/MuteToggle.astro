@@ -4,12 +4,8 @@
 
 <button
   id="mute-toggle"
-  x-data="{
-    muted: false,
-    init() { this.muted = localStorage.getItem('audioMuted') === 'true'; },
-    toggle() { this.muted = !this.muted; localStorage.setItem('audioMuted', String(this.muted)); }
-  }"
-  x-bind:aria-pressed="String(muted)"
+  x-data="muteToggle"
+  x-bind:aria-pressed="mutedLabel"
   x-bind:aria-label="muted ? 'Unmute sounds' : 'Mute sounds'"
   x-bind:title="muted ? 'Unmute sounds' : 'Mute sounds'"
   x-on:click="toggle()"

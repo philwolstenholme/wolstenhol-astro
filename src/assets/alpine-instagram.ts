@@ -14,5 +14,16 @@ export default defineComponent(() => ({
     });
   },
 
+  // Replaces an inline x-on:click.prevent that used an `if` statement and
+  // `new CustomEvent(...)` — neither is supported by the CSP-safe Alpine
+  // build's expression parser, which only understands single expressions.
+  openLightbox() {
+    if (this.useLightbox) {
+      (this.$root as HTMLElement).dispatchEvent(
+        new CustomEvent("pw-lightbox-open", { bubbles: true }),
+      );
+    }
+  },
+
   useLightbox: false,
 }));

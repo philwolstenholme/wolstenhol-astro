@@ -1,5 +1,10 @@
 import htmx from "htmx.org";
 
+// htmx otherwise injects a <style> element at runtime for its default
+// .htmx-indicator/.htmx-request CSS, which a strict style-src-elem blocks —
+// and the site doesn't use hx-indicator anywhere, so there's nothing to lose.
+htmx.config.includeIndicatorStyles = false;
+
 // Preload extension (htmx.org/dist/ext/preload.js)
 // Prefetches hx-get URLs on mouseover so swaps feel instant.
 // Add the `preload` attribute to any element with hx-get to opt in.
