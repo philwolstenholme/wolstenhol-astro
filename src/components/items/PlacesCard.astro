@@ -10,6 +10,7 @@ type Place = CollectionEntry<"places">["data"] & { id: string };
 const { item: place } = Astro.props as { item: Place };
 
 const formattedAddress = [place.address, place.city].filter(Boolean).join(", ");
+const mapAlt = `Map showing the location of ${place.name}${place.city ? ` in ${place.city}` : ""}`;
 const grungeOpacity = randomSubtleGrungeOpacity();
 const asteriskRotation = Math.floor(Math.random() * 360) + 1;
 ---
@@ -42,14 +43,14 @@ const asteriskRotation = Math.floor(Math.random() * 360) + 1;
         place.mapUrl ? (
           <img
             src={place.mapUrl}
-            alt={`Map showing location of ${place.name} in ${place.city}`}
+            alt={mapAlt}
             width="365"
             height="182"
             loading="lazy"
-            class="w-full mix-blend-multiply"
+            class="w-full aspect-[365/182] mix-blend-multiply"
           />
         ) : (
-          <div class="w-full h-full bg-foursquare-dark/30" />
+          <div class="w-full aspect-[365/182] bg-foursquare-dark/30" />
         )
       }
 
@@ -59,7 +60,7 @@ const asteriskRotation = Math.floor(Math.random() * 360) + 1;
         width="365"
         height="182"
         srcset="/proxy/cloudinary/image/upload/c_fill%2Cg_north%2Cw_365%2Ch_182%2Cf_auto%2Cq_auto%3Alow%2Fv1661284312%2Fone-offs%2F9-soft-grunge-texture-4-1.png 1x, /proxy/cloudinary/image/upload/c_fill%2Cg_north%2Cw_730%2Ch_364%2Cf_auto%2Cq_auto%3Alow%2Fv1661284312%2Fone-offs%2F9-soft-grunge-texture-4-1.png 2x"
-        class="opacity-grunge block w-full slow-connection:hidden"
+        class="opacity-grunge block w-full aspect-[365/182] slow-connection:hidden"
         style={`--opacity: ${grungeOpacity}`}
       />
 
