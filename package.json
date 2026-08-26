@@ -17,7 +17,7 @@
     "scrape:instagram": "node scripts/scrape-instagram.mjs"
   },
   "dependencies": {
-    "@aduptive/instagram-scraper": "^1.0.3",
+    "@aduptive/instagram-scraper": "^2.0.0",
     "@alpinejs/focus": "^3.15.12",
     "@astrojs/netlify": "^8.0.0",
     "@octokit/types": "^16.0.0",
