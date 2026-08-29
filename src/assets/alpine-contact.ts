@@ -44,9 +44,14 @@ export default defineComponent(() => ({
   },
   errors: Object.fromEntries(FIELDS.map((f) => [f, null])) as Record<FormFields, null | string>,
   init() {
-    const handler = (e: Event) => {
-      const detail = (e as CustomEvent).detail as { successful: boolean };
-      if (detail.successful) {
+    // htmx 4 renamed the event to `htmx:after:request` and no longer exposes a
+    // top-level `successful` flag — success is derived from the response status
+    // on `detail.ctx`. A network failure (fetch reject) fires `htmx:error`
+    // instead of `htmx:after:request`, so both are handled.
+    const onAfterRequest = (e: Event) => {
+      const ctx = (e as CustomEvent).detail?.ctx as undefined | { response?: { status: number } };
+      const status = ctx?.response?.status;
+      if (status != null && status < 400) {
         this.submitted = true;
         this.showSummary = false;
         document.dispatchEvent(new CustomEvent("play-sound", { detail: "success" }));
@@ -57,8 +62,15 @@ export default defineComponent(() => ({
         this.submitError = true;
       }
     };
-    this.$el.addEventListener("htmx:afterRequest", handler);
-    this._cleanup = () => this.$el.removeEventListener("htmx:afterRequest", handler);
+    const onError = () => {
+      this.submitError = true;
+    };
+    this.$el.addEventListener("htmx:after:request", onAfterRequest);
+    this.$el.addEventListener("htmx:error", onError);
+    this._cleanup = () => {
+      this.$el.removeEventListener("htmx:after:request", onAfterRequest);
+      this.$el.removeEventListener("htmx:error", onError);
+    };
   },
   showSummary: false,
   submit(formEl: HTMLFormElement) {

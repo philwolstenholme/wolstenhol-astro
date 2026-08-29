@@ -55,7 +55,7 @@ const htmxTarget = htmxPartialPath
   hx-target={htmxTarget}
   hx-swap={htmxPartialPath ? "outerHTML" : undefined}
   hx-select={htmxTarget}
-  preload={!isPrev && htmxPartialPath ? "" : undefined}
+  hx-preload={!isPrev && htmxPartialPath ? "" : undefined}
 >
   <span
     class={clsx(
