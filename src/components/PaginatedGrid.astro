@@ -47,7 +47,11 @@ const { data, hasNext, hasPrev, nextIndex, prevIndex } = staticMode
 const htmxAttrs = staticMode
   ? {}
   : {
-      "@htmx:after-swap": `$event.target.id === 'paginated-grid-${searchParam}' && $focus.within($event.target).first()`,
+      // htmx 4 renamed the event to `htmx:after:swap` and fires it on the
+      // request source element, which bubbles up to this wrapper. The wrapper
+      // contains only this grid, so any swap reaching it is the pagination
+      // swap — move focus to the first focusable element in the new content.
+      "@htmx:after:swap": `$focus.within($el).first()`,
       "x-data": "",
     };
 ---
