@@ -23,7 +23,7 @@
     "@octokit/types": "^17.0.0",
     "@sindresorhus/slugify": "^3.0.0",
     "@tailwindcss/vite": "^4.3.1",
-    "@web-kits/audio": "^0.1.0",
+    "@web-kits/audio": "^0.2.0",
     "alpinejs": "^3.15.12",
     "astro": "^7.0.0",
     "async-alpine": "^2.0.3",
