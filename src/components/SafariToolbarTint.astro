@@ -1,0 +1,46 @@
+---
+// Safari 26 ignores <meta name="theme-color"> and instead tints its toolbars
+// by sampling the background of position: fixed/sticky elements hugging the
+// viewport edges (within ~4px of the top or ~3px of the bottom, at least 80%
+// of the viewport wide on iOS, 90% on macOS, and 3px tall). The sticky
+// <Header> already covers the top edge. There is nothing like it at the
+// bottom, so on iPhone the floating bottom toolbar would pick up whatever
+// card or footer happens to be scrolled underneath it. This strip gives
+// Safari a steady paper colour to sample instead. It sits mostly off-screen
+// and behind the toolbar, so it's never really visible.
+// See https://jahir.dev/blog/safari-toolbar
+---
+
+<div class="safari-toolbar-tint" aria-hidden="true"></div>
+
+<style>
+  .safari-toolbar-tint {
+    /* display: none, not opacity: 0 — Safari still samples transparent
+       elements, but skips ones that aren't rendered. */
+    display: none;
+    position: fixed;
+    bottom: -8px;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    min-height: 12px;
+    pointer-events: none;
+    /* Matches the .bg-subtle-grunge page background in each theme. */
+    background-color: #f4f4f4;
+  }
+
+  :global([data-theme="dark"]) .safari-toolbar-tint {
+    background-color: #23201d;
+  }
+
+  /* Safari-only feature combination, limited to phone widths: iPad and
+     macOS Safari have no bottom toolbar to tint. */
+  @supports (-webkit-text-size-adjust: none) and (font: -apple-system-body) and
+    (-webkit-touch-callout: none) {
+    @media (width < 768px) {
+      .safari-toolbar-tint {
+        display: block;
+      }
+    }
+  }
+</style>

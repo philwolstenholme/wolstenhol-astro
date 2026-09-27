@@ -2,6 +2,7 @@
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import MuteToggle from "../components/MuteToggle.astro";
+import SafariToolbarTint from "../components/SafariToolbarTint.astro";
 import StyledTextLink from "../components/StyledTextLink.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import "../styles/global.css";
@@ -172,7 +173,9 @@ const coffeeStains = [
       title="My posts on dev.to"
       href="https://dev.to/feed/philw_"
     />
-    <meta name="theme-color" content="#161616" />
+    <!-- Matches the sticky header's bg-binding-dark colour. Chrome and Safari
+         ≤18 read this; Safari 26 samples the header itself instead. -->
+    <meta name="theme-color" content="#171717" />
     <noscript>
       <style>
         main section + section,
@@ -233,6 +236,7 @@ const coffeeStains = [
     <Footer />
     <ThemeToggle />
     <MuteToggle />
+    <SafariToolbarTint />
     <script src="../assets/audio-interactions.ts"></script>
     <script>
       import "../assets/htmx.ts";
