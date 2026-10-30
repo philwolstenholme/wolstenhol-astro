@@ -246,6 +246,9 @@ const coffeeStains = [
     <script>
       import "../assets/content-visibility.ts";
     </script>
+    <script>
+      import "../assets/ios-active.ts";
+    </script>
     <script is:inline type="speculationrules">
       {
         "prerender": [
@@ -269,7 +272,10 @@ const coffeeStains = [
 <style is:global>
   body {
     position: relative;
-    min-height: 100vh;
+    /* svh, not vh: 100vh is the height with the mobile URL bar collapsed, so
+       on load it overflows by the bar's height. svh is the smallest viewport,
+       so nothing is cut off and it doesn't shift as the bar shows/hides. */
+    min-height: 100svh;
     display: grid;
     /* Without an explicit column, the auto implicit column expands to the
        max-content size of any horizontal scroller. minmax(0, 1fr) caps it
