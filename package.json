@@ -14,7 +14,9 @@
     "lint:fix": "oxlint --fix src/",
     "format": "oxfmt . && prettier --write \"src/**/*.astro\"",
     "format:check": "oxfmt --check . && prettier --check \"src/**/*.astro\"",
-    "scrape:instagram": "node scripts/scrape-instagram.mjs"
+    "scrape:instagram": "node scripts/scrape-instagram.mjs",
+    "fonts:subset": "uv run scripts/subset-fonts.py",
+    "fonts:check": "uv run scripts/subset-fonts.py --check"
   },
   "dependencies": {
     "@aduptive/instagram-scraper": "^2.0.0",
@@ -58,7 +60,6 @@
     "prettier": "3.9.10",
     "prettier-plugin-astro": "0.14.1",
     "simple-git-hooks": "^2.13.1",
-    "subfont": "^7.2.3",
     "typescript": "^6.0.3"
   },
   "simple-git-hooks": {

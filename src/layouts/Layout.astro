@@ -4,6 +4,7 @@ import Header from "../components/Header.astro";
 import MuteToggle from "../components/MuteToggle.astro";
 import StyledTextLink from "../components/StyledTextLink.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
+import { fontPreloads } from "../data/fontPreloads.generated";
 import "../styles/global.css";
 type Props = {
   hasTitleSuffix?: boolean;
@@ -107,7 +108,17 @@ const coffeeStains = [
     </script>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="preconnect" href="https://res.cloudinary.com" />
-    <!-- Font preloads are injected by the subfont build integration (integrations/subfont.ts). -->
+    {
+      fontPreloads.map((href) => (
+        <link
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          href={href}
+          crossorigin
+        />
+      ))
+    }
     <link
       rel="apple-touch-icon"
       sizes="180x180"

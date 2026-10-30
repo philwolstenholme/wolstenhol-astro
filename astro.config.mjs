@@ -3,8 +3,6 @@ import tailwindcss from "@tailwindcss/vite";
 // @ts-check
 import { defineConfig, envField } from "astro/config";
 
-import { subfont } from "./integrations/subfont.ts";
-
 // Third-party client dependencies split into their own long-lived chunks, so a
 // Renovate bump to one library only cache-busts that library's chunk — never my
 // entry scripts (which hold just my own glue code) or the other vendors.
@@ -112,7 +110,6 @@ export default defineConfig({
       }),
     },
   },
-  integrations: [subfont()],
   routeRules: {
     "/**": { maxAge: 31536000 },
   },
