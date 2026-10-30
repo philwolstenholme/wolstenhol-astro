@@ -100,8 +100,10 @@ const animationDuration = (((hash >> 8) % 100) / 100 + 0.1).toFixed(2);
       animation: var(--animate-typewriter);
     }
 
-    .card--github:hover {
-      --typewriter-duration: 0.75s;
+    @media (hover: hover) and (pointer: fine) {
+      .card--github:hover {
+        --typewriter-duration: 0.75s;
+      }
     }
   }
 </style>

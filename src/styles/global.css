@@ -8,6 +8,13 @@ html {
   /* At least the header height; scales up with viewport so larger screens
      get more breathing room when scrolling to an anchor. */
   scroll-padding-top: clamp(3.5rem, 15vh, 10rem);
+  /* Drop the grey flash mobile browsers paint over tapped links/buttons;
+     tappable elements give their own press feedback via :active (the hocus
+     variants below include it). */
+  -webkit-tap-highlight-color: transparent;
+  /* Stop iOS inflating font sizes when the phone is rotated to landscape. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 @layer base {
@@ -26,10 +33,34 @@ html {
   }
 }
 
+/* Touch screens fake :hover on tap and leave it stuck until the next tap
+ * elsewhere, so hover styles only apply to a precise pointer that can really
+ * hover (a mouse or trackpad). Tailwind's own hover: only checks
+ * (hover: hover); this also requires (pointer: fine). */
+@custom-variant hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
+
 /* Hover *and* focus in one go, matching the original wolstenhol.me site. A lot
  * of the card interactions (lifting captions, fading talk thumbnails, swapping
- * background colours) hang off this variant. */
-@custom-variant hocus (&:hover, &:focus);
+ * background colours) hang off this variant. Hover is gated as above, and
+ * :active stands in for it on touch so a tap gets feedback the moment a
+ * finger lands. */
+@custom-variant hocus {
+  &:focus,
+  &:active {
+    @slot;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
 @custom-variant pointer-fine (@media (pointer: fine));
 @custom-variant slow-connection (@container style(--live-net-type: 1) or style(--live-net-type: 2) or style(--live-net-type: 3));
 /* Dark mode is driven by a data attribute on <html>, set by an inline script
@@ -289,8 +320,14 @@ html {
  * match the site's hand-drawn feel. :where() keeps specificity at zero so any
  * utility class can still override it. Links that only underline on hover
  * pick the wavy style up at the same moment. */
-a:where(:hover, :focus-visible) {
+a:where(:focus-visible) {
   text-decoration-style: wavy;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a:where(:hover) {
+    text-decoration-style: wavy;
+  }
 }
 
 /* ─── Dark theme colour overrides ────────────────────────────────────────────
@@ -442,8 +479,26 @@ a:where(:hover, :focus-visible) {
 }
 
 button {
-  user-select: none;
   cursor: pointer;
+}
+
+/* Controls fire click straight away instead of waiting ~300ms to see whether
+ * a second tap (double-tap zoom) is coming. Pinch zoom still works. */
+a,
+button,
+summary,
+[role="button"] {
+  touch-action: manipulation;
+}
+
+/* Long-pressing a button shouldn't select its label or pop the iOS callout.
+ * Only controls, never links in prose — that text is content people copy. */
+button,
+summary,
+[role="button"] {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 /* ─── content-visibility deferred rendering ──────────────────────────────── */
