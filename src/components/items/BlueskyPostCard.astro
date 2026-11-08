@@ -2,6 +2,8 @@
 import type { CollectionEntry } from "astro:content";
 
 import { longDateFormatter } from "../../helpers/longDateFormatter";
+import { randomTilt } from "../../helpers/organic";
+import GrungeOverlay from "../GrungeOverlay.astro";
 
 const { item: post } = Astro.props as {
   item: CollectionEntry<"bluesky">["data"];
@@ -19,10 +21,15 @@ const hasMedia = post.media_attachments.length > 0;
 const hasCard = post.card && !hasMedia;
 
 const formattedDate = longDateFormatter.format(new Date(post.created_at));
+
+// Each card sits at its own slight angle, like a printout stuck to the page,
+// and straightens up when it's hovered or something inside it has focus.
+const tilt = randomTilt(0.5);
 ---
 
 <article
-  class="card-bluesky contain-content overflow-hidden rounded bg-bluesky font-bold text-white shadow-hard flex flex-col dark:bg-bluesky-dark"
+  class="card-bluesky contain-content relative overflow-hidden rounded bg-bluesky font-bold text-white shadow-hard flex flex-col rotate-(--tilt) transition-[rotate,box-shadow] duration-200 motion-reduce:transition-none hover:rotate-0 hover:shadow-hard-lg focus-within:rotate-0 focus-within:shadow-hard-lg dark:bg-bluesky-dark"
+  style={`--tilt: ${tilt}`}
 >
   {
     hasMedia && (
@@ -178,6 +185,8 @@ const formattedDate = longDateFormatter.format(new Date(post.created_at));
       <time datetime={post.created_at} class="text-xs">{formattedDate}</time>
     </a>
   </div>
+
+  <GrungeOverlay class="absolute inset-0" subtle />
 </article>
 
 <style is:global>
