@@ -1,33 +1,98 @@
 ---
+import clsx from "clsx";
+
+import { randomBetween } from "../../helpers/organic";
+
 // A hand-drawn underline squiggle, used beneath headings to give them the
 // same marker-pen feel as the highlighter effect and the handwritten SVGs.
 // Two overlapping wobbly strokes make it look properly sketched rather than
 // geometric. preserveAspectRatio="none" lets width/height utilities stretch
 // it freely.
+//
+// Every render nudges the strokes' points up/down a touch and gives the whole
+// line its own slight tilt, so no two headings are underlined identically —
+// the way they would be if each one had been drawn with a real pen.
 export interface SquiggleProps {
   class?: string;
 }
 
 const { class: className } = Astro.props;
+
+// [x, y] points of each stroke: a start point followed by cubic bézier
+// segments of three points each (control, control, end).
+const mainStroke: [number, number][] = [
+  [3, 8],
+  [10, 2.5],
+  [17, 3],
+  [25, 6.5],
+  [31, 9],
+  [37, 9.6],
+  [44, 6],
+  [51, 2.6],
+  [56, 3.4],
+  [63, 6.4],
+  [70, 9],
+  [78, 9.4],
+  [86, 5.6],
+  [93, 2.4],
+  [100, 3.6],
+  [108, 6.6],
+  [112, 7.9],
+  [115, 7.4],
+  [117, 6.2],
+];
+
+const echoStroke: [number, number][] = [
+  [6, 10],
+  [14, 6],
+  [20, 6.6],
+  [28, 8.8],
+  [35, 10.6],
+  [42, 10.4],
+  [50, 7.4],
+  [58, 4.6],
+  [64, 5.2],
+  [72, 8],
+  [79, 10.2],
+  [87, 10],
+  [95, 7],
+  [102, 4.4],
+  [108, 5],
+  [114, 7.6],
+];
+
+// Jitter y only (clamped to keep the stroke inside the 12-unit viewBox), so
+// the line keeps its overall rhythm but the peaks and troughs drift.
+const toPath = (points: [number, number][]) => {
+  const coords = points.map(([x, y]) => {
+    const jittered = Math.min(10.4, Math.max(1.6, y + randomBetween(-1, 1)));
+    return `${x} ${jittered}`;
+  });
+  const [start, ...rest] = coords;
+  return `M${start} C ${rest.join(", ")}`;
+};
+
+const rotation = `${randomBetween(-2.2, 0.4)}deg`;
 ---
 
 <svg
   role="presentation"
   aria-hidden="true"
   focusable="false"
-  class={className}
+  class={clsx(className)}
+  style={`rotate: ${rotation}`}
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 120 12"
   preserveAspectRatio="none"
   fill="none"
 >
   <path
-    d="M3 8 C 10 2.5, 17 3, 25 6.5 C 31 9, 37 9.6, 44 6 C 51 2.6, 56 3.4, 63 6.4 C 70 9, 78 9.4, 86 5.6 C 93 2.4, 100 3.6, 108 6.6 C 112 7.9, 115 7.4, 117 6.2"
+    d={toPath(mainStroke)}
     stroke="currentColor"
-    stroke-width="3.2"
+    stroke-width={randomBetween(2.8, 3.6)}
     stroke-linecap="round"></path>
   <path
-    d="M6 10 C 14 6, 20 6.6, 28 8.8 C 35 10.6, 42 10.4, 50 7.4 C 58 4.6, 64 5.2, 72 8 C 79 10.2, 87 10, 95 7 C 102 4.4, 108 5, 114 7.6"
+    d={toPath(echoStroke)}
     stroke="currentColor"
     stroke-width="1.8"
     stroke-linecap="round"
